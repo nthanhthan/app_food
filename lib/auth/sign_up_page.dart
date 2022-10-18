@@ -1,6 +1,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -24,47 +25,48 @@ class SignUpPage extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(height: Dimensions.screenHeight*0.05,),
+            SizedBox(height: ScreenUtil().setHeight(50),),
             Container(
-              height: Dimensions.screenHeight*0.25,
+              height: ScreenUtil().setHeight(150),
               child: Center(
                 child: CircleAvatar(
                   backgroundColor:Colors.white,
-                  radius: 70,
+                  radius: 90,
                   backgroundImage: AssetImage(
                     "assets/images/logo.png"
                   ),
                 ),
               ),
             ),
+            SizedBox(height: ScreenUtil().setHeight(20),),
             AppTextField(textController: nameController, hintText: "Tên", icon: Icons.person),
-            SizedBox(height: Dimensions.height20,),
+            SizedBox(height: ScreenUtil().setHeight(20),),
             AppTextField(textController: emailController, hintText: "Email", icon: Icons.email),
-            SizedBox(height: Dimensions.height20,),
-            AppTextField(textController: passwordController, hintText: "Password", icon: Icons.password_sharp,obscureText: true,),
-            SizedBox(height: Dimensions.height45,),
+            SizedBox(height:  ScreenUtil().setHeight(20),),
+            AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: true,),
+            SizedBox(height:  ScreenUtil().setHeight(40),),
             Container(
-              width: Dimensions.screenWidth/2,
-                height: Dimensions.screenHeight/16,
+              width:  ScreenUtil().setWidth(250),
+                height:  ScreenUtil().setHeight(60),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                borderRadius: BorderRadius.circular( ScreenUtil().radius(30)),
                 color: AppColors.mainColor
               ),
               child: Center(
                 child: BigText(
                   text: "ĐĂNG KÝ",
-                  size: Dimensions.font20+Dimensions.font20/3,
+                  size: ScreenUtil().setSp(15),
                   color: Colors.white,
                 ),
               ),
             ),
-            SizedBox(height: Dimensions.height10,),
+            SizedBox(height: ScreenUtil().setHeight(20),),
             RichText(
                 text: TextSpan(
                     text: "Đã có tài khoản? ",
                     style: TextStyle(
                         color: Colors.grey[500],
-                        fontSize: Dimensions.font20
+                        fontSize: ScreenUtil().setSp(18)
                     ),
                     children: [
                       TextSpan(
@@ -73,7 +75,7 @@ class SignUpPage extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.mainBlackColor,
-                            fontSize: Dimensions.font20
+                            fontSize: ScreenUtil().setSp(22)
                         ),)
                     ]
                 )),

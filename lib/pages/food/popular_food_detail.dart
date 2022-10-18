@@ -1,4 +1,6 @@
+import 'package:app_food/pages/food/topping.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
 import '../../widgets/app_icon.dart';
@@ -20,7 +22,7 @@ class PopularFoodDetail extends StatelessWidget {
               right: 0,
               child: Container(
                 width: double.maxFinite,
-                height: Dimensions.popularFoodImgSize,
+                height: ScreenUtil().setHeight(240),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
@@ -28,14 +30,14 @@ class PopularFoodDetail extends StatelessWidget {
               )),
           //icon widgets
           Positioned(
-              top: Dimensions.height45,
-              left: Dimensions.width20,
-              right: Dimensions.width20,
+              top: ScreenUtil().setHeight(20),
+              left: ScreenUtil().setWidth(20),
+              right: ScreenUtil().setWidth(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIcon(icon: Icons.arrow_back_ios,size: Dimensions.iconSize30,),
-                  AppIcon(icon: Icons.shopping_cart_outlined,size: Dimensions.iconSize30)
+                  AppIcon(icon: Icons.arrow_back_ios,size: ScreenUtil().setHeight(30),),
+                  AppIcon(icon: Icons.shopping_cart_outlined,size: ScreenUtil().setHeight(30))
                 ],
               )),
           //introduction of food
@@ -43,7 +45,7 @@ class PopularFoodDetail extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: 0,
-              top: Dimensions.popularFoodImgSize - 20,
+              top: ScreenUtil().setHeight(220),
               child: Container(
                   padding: EdgeInsets.only(
                       left: Dimensions.width20,
@@ -51,8 +53,8 @@ class PopularFoodDetail extends StatelessWidget {
                       top: Dimensions.height20),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(Dimensions.radius20),
-                          topLeft: Radius.circular(Dimensions.radius20)),
+                          topRight: Radius.circular(ScreenUtil().radius(20)),
+                          topLeft: Radius.circular(ScreenUtil().radius(20))),
                       color: Colors.white),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,63 +63,59 @@ class PopularFoodDetail extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            BigText(text: "Bún mắm Đà Nẵng",size: Dimensions.font26,),
-                            BigText(text: "25.000",size: Dimensions.font26,),
+                            BigText(text: "Bún mắm Đà Nẵng",size: ScreenUtil().setSp(15),),
+                            BigText(text: "25.000",size:  ScreenUtil().setSp(15),),
                           ],
 
                         ),
                       ),
                       //AppColumn(text: "Bun mam Da Nang"),
                       SizedBox(
-                        height: Dimensions.height20,
-                      ),
-                      SizedBox(
-                        height: Dimensions.height15,
+                        height: ScreenUtil().setHeight(10),
                       ),
                      Expanded(child: SingleChildScrollView(
                         child: ExpandableTextWidget(text: "Bún mắm là một trong số các món ăn đặc sản của "
                             "miền tây Nam bộ Việt Nam. Bún mắm có nguồn gốc từ Campuchia, được nấu từ mắm bù hốc. "
                             "Khi sang đến Việt Nam thường được nấu bằng mắm cá linh hay cá sặc, "
                             "đây là các loại cá có nhiều tại miền Tây, đặc biệt là các tỉnh Trà Vinh và Sóc Trăng."
-                            "Bún mắm là một trong số các món ăn đặc sản của miền tây Nam bộ Việt Nam. Bún mắm có nguồn gốc từ Campuchia, được nấu từ mắm bù hốc. "
-                            "Khi sang đến Việt Nam thường được nấu bằng mắm cá linh hay cá sặc, "
-                            "đây là các loại cá có nhiều tại miền Tây, đặc biệt là các tỉnh Trà Vinh và Sóc Trăng."
-                            "Bún mắm là một trong số các món ăn đặc sản của "
-                            "miền tây Nam bộ Việt Nam. Bún mắm có nguồn gốc từ Campuchia, được nấu từ mắm bù hốc. "
-                            "Khi sang đến Việt Nam thường được nấu bằng mắm cá linh hay cá sặc, "
-                            "đây là các loại cá có nhiều tại miền Tây, đặc biệt là các tỉnh Trà Vinh và Sóc Trăng."
-                            "Bún mắm là một trong số các món ăn đặc sản của miền tây Nam bộ Việt Nam. Bún mắm có nguồn gốc từ Campuchia, được nấu từ mắm bù hốc. "
-                            "Khi sang đến Việt Nam thường được nấu bằng mắm cá linh hay cá sặc, "
-                            "đây là các loại cá có nhiều tại miền Tây, đặc biệt là các tỉnh Trà Vinh và Sóc Trăng."),
-                      ))
+
+                    ),
+                      )
+                     ),
+                      Expanded(
+                          child: SingleChildScrollView(
+                            child: Topping(),
+                          )),
                     ],
+
                   )))
       
         ],
       ),
+
       bottomNavigationBar: Container(
-        height: Dimensions.bottomHeightBar,
+        height: ScreenUtil().setHeight(80),
         padding: EdgeInsets.only(
-            top: Dimensions.height30,
-            bottom: Dimensions.height30,
-            left: Dimensions.width20,
-            right: Dimensions.width20),
+            top: ScreenUtil().setHeight(10),
+            bottom: ScreenUtil().setHeight(6),
+            left: ScreenUtil().setWidth(20),
+            right: ScreenUtil().setWidth(10)),
         decoration: BoxDecoration(
             color: AppColors.buttonBackgroundColor,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radius20 * 2),
-                topRight: Radius.circular(Dimensions.radius20 * 2))),
+                topLeft: Radius.circular(ScreenUtil().radius(20)),
+                topRight: Radius.circular(ScreenUtil().radius(20)))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               padding: EdgeInsets.only(
-                  top: Dimensions.height20,
-                  bottom: Dimensions.height20,
-                  left: Dimensions.width20,
-                  right: Dimensions.width20),
+                  top: ScreenUtil().setHeight(7),
+                  bottom: ScreenUtil().setHeight(10),
+                  left: ScreenUtil().setWidth(10),
+                  right: ScreenUtil().setWidth(10)),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(20)),
                   color: Colors.white),
               child: Row(
                 children: [
@@ -126,11 +124,11 @@ class PopularFoodDetail extends StatelessWidget {
                     color: AppColors.signColor,
                   ),
                   SizedBox(
-                    width: Dimensions.width10 / 2,
+                    width: ScreenUtil().setWidth(10),
                   ),
                   BigText(text: "0"),
                   SizedBox(
-                    width: Dimensions.width10 / 2,
+                    width: ScreenUtil().setWidth(10),
                   ),
                   Icon(
                     Icons.add,
@@ -141,12 +139,12 @@ class PopularFoodDetail extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.only(
-                  top: Dimensions.height20,
-                  bottom: Dimensions.height20,
-                  left: Dimensions.width20,
-                  right: Dimensions.width20),
+                  top: ScreenUtil().setHeight(7),
+                  bottom: ScreenUtil().setHeight(10),
+                  left: ScreenUtil().setWidth(10),
+                  right: ScreenUtil().setWidth(10)),
               child: BigText(
-                text: "\$10 | Add to Cart",
+                text: "Thêm  10.000đ",
                 color: Colors.white,
               ),
               decoration: BoxDecoration(

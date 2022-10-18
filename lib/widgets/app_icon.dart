@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 
@@ -18,10 +19,10 @@ class AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Dimensions.iconSize40,
-      height: Dimensions.iconSize40,
+      width: ScreenUtil().setWidth(40),
+      height: ScreenUtil().setHeight(35),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(size/2),
+        borderRadius: BorderRadius.circular(size/3),
         color: AppColors.buttonBackgroundColor,
       ),
       child: Icon(

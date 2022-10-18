@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
@@ -20,10 +21,10 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      margin: EdgeInsets.only(left: Dimensions.height20,right: Dimensions.height20),
+      margin: EdgeInsets.only(left: ScreenUtil().setHeight(20),right: ScreenUtil().setWidth(20)),
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(Dimensions.radius30),
+          borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
           boxShadow: [
             BoxShadow(
                 blurRadius: 10,
@@ -41,21 +42,21 @@ class AppTextField extends StatelessWidget {
             hintText: hintText,
             prefixIcon: Icon(icon,color: AppColors.mainColor,),
             focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
                 borderSide: BorderSide(
                   width: 1.0,
                   color: Colors.white,
                 )
             ),
             enabledBorder:  OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
                 borderSide: BorderSide(
                   width: 1.0,
                   color: Colors.white,
                 )
             ),
             border:  OutlineInputBorder(
-              borderRadius: BorderRadius.circular(Dimensions.radius30),
+              borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
 
             )
 

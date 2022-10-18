@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
@@ -23,9 +24,9 @@ class _MainFoodPageState extends State<MainFoodPage> {
           Container(
             child: Container(
               margin: EdgeInsets.only(
-                  top: Dimensions.height55, bottom: Dimensions.height15),
+                  top: ScreenUtil().setHeight(35), bottom:ScreenUtil().setHeight(20)),
               padding: EdgeInsets.only(
-                  left: Dimensions.width20, right: Dimensions.width20),
+                  left: ScreenUtil().setWidth(8), right:ScreenUtil().setWidth(15)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -35,19 +36,19 @@ class _MainFoodPageState extends State<MainFoodPage> {
                       BigText(
                         text: "TP.Đà Nẵng",
                         color: AppColors.mainColor,
-                        size: Dimensions.font26,
+                        size: ScreenUtil().setSp(15),
                       ),
                     ],
                   ),
                   Center(
                     child: Container(
-                      width: Dimensions.height45,
-                      height: Dimensions.height45,
+                      width: ScreenUtil().setWidth(40),
+                      height: ScreenUtil().setHeight(35),
                       child: Icon(Icons.search,
-                          color: Colors.white, size: Dimensions.iconSize24),
+                          color: Colors.white, size: ScreenUtil().setHeight(25)),
                       decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(Dimensions.radius15),
+                            BorderRadius.circular(ScreenUtil().radius(10)),
                         color: AppColors.mainColor,
                       ),
                     ),

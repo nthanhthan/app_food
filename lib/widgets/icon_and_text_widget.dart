@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/dimensions.dart';
 import 'small_text.dart';
@@ -18,8 +19,8 @@ class IconAndTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon,color: iconColor,size: Dimensions.iconSize24,),
-        SizedBox(width: 5,),
+        Icon(icon,color: iconColor,size: ScreenUtil().setHeight(15),),
+        SizedBox(width: ScreenUtil().setWidth(5),),
         SmallText(text: text),
       ],
     );

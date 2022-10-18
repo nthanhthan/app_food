@@ -1,6 +1,7 @@
 
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
@@ -21,7 +22,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   PageController pageController = PageController(viewportFraction: 0.85);
   var _currPageValue = 0.0;
   double _scaleFactor = 0.8;
-  double _height = Dimensions.pageViewContainer;
+  double _height = ScreenUtil().setHeight(280);
   @override
   void initState() {
     super.initState();
@@ -44,7 +45,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       children: [
         //slider section
         Container(
-          height: Dimensions.pageView,
+          height: ScreenUtil().setHeight(280),
           child: PageView.builder(
               controller: pageController,
               itemCount: 5,
@@ -66,23 +67,22 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         ),
         //Popular Text
         SizedBox(
-          height: Dimensions.height10,
+          height: ScreenUtil().setHeight(10),
         ),
         Container(
-          margin: EdgeInsets.only(left: Dimensions.width30),
+          margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              BigText(text: "Popular",
+              BigText(text: "Phổ biến",
                 color: AppColors.mainColor,
-
               ),
             ],
           ),
         ),
         //list of  food and images
         ListView.builder(
-          padding: EdgeInsets.only(top: Dimensions.height20),
+          padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
             physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: 10,
@@ -94,11 +94,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     children: [
                       //image section
                       Container(
-                        width: Dimensions.listViewImgSize,
-                        height: Dimensions.listViewImgSize,
+                        width:ScreenUtil().setWidth(80),
+                        height: ScreenUtil().setHeight(90),
                         decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.circular(Dimensions.radius20),
+                                BorderRadius.circular(ScreenUtil().radius(15)),
                             color: Colors.white38,
                             image: DecorationImage(
                               fit: BoxFit.cover,
@@ -107,38 +107,34 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                       //text container
                       Expanded(
                         child: Container(
-                          height: Dimensions.listViewTextContSize,
+                          height: ScreenUtil().setWidth(98),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(Dimensions.radius20),
-                              bottomRight: Radius.circular(Dimensions.radius20),
+                              topRight: Radius.circular(ScreenUtil().radius(15)),
+                              bottomRight: Radius.circular(ScreenUtil().radius(15)),
                             ),
                             color: Colors.white,
                           ),
                           child: Padding(
-                            padding: EdgeInsets.only(left: Dimensions.width10,right: Dimensions.width10),
+                            padding: EdgeInsets.only(left: ScreenUtil().setWidth(10),right:  ScreenUtil().setWidth(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                BigText(text: "Bun Mam Da Nang Viet Nam"),
-                                SizedBox(height: Dimensions.height10,),
-                                SmallText(text: "Thit heo, thit nuong, nme lui"),
-                                SizedBox(height: Dimensions.height10,),
+                                BigText(text: "Bún mắm Huế",size:  ScreenUtil().setSp(10),),
+                                SizedBox(height:  ScreenUtil().setHeight(5),),
+                                SmallText(text: "Thịt heo, thịt nướng"),
+                                SizedBox(height: ScreenUtil().setHeight(5),),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconAndTextWidget(
-                                        icon: Icons.circle_sharp,
-                                        text: "normal",
+                                        icon: Icons.food_bank_outlined,
+                                        text: "Quán NSL",
                                         iconColor: AppColors.iconColor1),
                                     IconAndTextWidget(
                                         icon: Icons.location_on,
                                         text: "1.7km",
-                                        iconColor: AppColors.mainColor),
-                                    IconAndTextWidget(
-                                        icon: Icons.access_alarm_rounded,
-                                        text: "32min",
                                         iconColor: AppColors.iconColor1),
                                   ],
                                 )
@@ -186,11 +182,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       child: Stack(
         children: [
           Container(
-            height: Dimensions.pageViewContainer,
+            height: ScreenUtil().setHeight(230),
             margin: EdgeInsets.only(
-                left: Dimensions.width10, right: Dimensions.width10),
+                left: ScreenUtil().setWidth(10), right: ScreenUtil().setWidth(10)),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
                 color: index.isEven ? Color(0xFF69c5df) : Color(0xFF9294cc),
                 image: DecorationImage(
                     fit: BoxFit.cover,
@@ -199,13 +195,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: Dimensions.pageViewTextContainer,
+              height: ScreenUtil().setHeight(105),
               margin: EdgeInsets.only(
-                  left: Dimensions.width30,
-                  right: Dimensions.width30,
-                  bottom: Dimensions.height30),
+                  left: ScreenUtil().setWidth(25),
+                  right: ScreenUtil().setWidth(25),
+                  bottom:ScreenUtil().setHeight(10)),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(25)),
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -217,10 +213,10 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   ]),
               child: Container(
                 padding: EdgeInsets.only(
-                    top: Dimensions.height10,
-                    left: Dimensions.height15,
-                    right: Dimensions.height15),
-                child: AppColumn(text: "Bun Mam Da Nang"),
+                    top: ScreenUtil().setHeight(10),
+                    left: ScreenUtil().setWidth(10),
+                    right: ScreenUtil().setWidth(10)),
+                child: AppColumn(text: "Bún Mắm Đà Nẵng"),
               ),
             ),
           )

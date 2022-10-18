@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 import 'small_text.dart';
@@ -15,7 +16,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
   late String firstHalf;
   late String secondHalf;
   bool hiddenText=true;
-  double textHeight=Dimensions.screenHeight/6;
+  double textHeight=ScreenUtil().setHeight(70);
   @override
   void initState(){
     super.initState();
@@ -30,9 +31,10 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: secondHalf.isEmpty?SmallText(color:AppColors.paraColor,size:Dimensions.font16,text: firstHalf):Column(
+      color: Color(0xFFA4A4A4),
+      child: secondHalf.isEmpty?SmallText(color:Color(0xFF4D4D4D),size:ScreenUtil().setSp(10),text: firstHalf):Column(
         children: [
-          SmallText(height:1.8,color:AppColors.paraColor,size:Dimensions.font16,text: hiddenText?(firstHalf+"..."):(firstHalf+secondHalf)),
+          SmallText(height:1.8,color:Color(0xFF4D4D4D),size:ScreenUtil().setSp(10),text: hiddenText?(firstHalf+"..."):(firstHalf+secondHalf)),
           InkWell(
             onTap: (){
               setState(() {

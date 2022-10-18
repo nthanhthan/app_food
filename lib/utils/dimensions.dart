@@ -38,9 +38,9 @@ static double iconSize24=screenHeight/34.17;
 static double listViewImgSize=screenWidth/3.43; //411/120
 static double listViewTextContSize=screenWidth/4.11;  //411/100
 
-//pupular food
-static double popularFoodImgSize=screenHeight/2.34;
+//popular food
+static double popularFoodImgSize=screenHeight/3;
 
 //bottom height
-static double bottomHeightBar=screenHeight/6.83;
+static double bottomHeightBar=screenHeight/9;
 }

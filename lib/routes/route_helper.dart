@@ -1,3 +1,4 @@
+import 'package:app_food/auth/sign_in_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../pages/home/home_page.dart';

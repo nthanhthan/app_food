@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 import '../utils/colors.dart';
@@ -17,53 +18,49 @@ class AppColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BigText(text: text,size: Dimensions.font26,),
+        BigText(text: text,size: ScreenUtil().setSp(14),),
         SizedBox(
-          height: Dimensions.height10,
+          height: ScreenUtil().setHeight(5),
         ),
         Row(
           children: [
+            SizedBox(
+              width: ScreenUtil().setWidth(10),
+            ),
             Wrap(
               children: List.generate(5, (index) {
                 return Icon(
                   Icons.star,
-                  color: AppColors.mainColor,
-                  size: 15,
+                  color: AppColors.iconColor1,
+                  size: ScreenUtil().setHeight(15),
                 );
               }),
             ),
             SizedBox(
-              width: 10,
+              width: ScreenUtil().setWidth(15),
             ),
             SmallText(text: "4.5"),
             SizedBox(
-              width: 10,
+              width: ScreenUtil().setWidth(15),
             ),
-            SmallText(text: "1233"),
-            SizedBox(
-              width: 10,
-            ),
-            SmallText(text: "comments")
+            SmallText(text: "(100+)")
           ],
         ),
         SizedBox(
-          height: Dimensions.height20,
+          height:ScreenUtil().setHeight(5),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconAndTextWidget(
-                icon: Icons.circle_sharp,
-                text: "normal",
+                icon: Icons.food_bank_outlined,
+                text: "Quán NSL",
                 iconColor: AppColors.iconColor1),
             IconAndTextWidget(
                 icon: Icons.location_on,
                 text: "1.7km",
-                iconColor: AppColors.mainColor),
-            IconAndTextWidget(
-                icon: Icons.access_alarm_rounded,
-                text: "32min",
                 iconColor: AppColors.iconColor1),
+
           ],
         )
       ],

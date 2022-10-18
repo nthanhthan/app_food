@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/dimensions.dart';
 
@@ -8,6 +9,8 @@ class BigText extends StatelessWidget {
   final String text;
   double size;
   TextOverflow overFlow;
+
+
   BigText(
       {Key? key,
       this.color=const Color(0xFF332d2b),
@@ -23,9 +26,9 @@ class BigText extends StatelessWidget {
       maxLines: 1,
       overflow: overFlow,
       style: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: 'Inter',
         color: color,
-        fontSize: size==0?Dimensions.font20:size,
+        fontSize: size==0?ScreenUtil().setSp(13):size,
         fontWeight: FontWeight.bold,
       ),
     );
