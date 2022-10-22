@@ -1,10 +1,10 @@
 
+import 'package:app_food/pages/home/home_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
+import '../controllers/popular_product_controller.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 import '../widgets/app_text_field.dart';
@@ -17,11 +17,19 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var passwordController=TextEditingController();
-    var phoneController=TextEditingController();
+    var emailController=TextEditingController();
      double screenHeight=Get.context!.height; //820
      double screenWidth=Get.context!.width;  //411
     print(screenHeight  ) ;
     print( screenWidth) ;
+    Future<bool> _login() async {
+      var data={
+        'username':emailController.text,
+        'password':passwordController.text,
+      };
+      var check=await Get.find<PopularProductController>().SignIn(data, "SignIn");
+      return check;
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -57,7 +65,7 @@ class SignInPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: ScreenUtil().setHeight(25),),
-            AppTextField(textController: phoneController, hintText: "Số điện thoại", icon: Icons.phone,textInputType: TextInputType.phone,),
+            AppTextField(textController: emailController, hintText: "Email", icon: Icons.phone,textInputType: TextInputType.emailAddress,),
             SizedBox(height: ScreenUtil().setHeight(20),),
             AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: true,),
             SizedBox(height: ScreenUtil().setHeight(50),),
@@ -70,11 +78,24 @@ class SignInPage extends StatelessWidget {
                   color: AppColors.mainColor
               ),
               child: Center(
-                child: BigText(
-                  text: "ĐĂNG NHẬP",
-                  size:  ScreenUtil().setSp(15),
-                  color: Colors.white,
-                ),
+                child:GestureDetector(
+                  onTap: () async {
+                    var signup=await _login();
+                    if(signup==true){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()),
+                      );
+                    }else{
+                      print("SAI");
+                    }
+                  },
+                  child: BigText(
+                    text: "ĐĂNG NHẬP",
+                    size:  ScreenUtil().setSp(15),
+                    color: Colors.white,
+                  ),
+                )
               ),
             ),
             SizedBox(height:  ScreenUtil().setHeight(50)),

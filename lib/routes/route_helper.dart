@@ -1,4 +1,5 @@
 import 'package:app_food/auth/sign_in_page.dart';
+import 'package:app_food/auth/sign_up_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../pages/home/home_page.dart';
@@ -7,6 +8,6 @@ class RouteHelper{
   static const String initial="/";
   static String getInitial()=>'$initial';
   static List<GetPage> routes=[
-    GetPage(name: initial, page: ()=>HomePage()),
+    GetPage(name: initial, page: ()=>SignUpPage()),
   ];
 }
