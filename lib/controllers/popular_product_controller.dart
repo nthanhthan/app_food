@@ -36,12 +36,18 @@ class PopularProductController extends GetxController{
   Future<bool> SignIn(data,url) async{
 
     http.Response response=(await popularProductRepo.SignIn(data, url)) as http.Response;
+    String? allSetCookie=response.headers['set-cookie'];
+    print(allSetCookie);
+
     print(response.statusCode);
     if(response.statusCode==200){
+      Map<String,dynamic> output=json.decode(response.body);
+      print(output);
       User user=User.fromJson(jsonDecode(response.body));
       var checkRole=user.getRoles()!.contains("User");
       print(checkRole);
       if(checkRole==true){
+
         return true;
       }else {
         return false;

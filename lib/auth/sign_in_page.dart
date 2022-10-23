@@ -82,10 +82,11 @@ class SignInPage extends StatelessWidget {
                   onTap: () async {
                     var signup=await _login();
                     if(signup==true){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomePage()),
-                      );
+                      Get.to(()=>HomePage());
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => const HomePage()),
+                      // );
                     }else{
                       print("SAI");
                     }

@@ -4,16 +4,50 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient extends GetConnect implements GetxService{
-  late String token;
+  late String _token;
+   setToken(token){
+     this._token=token;
+  }
+  String getToken(){
+     return this._token;
+  }
   final String  appBaseUrl;
-  late Map<String, String> _mainHeaders;
+  late Map<String, String> _mainHeaders={};
+  Map<String, String> cookies = {};
+  //Get AccessToken
+  void _setCookie(String rawCookie) {
+    if (rawCookie.isNotEmpty) {
+      var keyValue = rawCookie.split('=');
+      if (keyValue.length > 2) {
+        var key = keyValue[4].trim();
+        var value = key.split(';');
+        setToken(value[0].trim());
+      }
+    }
+  }
+  void updateCookie(http.Response response) {
+    String? rawCookie = response.headers['set-cookie'];
+    if (rawCookie != null) {
+      int index = rawCookie.indexOf(';');
+      _mainHeaders['cookie'] =
+      (index == -1) ? rawCookie : rawCookie.substring(0, index);
+    }
+  }
+  void GetToken(http.Response response) {
+    String? rawCookie = response.headers['set-cookie'];
+    if (rawCookie != null) {
+      int index = rawCookie.indexOf('AccessToken=');
+      _mainHeaders['cookie'] =
+      (index == -1) ? rawCookie : rawCookie.substring(index, index);
+    }
+  }
   ApiClient({required this.appBaseUrl}) {
     baseUrl = appBaseUrl;
     timeout = Duration(seconds: 30);
-    token="";
+    var token=getToken();
     _mainHeaders = {
       'Content-type': 'application/json; charset=UTF-8',
-     // 'Authorization': "Bearer $token",
+       'Authorization': "Bearer $token",
     };
   }
     Future<Response>  getData(String uri) async {
@@ -31,7 +65,7 @@ class ApiClient extends GetConnect implements GetxService{
       http.Response response= await http.post(
         Uri.parse(apiUrl),
         body: jsonEncode(data),
-        headers: _setHeaders(),
+        headers: _mainHeaders,
       );
       //response=handleResponse(response);
       print(response.statusCode);
@@ -44,16 +78,12 @@ class ApiClient extends GetConnect implements GetxService{
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
-      headers: _setHeaders(),
+      headers: _mainHeaders,
     );
-    //response=handleResponse(response);
-    print(response.statusCode);
-    print("thanhcong");
+     var allcookie=response.headers['set-cookie'];
+     _setCookie(allcookie!);
     return response;
   }
-
-
-
   _setHeaders()=>{
     'Content-type': 'application/json',
     'Accept':'application/json'

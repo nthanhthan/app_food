@@ -44,7 +44,7 @@ class AppTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
                 borderSide: BorderSide(
-                  width: 1.0,
+                  width: 0.5,
                   color: Colors.white,
                 )
             ),
@@ -61,6 +61,7 @@ class AppTextField extends StatelessWidget {
             )
 
         ),
+        style: TextStyle(fontSize: ScreenUtil().setSp(10)),
       ),
     );
   }
