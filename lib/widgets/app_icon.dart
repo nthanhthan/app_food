@@ -13,7 +13,7 @@ class AppIcon extends StatelessWidget {
   const AppIcon({Key? key,
     required this.icon,
     this.backgroundColor=const Color(0xFFfcf4e4),
-   this.iconColor=const Color(0xFF756d54),
+   this.iconColor=const Color(0xFFFFFFFF),
      this.size=40}) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class AppIcon extends StatelessWidget {
       height: ScreenUtil().setHeight(35),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(size/3),
-        color: AppColors.buttonBackgroundColor,
+      //  color: AppColors.buttonBackgroundColor,
       ),
       child: Icon(
         icon,

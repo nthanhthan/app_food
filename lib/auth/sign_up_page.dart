@@ -75,7 +75,11 @@ class SignUpPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const SignInPage()),
                     );
                     }else{
-                      print("SAI");
+                      emailController.text="";
+                      nameController.text="";
+                      phoneController.text="";
+                      passwordController.text="";
+                      Text("SAI rooif");
                     }
                   },
                   child: BigText(

@@ -1,3 +1,4 @@
+import 'package:app_food/pages/food/store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     return [
       MainFoodPage(),
       PopularFoodDetail(),
-      Container(child: Center(child: Text("Shopping Cart")),),
+      StorePage(),
       Container(child: Center(child: Text("Profile")),),
 
     ];
