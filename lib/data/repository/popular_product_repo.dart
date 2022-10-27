@@ -16,4 +16,7 @@ class PopularProductRepo extends GetxService{
     var fullApiUrl=apiClient.appBaseUrl+apiUrl;
     return await apiClient.SignIn(data, fullApiUrl);
   }
+  bool LogOut(){
+    return apiClient.LogOut();
+  }
 }

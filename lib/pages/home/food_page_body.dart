@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
-import '../../utils/dimensions.dart';
 import '../../widgets/app_column.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/icon_and_text_widget.dart';
@@ -88,7 +87,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.only(
-                      left: Dimensions.width20, right: Dimensions.width20,bottom: Dimensions.height10),
+                      left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(10)),
                   child: Row(
                     children: [
                       //image section
@@ -101,7 +100,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                             color: Colors.white38,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                                image: AssetImage("assets/images/img.png"))),
+                                image: AssetImage("assets/images/milktea.png"))),
                       ),
                       //text container
                       Expanded(
@@ -120,9 +119,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                BigText(text: "Bún mắm Huế",size:  ScreenUtil().setSp(10),),
+                                BigText(text: "Trà sữa trân châu đen",size:  ScreenUtil().setSp(10),),
                                 SizedBox(height:  ScreenUtil().setHeight(5),),
-                                SmallText(text: "Thịt heo, thịt nướng"),
+                                SmallText(text: "Phô mai, khúc bạch"),
                                 SizedBox(height: ScreenUtil().setHeight(5),),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../food/popular_food_detail.dart';
+import '../profile/profile_user.dart';
 import 'main_food_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       MainFoodPage(),
       PopularFoodDetail(),
       StorePage(),
-      Container(child: Center(child: Text("Profile")),),
+      ProfileUser()
 
     ];
   }

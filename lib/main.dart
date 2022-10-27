@@ -9,7 +9,7 @@ Future<void> main() async{
   await ScreenUtil.ensureScreenSize();
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  token=prefs.getString("token")!;
+  token=prefs?.getString("token")??"";
   await dep.init();
   runApp(const MyApp());
 }
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           // home: MainFoodPage(),
 
-          initialRoute: token==null? RouteHelper.getInitial():RouteHelper.getHomePage(),
+          initialRoute: token==""? RouteHelper.getInitial():RouteHelper.getHomePage(),
           getPages: RouteHelper.routes,
         );
       },

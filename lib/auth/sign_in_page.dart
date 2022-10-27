@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../controllers/popular_product_controller.dart';
 import '../utils/colors.dart';
-import '../utils/dimensions.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/big_text.dart';
 import 'sign_up_page.dart';
@@ -74,7 +73,7 @@ class SignInPage extends StatelessWidget {
               width: ScreenUtil().setWidth(250),
               height: ScreenUtil().setHeight(70),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius30),
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
                   color: AppColors.mainColor
               ),
               child: Center(

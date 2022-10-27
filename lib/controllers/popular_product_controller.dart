@@ -33,6 +33,9 @@ class PopularProductController extends GetxController{
       return false;
     }
   }
+  bool LogOut(){
+    return popularProductRepo.LogOut();
+  }
   Future<bool> SignIn(data,url) async{
     http.Response response=(await popularProductRepo.SignIn(data, url)) as http.Response;
     String? allSetCookie=response.headers['set-cookie'];

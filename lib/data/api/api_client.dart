@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -81,7 +82,7 @@ class ApiClient extends GetConnect implements GetxService {
     }
   Future<http.Response> SignIn(data,apiUrl) async{
     prefs=await _prefs;
-    String token=prefs!.getString("token")??"";
+    String token=prefs?.getString("token")??"";
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
@@ -91,6 +92,15 @@ class ApiClient extends GetConnect implements GetxService {
      prefs?.setString("token", _setCookie(allcookie!)) ;
     // print(prefs?.getString("token"));
     return response;
+  }
+  bool LogOut(){
+    try{
+    prefs?.remove("token");
+    return true;
+    }
+    catch(e){
+      return false;
+    }
   }
 
 

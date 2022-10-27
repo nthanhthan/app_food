@@ -18,7 +18,7 @@ class SmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      maxLines: 2,
+      maxLines: 5,
       style: TextStyle(
         fontFamily: 'Inter',
         color: color==const Color(0xFFccc7c5)?const Color(0xFFccc7c5):color,
