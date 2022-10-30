@@ -10,40 +10,47 @@ import 'small_text.dart';
 
 class AppColumn extends StatelessWidget {
   final String text;
+  final int star;
+  final String address;
+  final double distance;
   const AppColumn({Key? key,
-    required this.text}) : super(key: key);
+    required this.text,required this.star,required this.address,required this.distance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        BigText(text: text,size: ScreenUtil().setSp(14),),
+        BigText(text: text,size: ScreenUtil().setSp(8),),
         SizedBox(
           height: ScreenUtil().setHeight(5),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: ScreenUtil().setWidth(10),
-            ),
-            Wrap(
-              children: List.generate(5, (index) {
-                return Icon(
-                  Icons.star,
-                  color: AppColors.iconColor1,
-                  size: ScreenUtil().setHeight(15),
-                );
-              }),
-            ),
-            SizedBox(
-              width: ScreenUtil().setWidth(15),
-            ),
-            SmallText(text: "4.5"),
-            SizedBox(
-              width: ScreenUtil().setWidth(15),
-            ),
-            SmallText(text: "(100+)")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Wrap(
+                children: List.generate(5, (index) {
+                  return Icon(
+                    Icons.star,
+                    color: AppColors.iconColor1,
+                    size: ScreenUtil().setHeight(15),
+                  );
+                }),
+              ),
+              SizedBox(
+                width: ScreenUtil().setWidth(15),
+              ),
+              SmallText(text: star.toString()),
+            ],
+          ),
+
+            IconAndTextWidget(
+                icon: Icons.location_on,
+                text: "${(distance.toString().substring(0,3))!}km",
+                iconColor: AppColors.iconColor1),
           ],
         ),
         SizedBox(
@@ -54,11 +61,7 @@ class AppColumn extends StatelessWidget {
           children: [
             IconAndTextWidget(
                 icon: Icons.food_bank_outlined,
-                text: "Quán NSL",
-                iconColor: AppColors.iconColor1),
-            IconAndTextWidget(
-                icon: Icons.location_on,
-                text: "1.7km",
+                text: address.split(",")[0]!,
                 iconColor: AppColors.iconColor1),
 
           ],

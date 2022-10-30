@@ -5,10 +5,12 @@ class SmallText extends StatelessWidget {
   final String text;
   double size;
   double height;
+  int maxLines;
   SmallText(
       {Key? key,
         this.color=const Color(0xFFccc7c5),
         required this.text,
+        this.maxLines=5,
         this.size = 10,
         this.height=1.2
         })
@@ -18,7 +20,7 @@ class SmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      maxLines: 5,
+      maxLines: maxLines,
       style: TextStyle(
         fontFamily: 'Inter',
         color: color==const Color(0xFFccc7c5)?const Color(0xFFccc7c5):color,

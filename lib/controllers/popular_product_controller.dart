@@ -10,21 +10,19 @@ class PopularProductController extends GetxController{
   PopularProductController({required this.popularProductRepo});
   List<dynamic> _popularProductList=[];
   List<dynamic> get popularProductList=>_popularProductList;
-  Future<void> getPopularProductList()async{
-   Response response= await popularProductRepo.getPopularProductList();
-   if(response.statusCode==200){
-     _popularProductList=[];
-    // _popularProductList.addAll();
-     update();
-
-   }else{
-
-   }
-  }
+  // Future<void> getPopularProductList()async{
+  //  Response response= await popularProductRepo.getPopularProductList();
+  //  if(response.statusCode==200){
+  //    _popularProductList=[];
+  //   // _popularProductList.addAll();
+  //    update();
+  //
+  //  }else{
+  //
+  //  }
+  // }
   Future<bool> SignUp(data,url) async{
-
-    http.Response response=(await popularProductRepo.SignUp(data, url)) as http.Response;
-    print(response.statusCode);
+    http.Response response=(await popularProductRepo.SignUp(data, url));
     if(response.statusCode==200){
      print("Register success");
      return true;
@@ -37,7 +35,7 @@ class PopularProductController extends GetxController{
     return popularProductRepo.LogOut();
   }
   Future<bool> SignIn(data,url) async{
-    http.Response response=(await popularProductRepo.SignIn(data, url)) as http.Response;
+    http.Response response=(await popularProductRepo.SignIn(data, url));
     String? allSetCookie=response.headers['set-cookie'];
     print(allSetCookie);
 

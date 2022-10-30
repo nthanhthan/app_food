@@ -1,7 +1,11 @@
+import 'package:app_food/controllers/popular_product_controller.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../controllers/recommended_storenear_controller.dart';
+import '../../models/store_model.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_column.dart';
 import '../../widgets/big_text.dart';
@@ -42,27 +46,37 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     return Column(
       children: [
         //slider section
-        Container(
-          height: ScreenUtil().setHeight(280),
-          child: PageView.builder(
-              controller: pageController,
-              itemCount: 5,
-              itemBuilder: (context, position) {
-                return _buildPageItem(position);
-              }),
-        ),
+        GetBuilder<RecommendedStoreNearController>(builder: (storeNear){
+          return  storeNear.isLoaded? Container(
+            height: ScreenUtil().setHeight(280),
+            child: PageView.builder(
+                controller: pageController,
+               // itemCount: storeNear.storeNearList.length,
+                itemCount: 5,
+                itemBuilder: (context, position) {
+                  return _buildPageItem(position,storeNear.storeNearList[position]);
+                }),
+          ):CircularProgressIndicator(
+            color: AppColors.mainColor,
+          );
+        }),
+
         //dots
-        new DotsIndicator(
-          dotsCount: 5,
-          position: _currPageValue,
-          decorator: DotsDecorator(
-            activeColor: AppColors.mainColor,
-            size: const Size.square(9.0),
-            activeSize: const Size(18.0, 9.0),
-            activeShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
-          ),
-        ),
+        GetBuilder<RecommendedStoreNearController>(builder: (storeNear){
+          return  DotsIndicator(
+          //  dotsCount: storeNear.storeNearList.isEmpty?1:storeNear.storeNearList.length,
+            dotsCount: 5,
+            position: _currPageValue,
+            decorator: DotsDecorator(
+              activeColor: AppColors.mainColor,
+              size: const Size.square(9.0),
+              activeSize: const Size(18.0, 9.0),
+              activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+            )
+          );
+        }),
+
         //Popular Text
         SizedBox(
           height: ScreenUtil().setHeight(10),
@@ -79,11 +93,12 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           ),
         ),
         //list of  food and images
-        ListView.builder(
+        GetBuilder<RecommendedStoreNearController>(builder: (storeNear){
+          return storeNear.isLoaded? ListView.builder(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
             physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: storeNear.storeNearList.isEmpty?1:storeNear.storeNearList.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.only(
@@ -100,7 +115,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                             color: Colors.white38,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                                image: AssetImage("assets/images/milktea.png"))),
+                                image: NetworkImage(storeNear.storeNearList[index].image!))),
                       ),
                       //text container
                       Expanded(
@@ -119,20 +134,20 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                BigText(text: "Trà sữa trân châu đen",size:  ScreenUtil().setSp(10),),
+                                BigText(text: storeNear.storeNearList[index].name,size:  ScreenUtil().setSp(10),),
                                 SizedBox(height:  ScreenUtil().setHeight(5),),
-                                SmallText(text: "Phô mai, khúc bạch"),
+                                SmallText(text: (storeNear.storeNearList[index].address.split(","))[0]!,maxLines: 1,size: ScreenUtil().setSp(8),),
                                 SizedBox(height: ScreenUtil().setHeight(5),),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    IconAndTextWidget(
-                                        icon: Icons.food_bank_outlined,
-                                        text: "Quán NSL",
-                                        iconColor: AppColors.iconColor1),
+                                    // IconAndTextWidget(
+                                    //     icon: Icons.food_bank_outlined,
+                                    //     text: "Quán NSL",
+                                    //     iconColor: AppColors.iconColor1),
                                     IconAndTextWidget(
                                         icon: Icons.location_on,
-                                        text: "1.7km",
+                                        text: "${(storeNear.storeNearList[index].distance.toString().substring(0,3))!}km",
                                         iconColor: AppColors.iconColor1),
                                   ],
                                 )
@@ -144,13 +159,16 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     ],
                   ),
                 );
-              }),
+              }):CircularProgressIndicator(
+            color: AppColors.mainColor,
+          );
+        })
 
-      ],
+      ]
     );
   }
 
-  Widget _buildPageItem(int index) {
+  Widget _buildPageItem(int index,Store storeNear) {
     Matrix4 matrix = new Matrix4.identity();
     if (index == _currPageValue.floor()) {
       var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
@@ -188,7 +206,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                 color: index.isEven ? Color(0xFF69c5df) : Color(0xFF9294cc),
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/images/img.png"))),
+                    image: NetworkImage(storeNear.image!))),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -214,7 +232,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     top: ScreenUtil().setHeight(10),
                     left: ScreenUtil().setWidth(10),
                     right: ScreenUtil().setWidth(10)),
-                child: AppColumn(text: "Bún Mắm Đà Nẵng"),
+                child: AppColumn(text: storeNear.name.toString(),star:storeNear.star!,address: storeNear.address!,distance: storeNear.distance! ,),
               ),
             ),
           )

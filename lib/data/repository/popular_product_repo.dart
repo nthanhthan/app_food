@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 class PopularProductRepo extends GetxService{
   final ApiClient apiClient;
   PopularProductRepo({required this.apiClient});
-  Future<Response> getPopularProductList() async{
-    return await apiClient.getData("end point url");
-  }
+  // Future<Response> getPopularProductList() async{
+  //   return await apiClient.getData("end point url");
+  // }
    Future<http.Response> SignUp(data,apiUrl) async{
     var fullApiUrl=apiClient.appBaseUrl+apiUrl;
     return await apiClient.SignUp(data, fullApiUrl);

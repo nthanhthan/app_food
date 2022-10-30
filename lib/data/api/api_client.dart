@@ -60,13 +60,14 @@ class ApiClient extends GetConnect implements GetxService {
       baseUrl = appBaseUrl;
       timeout = Duration(seconds: 30);
   }
-    Future<Response>  getData(String uri) async {
-      try{
-        Response response=await get(uri);
+    Future<http.Response>  getAllFoodOfStore(String uri) async {
+        print(uri);
+        String token=prefs?.getString("token")??"";
+        http.Response response=await http.get(
+          Uri.parse(uri),
+          headers: _mainHeaders("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSWQiOiI2MzUzZmU4NDc3MDQ3YzI5NTY5Y2IzYmIiLCJSb2xlcyI6IltcIlVzZXJcIl0iLCJuYmYiOjE2NjcxMzcwMDQsImV4cCI6MTY2NzE1NTAwNCwiaWF0IjoxNjY3MTM3MDA0fQ.rMPsSgBvi-QgZZn_F0YYHsvdbxfzKLKz62Ua9HWLc3Y")
+        );
         return response;
-      }catch(e){
-        return Response(statusCode: 1,statusText: e.toString());
-      }
     }
     Future<http.Response> SignUp(data,apiUrl) async{
       http.Response response= await http.post(
@@ -102,16 +103,36 @@ class ApiClient extends GetConnect implements GetxService {
       return false;
     }
   }
+  Future<http.Response> getStoreNear(data,apiUrl) async{
+    String token=prefs?.getString("token")??"";
+    print(data);
+    http.Response response= await http.post(
+      Uri.parse(apiUrl),
+      body: jsonEncode(data),
+      headers: _mainHeaders("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSWQiOiI2MzUzZmU4NDc3MDQ3YzI5NTY5Y2IzYmIiLCJSb2xlcyI6IltcIlVzZXJcIl0iLCJuYmYiOjE2NjcxMzcwMDQsImV4cCI6MTY2NzE1NTAwNCwiaWF0IjoxNjY3MTM3MDA0fQ.rMPsSgBvi-QgZZn_F0YYHsvdbxfzKLKz62Ua9HWLc3Y"),
+    );
 
-
+    // print(prefs?.getString("token"));
+    return response;
+  }
   _setHeaders()=>{
     'Content-type': 'application/json',
     'Accept':'application/json'
   };
   _mainHeaders (token)=> {
-  'Content-type': 'application/json; charset=UTF-8',
-  'Authorization': "Bearer $token",
+  'Content-type': 'application/json',
+  'Accept':'application/json',
+  'Authorization': 'Bearer $token',
   };
+  // Future<http.Response> getAllFoodOfStore(data,apiUrl) async{
+  //   String? token=prefs?.getString("token");
+  //   http.Response response=await http.post(
+  //     Uri.parse(apiUrl),
+  //     body: jsonEncode(data),
+  //     headers: _mainHeaders(token)
+  //   );
+  //   return response;
+  // }
   Response handleResponse(Response response) {
     Response _response = response;
     if(_response.hasError && _response.body != null && _response.body is !String) {
