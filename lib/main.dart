@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       "radiusOut": 1
     };
     Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
-    Get.find<FoodOfStoreController>().getAllFoodOfStore("6358eb4c814c0de88aeb3d8a","16.073877","108.149892");
+   // Get.find<FoodOfStoreController>().getAllFoodOfStore("6358eb4c814c0de88aeb3d8a","16.073877","108.149892");
     return ScreenUtilInit(
       designSize: const Size(410, 730),
       minTextAdapt: true,

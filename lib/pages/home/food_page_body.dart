@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/foodOfStore_controller.dart';
 import '../../controllers/recommended_storenear_controller.dart';
 import '../../models/store_model.dart';
+import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_column.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/icon_and_text_widget.dart';
 import '../../widgets/small_text.dart';
+import '../food/store.dart';
 
 
 class FoodPageBody extends StatefulWidget {
@@ -49,13 +52,18 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         GetBuilder<RecommendedStoreNearController>(builder: (storeNear){
           return  storeNear.isLoaded? Container(
             height: ScreenUtil().setHeight(280),
-            child: PageView.builder(
-                controller: pageController,
-               // itemCount: storeNear.storeNearList.length,
-                itemCount: 5,
-                itemBuilder: (context, position) {
-                  return _buildPageItem(position,storeNear.storeNearList[position]);
-                }),
+            child: GestureDetector(
+              onTap: (){
+               // Get.to(()=>FoodOfStoreController().getAllFoodOfStore(id, lat, lng))
+              },
+              child: PageView.builder(
+                  controller: pageController,
+                 // itemCount: storeNear.storeNearList.length,
+                  itemCount: 5,
+                  itemBuilder: (context, position) {
+                    return _buildPageItem(position,storeNear.storeNearList[position]);
+                  }),
+            ),
           ):CircularProgressIndicator(
             color: AppColors.mainColor,
           );
@@ -100,63 +108,72 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               shrinkWrap: true,
               itemCount: storeNear.storeNearList.isEmpty?1:storeNear.storeNearList.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.only(
-                      left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(10)),
-                  child: Row(
-                    children: [
-                      //image section
-                      Container(
-                        width:ScreenUtil().setWidth(80),
-                        height: ScreenUtil().setHeight(90),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(ScreenUtil().radius(15)),
-                            color: Colors.white38,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                                image: NetworkImage(storeNear.storeNearList[index].image!))),
-                      ),
-                      //text container
-                      Expanded(
-                        child: Container(
-                          height: ScreenUtil().setWidth(98),
+                return GestureDetector(
+                  onTap: () async {
+                    print(storeNear.storeNearList[index].storeId);
+                   bool check=await Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.073877", "108.149892");
+                   if(check){
+                     Get.to(()=>const StorePage());
+                   }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(10)),
+                    child: Row(
+                      children: [
+                        //image section
+                        Container(
+                          width:ScreenUtil().setWidth(80),
+                          height: ScreenUtil().setHeight(90),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(ScreenUtil().radius(15)),
-                              bottomRight: Radius.circular(ScreenUtil().radius(15)),
-                            ),
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: ScreenUtil().setWidth(10),right:  ScreenUtil().setWidth(10)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                BigText(text: storeNear.storeNearList[index].name,size:  ScreenUtil().setSp(10),),
-                                SizedBox(height:  ScreenUtil().setHeight(5),),
-                                SmallText(text: (storeNear.storeNearList[index].address.split(","))[0]!,maxLines: 1,size: ScreenUtil().setSp(8),),
-                                SizedBox(height: ScreenUtil().setHeight(5),),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // IconAndTextWidget(
-                                    //     icon: Icons.food_bank_outlined,
-                                    //     text: "Quán NSL",
-                                    //     iconColor: AppColors.iconColor1),
-                                    IconAndTextWidget(
-                                        icon: Icons.location_on,
-                                        text: "${(storeNear.storeNearList[index].distance.toString().substring(0,3))!}km",
-                                        iconColor: AppColors.iconColor1),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                              borderRadius:
+                                  BorderRadius.circular(ScreenUtil().radius(15)),
+                              color: Colors.white38,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                  image: NetworkImage(storeNear.storeNearList[index].image!))),
                         ),
-                      )
-                    ],
+                        //text container
+                        Expanded(
+                          child: Container(
+                            height: ScreenUtil().setWidth(98),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(ScreenUtil().radius(15)),
+                                bottomRight: Radius.circular(ScreenUtil().radius(15)),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: ScreenUtil().setWidth(10),right:  ScreenUtil().setWidth(10)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BigText(text: storeNear.storeNearList[index].name,size:  ScreenUtil().setSp(10),),
+                                  SizedBox(height:  ScreenUtil().setHeight(5),),
+                                  SmallText(text: (storeNear.storeNearList[index].address.split(","))[0]!,maxLines: 1,size: ScreenUtil().setSp(8),),
+                                  SizedBox(height: ScreenUtil().setHeight(5),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // IconAndTextWidget(
+                                      //     icon: Icons.food_bank_outlined,
+                                      //     text: "Quán NSL",
+                                      //     iconColor: AppColors.iconColor1),
+                                      IconAndTextWidget(
+                                          icon: Icons.location_on,
+                                          text: "${(storeNear.storeNearList[index].distance.toString().substring(0,3))!}km",
+                                          iconColor: AppColors.iconColor1),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               }):CircularProgressIndicator(

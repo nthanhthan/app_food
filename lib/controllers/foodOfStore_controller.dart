@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:app_food/models/foodStore_model.dart';
 import 'package:get/get.dart';
 import '../data/repository/foodOfStore_repo.dart';
-import '../models/store_model.dart';
 import 'package:http/http.dart' as http;
 class FoodOfStoreController extends GetxController{
   final FoodOfStoreRepo foodOfStoreRepo;
@@ -14,17 +13,24 @@ class FoodOfStoreController extends GetxController{
    List<dynamic> get foodOfStoreList=>_foodOfStoreList;
   bool _isLoaded=false;
   bool get isLoaded=>_isLoaded;
-  Future<void> getAllFoodOfStore(id,lat,lng)async{
+  Future<bool> getAllFoodOfStore(id,lat,lng)async{
     http.Response response=(await foodOfStoreRepo.getAllFoodOfStore(id,lat,lng));
     print(response.statusCode);
     print("food");
     if(response.statusCode==200){
+     // print(id);
+      _foodsStore=null;
+      print(jsonDecode(response.body));
       _foodsStore=FoodStore.fromJson(jsonDecode(response.body));
+      _foodOfStoreList=[];
       _foodOfStoreList.addAll(FoodStore.fromJson(jsonDecode(response.body)).foods);
       _isLoaded=true;
+      print(_foodsStore.storeName);
       update();
+      return true;
     }else{
       print("sai");
+      return false;
     }
   }
 }
