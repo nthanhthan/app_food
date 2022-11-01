@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient extends GetConnect implements GetxService {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  SharedPreferences? prefs;
   final String  appBaseUrl;
 //  late Map<String, String> _mainHeaders={};
   Map<String, String> cookies = {};
@@ -60,12 +58,12 @@ class ApiClient extends GetConnect implements GetxService {
       baseUrl = appBaseUrl;
       timeout = Duration(seconds: 30);
   }
-    Future<http.Response>  getAllFoodOfStore(String uri) async {
-        print(uri);
+    Future<http.Response>  getFood(String uri) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
         String token=prefs?.getString("token")??"";
         http.Response response=await http.get(
           Uri.parse(uri),
-          headers: _mainHeaders("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSWQiOiI2MzUzZmU4NDc3MDQ3YzI5NTY5Y2IzYmIiLCJSb2xlcyI6IltcIlVzZXJcIl0iLCJuYmYiOjE2NjcxMzcwMDQsImV4cCI6MTY2NzE1NTAwNCwiaWF0IjoxNjY3MTM3MDA0fQ.rMPsSgBvi-QgZZn_F0YYHsvdbxfzKLKz62Ua9HWLc3Y")
+          headers: _mainHeaders(token)
         );
         return response;
     }
@@ -82,21 +80,24 @@ class ApiClient extends GetConnect implements GetxService {
 
     }
   Future<http.Response> SignIn(data,apiUrl) async{
-    prefs=await _prefs;
-    String token=prefs?.getString("token")??"";
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+   // String token=prefs?.getString("token")??"";
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
-      headers: _mainHeaders(token),
+      headers: _setHeaders(),
     );
      var allcookie=response.headers['set-cookie'];
-     prefs?.setString("token", _setCookie(allcookie!)) ;
+     _prefs.setString("token", _setCookie(allcookie!)) ;
     // print(prefs?.getString("token"));
     return response;
   }
-  bool LogOut(){
+  Future<bool> LogOut() async {
     try{
-    prefs?.remove("token");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove("token");
+    //print(prefs?.getString("token"));
     return true;
     }
     catch(e){
@@ -104,15 +105,14 @@ class ApiClient extends GetConnect implements GetxService {
     }
   }
   Future<http.Response> getStoreNear(data,apiUrl) async{
-    String token=prefs?.getString("token")??"";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token=prefs.getString("token");
     print(data);
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
-      headers: _mainHeaders("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSWQiOiI2MzUzZmU4NDc3MDQ3YzI5NTY5Y2IzYmIiLCJSb2xlcyI6IltcIlVzZXJcIl0iLCJuYmYiOjE2NjcxMzcwMDQsImV4cCI6MTY2NzE1NTAwNCwiaWF0IjoxNjY3MTM3MDA0fQ.rMPsSgBvi-QgZZn_F0YYHsvdbxfzKLKz62Ua9HWLc3Y"),
+      headers: _mainHeaders(token),
     );
-
-    // print(prefs?.getString("token"));
     return response;
   }
   _setHeaders()=>{
@@ -124,15 +124,7 @@ class ApiClient extends GetConnect implements GetxService {
   'Accept':'application/json',
   'Authorization': 'Bearer $token',
   };
-  // Future<http.Response> getAllFoodOfStore(data,apiUrl) async{
-  //   String? token=prefs?.getString("token");
-  //   http.Response response=await http.post(
-  //     Uri.parse(apiUrl),
-  //     body: jsonEncode(data),
-  //     headers: _mainHeaders(token)
-  //   );
-  //   return response;
-  // }
+
   Response handleResponse(Response response) {
     Response _response = response;
     if(_response.hasError && _response.body != null && _response.body is !String) {

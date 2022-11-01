@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../controllers/popular_product_controller.dart';
+import '../controllers/user_controller.dart';
 import '../utils/colors.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/big_text.dart';
@@ -25,7 +25,7 @@ class SignUpPage extends StatelessWidget {
         'password':passwordController.text,
         'phoneNumber':phoneController.text,
       };
-     var check=await Get.find<PopularProductController>().SignUp(data, "SignUp");
+     var check=await Get.find<UserController>().SignUp(data, "SignUp");
      return check;
     }
     return Scaffold(

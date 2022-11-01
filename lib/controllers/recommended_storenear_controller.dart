@@ -21,6 +21,7 @@ class RecommendedStoreNearController extends GetxController{
       List<dynamic>  decodedList = json.decode(response.body);
       List<Store> posts = List<Store>.from(decodedList.map((model)=> Store.fromJson(model)));
      _storeNearList.addAll(posts);
+     print(_storeNearList);
      _isLoaded=true;
       update();
     }else{

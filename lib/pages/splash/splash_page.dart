@@ -21,9 +21,8 @@ class _SplashSreeenState extends State<SplashSreeen> with TickerProviderStateMix
    String? token;
   Future<void > _loadResource()async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-     token=prefs.getString("token");
+     token= prefs.getString("token");
      print(token);
-
   }
   @override
  void  initState()  {

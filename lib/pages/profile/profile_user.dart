@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../auth/sign_in_page.dart';
-import '../../controllers/popular_product_controller.dart';
+import '../../controllers/user_controller.dart';
 import '../../utils/colors.dart';
 import '../../widgets/big_text.dart';
 
@@ -28,8 +28,8 @@ class ProfileUser extends StatelessWidget {
              ),
              child: Center(
                  child:GestureDetector(
-                   onTap: ()  {
-                     if(Get.find<PopularProductController>().LogOut()){
+                   onTap: ()  async {
+                     if(await Get.find<UserController>().LogOut()){
                        Get.to(()=>SignInPage());
                      }
                    },

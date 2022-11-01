@@ -1,26 +1,14 @@
 import 'dart:convert';
 
-import 'package:app_food/data/repository/popular_product_repo.dart';
+import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class PopularProductController extends GetxController{
-  final PopularProductRepo popularProductRepo;
-  PopularProductController({required this.popularProductRepo});
-  final List<dynamic> _popularProductList=[];
-  List<dynamic> get popularProductList=>_popularProductList;
-  // Future<void> getPopularProductList()async{
-  //  Response response= await popularProductRepo.getPopularProductList();
-  //  if(response.statusCode==200){
-  //    _popularProductList=[];
-  //   // _popularProductList.addAll();
-  //    update();
-  //
-  //  }else{
-  //
-  //  }
-  // }
+class UserController extends GetxController{
+  final UserRepo popularProductRepo;
+  UserController({required this.popularProductRepo});
+
   Future<bool> SignUp(data,url) async{
     http.Response response=(await popularProductRepo.SignUp(data, url));
     if(response.statusCode==200){
@@ -31,7 +19,7 @@ class PopularProductController extends GetxController{
       return false;
     }
   }
-  bool LogOut(){
+  Future<bool> LogOut(){
     return popularProductRepo.LogOut();
   }
   Future<bool> SignIn(data,url) async{

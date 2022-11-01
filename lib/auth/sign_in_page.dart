@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../controllers/popular_product_controller.dart';
+import '../controllers/user_controller.dart';
 import '../utils/colors.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/big_text.dart';
@@ -26,7 +26,7 @@ class SignInPage extends StatelessWidget {
         'username':emailController.text,
         'password':passwordController.text,
       };
-      var check=await Get.find<PopularProductController>().SignIn(data, "SignIn");
+      var check=await Get.find<UserController>().SignIn(data, "SignIn");
       return check;
     }
     return Scaffold(

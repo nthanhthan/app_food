@@ -1,4 +1,4 @@
-import 'package:app_food/controllers/popular_product_controller.dart';
+import 'package:app_food/controllers/user_controller.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,18 +52,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         GetBuilder<RecommendedStoreNearController>(builder: (storeNear){
           return  storeNear.isLoaded? Container(
             height: ScreenUtil().setHeight(280),
-            child: GestureDetector(
-              onTap: (){
-               // Get.to(()=>FoodOfStoreController().getAllFoodOfStore(id, lat, lng))
-              },
-              child: PageView.builder(
+            child: PageView.builder(
                   controller: pageController,
                  // itemCount: storeNear.storeNearList.length,
                   itemCount: 5,
                   itemBuilder: (context, position) {
                     return _buildPageItem(position,storeNear.storeNearList[position]);
                   }),
-            ),
           ):CircularProgressIndicator(
             color: AppColors.mainColor,
           );
@@ -110,10 +105,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () async {
-                    print(storeNear.storeNearList[index].storeId);
                    bool check=await Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.073877", "108.149892");
                    if(check){
-                     Get.to(()=>const StorePage());
+                     Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeNearList[index].storeId!));
                    }
                   },
                   child: Container(
@@ -212,48 +206,56 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     }
     return Transform(
       transform: matrix,
-      child: Stack(
-        children: [
-          Container(
-            height: ScreenUtil().setHeight(230),
-            margin: EdgeInsets.only(
-                left: ScreenUtil().setWidth(10), right: ScreenUtil().setWidth(10)),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
-                color: index.isEven ? Color(0xFF69c5df) : Color(0xFF9294cc),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(storeNear.image!))),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: ScreenUtil().setHeight(105),
+      child: GestureDetector(
+        onTap: () async {
+          bool check=await Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeId!, "16.073877", "108.149892");
+          if(check){
+            Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeId!));
+          }
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: ScreenUtil().setHeight(230),
               margin: EdgeInsets.only(
-                  left: ScreenUtil().setWidth(25),
-                  right: ScreenUtil().setWidth(25),
-                  bottom:ScreenUtil().setHeight(10)),
+                  left: ScreenUtil().setWidth(10), right: ScreenUtil().setWidth(10)),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(ScreenUtil().radius(25)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xFFe8e8e8),
-                        blurRadius: 5.0,
-                        offset: Offset(0, 5)),
-                    BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
-                    BoxShadow(color: Colors.white, offset: Offset(5, 0))
-                  ]),
-              child: Container(
-                padding: EdgeInsets.only(
-                    top: ScreenUtil().setHeight(10),
-                    left: ScreenUtil().setWidth(10),
-                    right: ScreenUtil().setWidth(10)),
-                child: AppColumn(text: storeNear.name.toString(),star:storeNear.star!,address: storeNear.address!,distance: storeNear.distance! ,),
-              ),
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                  color: index.isEven ? Color(0xFF69c5df) : Color(0xFF9294cc),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(storeNear.image!))),
             ),
-          )
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: ScreenUtil().setHeight(105),
+                margin: EdgeInsets.only(
+                    left: ScreenUtil().setWidth(25),
+                    right: ScreenUtil().setWidth(25),
+                    bottom:ScreenUtil().setHeight(10)),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(ScreenUtil().radius(25)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color(0xFFe8e8e8),
+                          blurRadius: 5.0,
+                          offset: Offset(0, 5)),
+                      BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
+                      BoxShadow(color: Colors.white, offset: Offset(5, 0))
+                    ]),
+                child: Container(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setHeight(10),
+                      left: ScreenUtil().setWidth(10),
+                      right: ScreenUtil().setWidth(10)),
+                  child: AppColumn(text: storeNear.name.toString(),star:storeNear.star!,address: storeNear.address!,distance: storeNear.distance! ,),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

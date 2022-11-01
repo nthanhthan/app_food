@@ -15,21 +15,15 @@ class FoodOfStoreController extends GetxController{
   bool get isLoaded=>_isLoaded;
   Future<bool> getAllFoodOfStore(id,lat,lng)async{
     http.Response response=(await foodOfStoreRepo.getAllFoodOfStore(id,lat,lng));
-    print(response.statusCode);
-    print("food");
     if(response.statusCode==200){
-     // print(id);
       _foodsStore=null;
-      print(jsonDecode(response.body));
       _foodsStore=FoodStore.fromJson(jsonDecode(response.body));
       _foodOfStoreList=[];
       _foodOfStoreList.addAll(FoodStore.fromJson(jsonDecode(response.body)).foods);
       _isLoaded=true;
-      print(_foodsStore.storeName);
       update();
       return true;
     }else{
-      print("sai");
       return false;
     }
   }
