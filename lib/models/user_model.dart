@@ -1,38 +1,45 @@
 class User {
-  String? _id;
-  String? _name;
-  String? _email;
-  String? _photo;
-  String? _phone;
-  List<String>? _roles;
+  String? id;
+  String? name;
+  String? email;
+  String? photo;
+  String? phone;
+  List<String>? roles;
+  List<String>? get getRoles=>roles;
+  String? accessToken;
+ late String? refreshToken;
 
-  User(id, name, email, photo,  phone, roles){
-    this._id=id;
-    this._name=name;
-    this._email=email;
-    this._photo=photo;
-    this._roles=roles;
-  }
-  List<String>? getRoles(){
-    return this._roles;
-  }
+  User(
+      {this.id,
+        this.name,
+        this.email,
+        this.photo,
+        this.phone,
+        this.roles,
+        this.accessToken,
+        this.refreshToken});
+
   User.fromJson(Map<String, dynamic> json) {
-    this._id = json['id'];
-    this._name = json['name'];
-    this._email = json['email'];
-    this._photo = json['photo'];
-    this._phone = json['phone'];
-    this._roles = json['roles'].cast<String>();
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    photo = json['photo'];
+    phone = json['phone'];
+    roles = json['roles'].cast<String>();
+    accessToken = json['accessToken'];
+    refreshToken = json['refreshToken'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this._id;
-    data['name'] = this._name;
-    data['email'] = this._email;
-    data['photo'] = this._photo;
-    data['phone'] = this._phone;
-    data['roles'] = this._roles;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['photo'] = this.photo;
+    data['phone'] = this.phone;
+    data['roles'] = this.roles;
+    data['accessToken'] = this.accessToken;
+    data['refreshToken'] = this.refreshToken;
     return data;
   }
 }

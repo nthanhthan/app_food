@@ -17,116 +17,121 @@ class FoodDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   // var food = Get.find<FoodDetailController>().getFoodDetailById(foodID);
+    // var food = Get.find<FoodDetailController>().getFoodDetailById(foodID);
 
     //Get.find<FoodDetailController>().initFood(food.foodsDetail, Get.find<CartController>());
 
-
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            //background image
-            Positioned(
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: double.maxFinite,
-                  height: ScreenUtil().setHeight(240),
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/img.png"))),
-                )),
-            //icon widgets
-            Positioned(
-                top: ScreenUtil().setHeight(20),
-                left: ScreenUtil().setWidth(20),
-                right: ScreenUtil().setWidth(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Get.toNamed(RouteHelper.storeDetail);
-                        },
-                        child: AppIcon(
-                          icon: Icons.arrow_back,
-                          size: ScreenUtil().setHeight(30),
-                        )),
-                    GetBuilder<FoodDetailController>(builder: (controller) {
-                      return Stack(
+        body: GetBuilder<FoodDetailController>(builder: (foodDetail) {
+          return Stack(
+            children: [
+              //background image
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    width: double.maxFinite,
+                    height: ScreenUtil().setHeight(240),
+                    decoration:  BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(foodDetail.foodsDetail.urlImage!))),
+                  )),
+              //icon widgets
+              Positioned(
+                  top: ScreenUtil().setHeight(20),
+                  left: ScreenUtil().setWidth(20),
+                  right: ScreenUtil().setWidth(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Get.toNamed(RouteHelper.storeDetail);
+                          },
+                          child: AppIcon(
+                            icon: Icons.arrow_back,
+                            size: ScreenUtil().setHeight(30),
+                          )),
+                      GetBuilder<FoodDetailController>(builder: (controller) {
+                        return Stack(
+                          children: [
+                            AppIcon(
+                                icon: Icons.shopping_cart_outlined,
+                                size: ScreenUtil().setHeight(30)),
+                            Get.find<FoodDetailController>().totalItems >= 1
+                                ? Positioned(
+                                    right: 3,
+                                    top: 3,
+                                    child: BigText(
+                                      text: Get.find<FoodDetailController>()
+                                          .totalItems
+                                          .toString(),
+                                      size: ScreenUtil().setSp(5),
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Container()
+                          ],
+                        );
+                      })
+                    ],
+                  )),
+              //introduction of food
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: ScreenUtil().setHeight(220),
+                  child: Container(
+                      padding: EdgeInsets.only(
+                          left: Dimensions.width20,
+                          right: Dimensions.width20,
+                          top: Dimensions.height20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topRight:
+                                  Radius.circular(ScreenUtil().radius(20)),
+                              topLeft:
+                                  Radius.circular(ScreenUtil().radius(20))),
+                          color: Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppIcon(
-                              icon: Icons.shopping_cart_outlined,
-                              size: ScreenUtil().setHeight(30)),
-                          Get.find<FoodDetailController>().totalItems >= 1
-                              ? Positioned(
-                                  right: 3,
-                                  top: 3,
-                                  child: BigText(text:  Get.find<FoodDetailController>().totalItems.toString(),size: ScreenUtil().setSp(5),color: Colors.white,),
-                                )
-                              : Container()
-                        ],
-                      );
-                    })
-                  ],
-                )),
-            //introduction of food
-            Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: ScreenUtil().setHeight(220),
-                child: Container(
-                    padding: EdgeInsets.only(
-                        left: Dimensions.width20,
-                        right: Dimensions.width20,
-                        top: Dimensions.height20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(ScreenUtil().radius(20)),
-                            topLeft: Radius.circular(ScreenUtil().radius(20))),
-                        color: Colors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              BigText(
-                                text: "Bún mắm Đà Nẵng",
-                                size: ScreenUtil().setSp(15),
-                              ),
-                              BigText(
-                                text: "25.000",
-                                size: ScreenUtil().setSp(15),
-                              ),
-                            ],
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                BigText(
+                                  text: foodDetail.foodsDetail.name!,
+                                  size: ScreenUtil().setSp(10),
+                                ),
+                                BigText(
+                                  text: foodDetail.foodsDetail.price.toString()!,
+                                  size: ScreenUtil().setSp(10),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        //AppColumn(text: "Bun mam Da Nang"),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(10),
-                        ),
-                        const Expanded(
-                            child: SingleChildScrollView(
-                          child: ExpandableTextWidget(
-                              text:
-                                  "Bún mắm là một trong số các món ăn đặc sản của "
-                                  "miền tây Nam bộ Việt Nam. Bún mắm có nguồn gốc từ Campuchia, được nấu từ mắm bù hốc. "
-                                  "Khi sang đến Việt Nam thường được nấu bằng mắm cá linh hay cá sặc, "
-                                  "đây là các loại cá có nhiều tại miền Tây, đặc biệt là các tỉnh Trà Vinh và Sóc Trăng."),
-                        )),
-                        const Expanded(
-                            child: SingleChildScrollView(
-                          child: Topping(),
-                        )),
-                      ],
-                    )))
-          ],
-        ),
+                          //AppColumn(text: "Bun mam Da Nang"),
+                          SizedBox(
+                            height: ScreenUtil().setHeight(10),
+                          ),
+                           Expanded(
+                              child: SingleChildScrollView(
+                            child: ExpandableTextWidget(
+                                text:foodDetail.foodsDetail.description!),
+                          )),
+                          const Expanded(
+                              child: SingleChildScrollView(
+                            child: Topping(),
+                          )),
+                        ],
+                      )))
+            ],
+          );
+        }),
         bottomNavigationBar: GetBuilder<FoodDetailController>(
           builder: (foodDetail) {
             return Container(

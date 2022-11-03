@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/foodDetail_controller.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/icon_and_text_widget.dart';
@@ -180,7 +181,8 @@ class StorePage extends StatelessWidget {
                       itemCount: foodsStore.foodOfStoreList.isEmpty?0:foodsStore.foodOfStoreList.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () async {
+                            bool check=await Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
                             Get.toNamed(RouteHelper.getDetailFood(foodsStore.foodOfStoreList[index].foodId!));
                           },
                           child: Container(

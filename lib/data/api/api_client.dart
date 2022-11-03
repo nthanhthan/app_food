@@ -5,55 +5,24 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user_model.dart';
+
 class ApiClient extends GetConnect implements GetxService {
   final String  appBaseUrl;
-//  late Map<String, String> _mainHeaders={};
   Map<String, String> cookies = {};
-  //Get AccessToken
-  // Future<void> _setToken() async{
-  //   final SharedPreferences prefs=await _prefs;
-  //   final String token=(prefs.getString("token"))!;
-  //   setState((){
-  //     _token=prefs.setString("token", token).then((bool success){
-  //       return token;
-  //     });
-  //   });
-  // }
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   _token=_prefs.then((SharedPreferences prefs){
-  //     return prefs.getString("token")??"";
-  //   });
-  // }
-  String _setCookie(String rawCookie)  {
-    if (rawCookie.isNotEmpty) {
-      var keyValue = rawCookie.split('=');
-      if (keyValue.length > 2) {
-        var key = keyValue[4].trim();
-        var value = key.split(';');
-        return value[0].trim();
-        //prefs!.setString("token", value[0].trim());
-      }
-    }
-    return "";
-  }
-  // void updateCookie(http.Response response) {
-  //   String? rawCookie = response.headers['set-cookie'];
-  //   if (rawCookie != null) {
-  //     int index = rawCookie.indexOf(';');
-  //     _mainHeaders['cookie'] =
-  //     (index == -1) ? rawCookie : rawCookie.substring(0, index);
+  // String _setCookie(String rawCookie)  {
+  //   if (rawCookie.isNotEmpty) {
+  //     var keyValue = rawCookie.split('=');
+  //     if (keyValue.length > 2) {
+  //       var key = keyValue[4].trim();
+  //       var value = key.split(';');
+  //       return value[0].trim();
+  //       //prefs!.setString("token", value[0].trim());
+  //     }
   //   }
+  //   return "";
   // }
-  // void GetToken(http.Response response) {
-  //   String? rawCookie = response.headers['set-cookie'];
-  //   if (rawCookie != null) {
-  //     int index = rawCookie.indexOf('AccessToken=');
-  //     _mainHeaders['cookie'] =
-  //     (index == -1) ? rawCookie : rawCookie.substring(index, index);
-  //   }
-  // }
+
   ApiClient({required this.appBaseUrl}) {
       baseUrl = appBaseUrl;
       timeout = Duration(seconds: 30);
@@ -65,6 +34,7 @@ class ApiClient extends GetConnect implements GetxService {
           Uri.parse(uri),
           headers: _mainHeaders(token)
         );
+        print(response.body);
         return response;
     }
     Future<http.Response> SignUp(data,apiUrl) async{
@@ -73,31 +43,22 @@ class ApiClient extends GetConnect implements GetxService {
         body: jsonEncode(data),
         headers: _setHeaders(),
       );
-      //response=handleResponse(response);
-      print(response.statusCode);
-      print("thanhcobng");
       return response;
 
     }
   Future<http.Response> SignIn(data,apiUrl) async{
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-   // String token=prefs?.getString("token")??"";
+   // SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
       headers: _setHeaders(),
     );
-     var allcookie=response.headers['set-cookie'];
-     _prefs.setString("token", _setCookie(allcookie!)) ;
-    // print(prefs?.getString("token"));
     return response;
   }
   Future<bool> LogOut() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove("token");
-    //print(prefs?.getString("token"));
     return true;
     }
     catch(e){
@@ -107,12 +68,30 @@ class ApiClient extends GetConnect implements GetxService {
   Future<http.Response> getStoreNear(data,apiUrl) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token=prefs.getString("token");
-    print(data);
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
       headers: _mainHeaders(token),
     );
+    print(response.statusCode);
+    if(response.statusCode==401){
+      var refreshToken="https://takefoodauthentication.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
+      http.Response res=await http.get(
+          Uri.parse(refreshToken),
+          headers: _setHeaders()
+      );
+      if(res.statusCode==200){
+        User user=User.fromJson(jsonDecode(res.body));
+        prefs.setString("token", user.accessToken!);
+      }
+      http.Response response= await http.post(
+        Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: _mainHeaders(prefs.getString("token")),
+      );
+      print(response.statusCode);
+      return response;
+    }
     return response;
   }
   _setHeaders()=>{

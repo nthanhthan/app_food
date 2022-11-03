@@ -1,31 +1,39 @@
-class Food {
+class FoodTopping {
   String? foodId;
   String? name;
   String? description;
   String? urlImage;
   int? price;
   String? category;
-  Null? listTopping;
+  late List<ListTopping> _listTopping;
+  List<ListTopping> get  listTopping=>_listTopping;
   String? state;
 
-  Food(
+  FoodTopping(
       {this.foodId,
         this.name,
         this.description,
         this.urlImage,
         this.price,
         this.category,
-        this.listTopping,
-        this.state});
+        required listTopping,
+        this.state}){
+    _listTopping=listTopping;
+  }
 
-  Food.fromJson(Map<String, dynamic> json) {
+  FoodTopping.fromJson(Map<String, dynamic> json) {
     foodId = json['FoodId'];
     name = json['Name'];
     description = json['Dscription'];
     urlImage = json['UrlImage'];
     price = json['Price'];
     category = json['Category'];
-    listTopping = json['ListTopping'];
+    if (json['ListTopping'] != null) {
+      _listTopping = <ListTopping>[];
+      json['ListTopping'].forEach((v) {
+        listTopping!.add(new ListTopping.fromJson(v));
+      });
+    }
     state = json['State'];
   }
 
@@ -37,8 +45,35 @@ class Food {
     data['UrlImage'] = this.urlImage;
     data['Price'] = this.price;
     data['Category'] = this.category;
-    data['ListTopping'] = this.listTopping;
+    if (this.listTopping != null) {
+      data['ListTopping'] = this.listTopping!.map((v) => v.toJson()).toList();
+    }
     data['State'] = this.state;
+    return data;
+  }
+}
+
+class ListTopping {
+  String? iD;
+  String? name;
+  String? state;
+  int? price;
+
+  ListTopping({this.iD, this.name, this.state, this.price});
+
+  ListTopping.fromJson(Map<String, dynamic> json) {
+    iD = json['ID'];
+    name = json['Name'];
+    state = json['State'];
+    price = json['Price'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ID'] = this.iD;
+    data['Name'] = this.name;
+    data['State'] = this.state;
+    data['Price'] = this.price;
     return data;
   }
 }

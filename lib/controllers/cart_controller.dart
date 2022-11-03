@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:app_food/data/repository/cart_repo.dart';
+import 'package:app_food/models/food_model.dart';
 import 'package:get/get.dart';
 
 import '../models/cart_model.dart';
@@ -11,7 +12,7 @@ class CartController extends GetxController{
   CartController({required this.cartRepo});
   Map<String,CartModel> _items={};
   Map<String,CartModel> get items=>_items;
-  void addItem(Foods food,int quantity){
+  void addItem(FoodTopping food,int quantity){
     var totalQuantity=0;
     if(_items.containsKey(food.foodId!)){
       _items.update(food.foodId!, (value) {
@@ -33,21 +34,21 @@ class CartController extends GetxController{
     _items.putIfAbsent(food.foodId!, () {
       return CartModel(
         foodId:food.foodId,
-        foodName:food.foodName,
+        foodName:food.name,
         price:food.price,
-        imageUrl:food.imageUrl,
+        imageUrl:food.urlImage,
         quantity:quantity,
         isExist:true,
         time:DateTime.now().toString(),
     );});}
   }
-  existInCart(Foods food){
+  existInCart(FoodTopping food){
     if(_items.containsKey(food.foodId)){
       return true;
     }
     return false;
   }
-  getQuantity(Foods food){
+  getQuantity(FoodTopping food){
     var quantity=0;
     if(_items.containsKey(food.foodId)){
       _items.forEach((key, value) {

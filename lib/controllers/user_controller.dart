@@ -4,6 +4,7 @@ import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController{
   final UserRepo popularProductRepo;
@@ -23,6 +24,7 @@ class UserController extends GetxController{
     return popularProductRepo.LogOut();
   }
   Future<bool> SignIn(data,url) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response=(await popularProductRepo.SignIn(data, url));
     String? allSetCookie=response.headers['set-cookie'];
     print(allSetCookie);
@@ -30,12 +32,12 @@ class UserController extends GetxController{
     print(response.statusCode);
     if(response.statusCode==200){
       Map<String,dynamic> output=json.decode(response.body);
-      print(output);
       User user=User.fromJson(jsonDecode(response.body));
-      var checkRole=user.getRoles()!.contains("User");
+      prefs.setString("token",user.accessToken!);
+      prefs.setString("refreshToken",user.refreshToken!);
+      var checkRole=user.getRoles!.contains("User");
       print(checkRole);
       if(checkRole==true){
-
         return true;
       }else {
         return false;
