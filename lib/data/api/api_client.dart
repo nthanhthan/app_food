@@ -29,7 +29,8 @@ class ApiClient extends GetConnect implements GetxService {
   }
     Future<http.Response>  getFood(String uri) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-        String token=prefs?.getString("token")??"";
+        String? token=prefs?.getString("token");
+        print(token);
         http.Response response=await http.get(
           Uri.parse(uri),
           headers: _mainHeaders(token)
@@ -73,6 +74,7 @@ class ApiClient extends GetConnect implements GetxService {
       body: jsonEncode(data),
       headers: _mainHeaders(token),
     );
+    print(token);
     print(response.statusCode);
     if(response.statusCode==401){
       var refreshToken="https://takefoodauthentication.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
@@ -82,7 +84,8 @@ class ApiClient extends GetConnect implements GetxService {
       );
       if(res.statusCode==200){
         User user=User.fromJson(jsonDecode(res.body));
-        prefs.setString("token", user.accessToken!);
+        //await prefs.remove("token");
+        await prefs.setString("token", user.accessToken!);
       }
       http.Response response= await http.post(
         Uri.parse(apiUrl),

@@ -1,29 +1,40 @@
-import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/pages/food/topping.dart';
-import 'package:app_food/routes/route_helper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+
 import '../../controllers/foodDetail_controller.dart';
+import '../../models/food_model.dart';
+import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/expandable_text_widget.dart';
 
-class FoodDetail extends StatelessWidget {
+class FoodDetail extends StatefulWidget {
   String foodID;
-  FoodDetail({Key? key, required this.foodID}) : super(key: key);
+   FoodDetail({Key? key,required this.foodID}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // var food = Get.find<FoodDetailController>().getFoodDetailById(foodID);
+  State<FoodDetail> createState() => _FoodDetailState();
+}
 
-    //Get.find<FoodDetailController>().initFood(food.foodsDetail, Get.find<CartController>());
+class _FoodDetailState extends State<FoodDetail> {
+  List _selectedIndexs=[];
+  List<ListTopping> listtopping= [];
+  int check=0;
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
         backgroundColor: Colors.white,
         body: GetBuilder<FoodDetailController>(builder: (foodDetail) {
+
           return Stack(
             children: [
               //background image
@@ -51,6 +62,7 @@ class FoodDetail extends StatelessWidget {
                             Get.toNamed(RouteHelper.storeDetail);
                           },
                           child: AppIcon(
+                            iconColor: Colors.black54,
                             icon: Icons.arrow_back,
                             size: ScreenUtil().setHeight(30),
                           )),
@@ -58,20 +70,21 @@ class FoodDetail extends StatelessWidget {
                         return Stack(
                           children: [
                             AppIcon(
+                                iconColor: Colors.black54,
                                 icon: Icons.shopping_cart_outlined,
                                 size: ScreenUtil().setHeight(30)),
                             Get.find<FoodDetailController>().totalItems >= 1
                                 ? Positioned(
-                                    right: 3,
-                                    top: 3,
-                                    child: BigText(
-                                      text: Get.find<FoodDetailController>()
-                                          .totalItems
-                                          .toString(),
-                                      size: ScreenUtil().setSp(5),
-                                      color: Colors.white,
-                                    ),
-                                  )
+                              right: 3,
+                              top: 3,
+                              child: BigText(
+                                text: Get.find<FoodDetailController>()
+                                    .totalItems
+                                    .toString(),
+                                size: ScreenUtil().setSp(5),
+                                color: Colors.red,
+                              ),
+                            )
                                 : Container()
                           ],
                         );
@@ -92,9 +105,9 @@ class FoodDetail extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               topRight:
-                                  Radius.circular(ScreenUtil().radius(20)),
+                              Radius.circular(ScreenUtil().radius(20)),
                               topLeft:
-                                  Radius.circular(ScreenUtil().radius(20))),
+                              Radius.circular(ScreenUtil().radius(20))),
                           color: Colors.white),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,11 +118,11 @@ class FoodDetail extends StatelessWidget {
                               children: [
                                 BigText(
                                   text: foodDetail.foodsDetail.name!,
-                                  size: ScreenUtil().setSp(10),
+                                  size: ScreenUtil().setSp(12),
                                 ),
                                 BigText(
-                                  text: foodDetail.foodsDetail.price.toString()!,
-                                  size: ScreenUtil().setSp(10),
+                                  text: foodDetail.foodsDetail.price.toString()!.toVND(unit: 'đ'),
+                                  size: ScreenUtil().setSp(12),
                                 ),
                               ],
                             ),
@@ -118,15 +131,99 @@ class FoodDetail extends StatelessWidget {
                           SizedBox(
                             height: ScreenUtil().setHeight(10),
                           ),
+                          Expanded(
+                              child: SingleChildScrollView(
+                                child: ExpandableTextWidget(
+                                    text:foodDetail.foodsDetail.description!),
+                              )),
                            Expanded(
                               child: SingleChildScrollView(
-                            child: ExpandableTextWidget(
-                                text:foodDetail.foodsDetail.description!),
-                          )),
-                          const Expanded(
-                              child: SingleChildScrollView(
-                            child: Topping(),
-                          )),
+                                child: Column(
+                                  children: [
+                                    GetBuilder<FoodDetailController>(builder: (topping){
+                                      return topping.toppingFood.isEmpty?Container():Container(
+                                        //margin: EdgeInsets.only(left: Dimensions.height10),
+                                        child: Row(
+                                          children: [
+                                            BigText(
+                                              text: "Chọn topping",
+                                              color: AppColors.mainBlackColor,
+                                              size: ScreenUtil().setSp(12),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                    GetBuilder<FoodDetailController>(builder: (topping){
+                                       return topping.toppingFood.isEmpty?Container():ListView.builder(
+                                          padding: EdgeInsets.only(top:ScreenUtil().setHeight(5)),
+                                          physics: NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: topping.toppingFood.isEmpty?1:topping.toppingFood.length,
+                                          itemBuilder: (context, index) {
+                                            var _isSelectedBefore=topping.listTopping.contains(topping.toppingFood[index].iD);
+                                            if(_isSelectedBefore && check<=topping.toppingFood.length){
+                                              _selectedIndexs.add(index);
+                                              listtopping.add(topping.toppingFood[index]);
+                                              ++check;
+                                            }
+                                            var _isSelected=_selectedIndexs.contains(index);
+
+
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                  top: ScreenUtil().setHeight(5)),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child:GestureDetector(
+                                                      onTap:()  {
+                                                        setState((){
+                                                          if(_isSelected){
+                                                            _selectedIndexs.remove(index);
+                                                            listtopping.remove(topping.toppingFood[index]);
+                                                          }else{
+
+                                                            _selectedIndexs.add(index);
+                                                            listtopping.add(topping.toppingFood[index]);
+                                                          }
+                                                        }
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15),bottom: ScreenUtil().setHeight(8)),
+                                                        decoration: BoxDecoration(
+                                                            color: _isSelected?AppColors.mainColor:Colors.white,
+                                                            border: Border(
+                                                                bottom: BorderSide(
+                                                                    color: AppColors.borderBottom,
+                                                                    width: 2.0
+                                                                )
+                                                            )
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            BigText(text: topping.toppingFood[index].name!,size: ScreenUtil().setSp(10),),
+                                                            BigText(text: topping.toppingFood[index].price.toString()!.toVND(unit: 'đ'),size: ScreenUtil().setSp(10),),
+                                                          ],
+
+
+                                                        ),
+
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                    })
+
+                                  ],
+                                ),
+                              )),
                         ],
                       )))
             ],
@@ -157,7 +254,7 @@ class FoodDetail extends StatelessWidget {
                         right: ScreenUtil().setWidth(10)),
                     decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(ScreenUtil().radius(20)),
+                        BorderRadius.circular(ScreenUtil().radius(20)),
                         color: Colors.white),
                     child: Row(
                       children: [
@@ -197,14 +294,14 @@ class FoodDetail extends StatelessWidget {
                         right: ScreenUtil().setWidth(10)),
                     decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(Dimensions.radius20),
+                        BorderRadius.circular(Dimensions.radius20),
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () {
-                        foodDetail.addItem(foodDetail.foodsDetail);
+                        foodDetail.addItem(foodDetail.foodsDetail,listtopping);
                       },
                       child: BigText(
-                        text: "Thêm  10.000đ",
+                        text: "Thêm ${(foodDetail.foodsDetail.price*foodDetail.inCartItems).toString()!.toVND(unit: 'đ')}",
                         color: Colors.white,
                       ),
                     ),

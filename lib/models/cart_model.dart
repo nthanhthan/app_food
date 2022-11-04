@@ -1,3 +1,5 @@
+import 'food_model.dart';
+
 class CartModel {
   String? foodId;
   String? foodName;
@@ -6,6 +8,9 @@ class CartModel {
   int? quantity;
   bool? isExist;
   String? time;
+  late List<ListTopping> _listFoodTopping;
+  List<ListTopping> get listFoodTopping=>_listFoodTopping;
+
 
   CartModel({
     this.foodId,
@@ -14,8 +19,12 @@ class CartModel {
     this.imageUrl,
     this.quantity,
     this.isExist,
-    this.time
-  });
+    this.time,
+    required listFoodTopping,
+  }
+  ){
+    _listFoodTopping=listFoodTopping;
+  }
 
   CartModel.fromJson(Map<String, dynamic> json) {
     foodId = json['foodId'];
@@ -25,6 +34,12 @@ class CartModel {
     quantity=json['quantity'];
     isExist=json['isExist'];
     time=json['time'];
+    if (json['ListTopping'] != null) {
+      _listFoodTopping = <ListTopping>[];
+      json['ListTopping'].forEach((v) {
+        listFoodTopping!.add(new ListTopping.fromJson(v));
+      });
+    }
 
   }
 
@@ -34,6 +49,9 @@ class CartModel {
     data['foodName'] = this.foodName;
     data['price'] = this.price;
     data['imageUrl'] = this.imageUrl;
+    if (this.listFoodTopping != null) {
+      data['ListTopping'] = this.listFoodTopping!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

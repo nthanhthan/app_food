@@ -11,6 +11,7 @@ import '../../controllers/foodDetail_controller.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/icon_and_text_widget.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class StorePage extends StatelessWidget {
   String storeId;
@@ -223,7 +224,7 @@ class StorePage extends StatelessWidget {
                                               color: AppColors.mainBlackColor),
                                           SizedBox(height: ScreenUtil().setHeight(20)),
                                           BigText(
-                                            text: "${foodsStore.foodOfStoreList[index].price.toString()!}đ",
+                                            text: foodsStore.foodOfStoreList[index].price.toString().toVND(unit: 'đ'),
                                             color: AppColors.mainBlackColor,
                                             size: ScreenUtil().setSp(10),
                                           )
@@ -233,15 +234,28 @@ class StorePage extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  width: ScreenUtil().setWidth(80),
-                                  height: ScreenUtil().setHeight(80),
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(ScreenUtil().radius(10)),
-                                      color: Colors.white38,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(foodsStore.foodOfStoreList[index].imageUrl!))),
+                                  height: ScreenUtil().setWidth(110),
+                                  width: ScreenUtil().setWidth(110),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Image.network(
+                                      foodsStore.foodOfStoreList[index].imageUrl!,
+                                      errorBuilder:
+                                          (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        // Appropriate logging or analytics, e.g.
+                                        // myAnalytics.recordError(
+                                        //   'An error occurred loading "https://example.does.not.exist/image.jpg"',
+                                        //   exception,
+                                        //   stackTrace,
+                                        // );
+                                        return const Text("...");
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

@@ -31,7 +31,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFFA4A4A4),
+      color: Colors.white,
       child: secondHalf.isEmpty?SmallText(color:Color(0xFF4D4D4D),size:ScreenUtil().setSp(10),text: firstHalf):Column(
         children: [
           SmallText(height:1.8,color:Color(0xFF4D4D4D),size:ScreenUtil().setSp(10),text: hiddenText?(firstHalf+"..."):(firstHalf+secondHalf)),

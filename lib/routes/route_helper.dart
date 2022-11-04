@@ -1,11 +1,8 @@
 import 'package:app_food/auth/sign_in_page.dart';
-import 'package:app_food/auth/sign_up_page.dart';
-import 'package:app_food/models/foodStore_model.dart';
 import 'package:app_food/pages/food/store.dart';
 import 'package:app_food/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-
 import '../pages/food/foodDetail.dart';
 import '../pages/home/home_page.dart';
 
@@ -18,7 +15,7 @@ class RouteHelper{
   static String getInitial()=>'$initial';
   static String getHomePage()=>'$homepage';
   static String getSplashPage()=>'$Splashpage';
-  static String getDetailFood(String foodId)=>'$foodDetail?foodID=&foodId';
+  static String getDetailFood(String foodId)=>'$foodDetail?foodID=$foodId';
   static String getStoreDetail(String storeId)=>'$storeDetail?storeId=$storeId';
   static List<GetPage> routes=[
     GetPage(name: initial, page: ()=>SignInPage()),

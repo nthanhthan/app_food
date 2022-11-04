@@ -25,7 +25,13 @@ class FoodDetailController extends GetxController {
   int _inCartItems = 0;
   late Foods food;
   int get inCartItems => _inCartItems+_quantity;
+  List<dynamic> _listTopping=[];
+  List<dynamic> get listTopping=>_listTopping;
   late CartController _cart;
+  late List<String> _topping;
+   List<String> get  topping=>_topping;
+
+
   Future<bool> getFoodDetailById(id) async {
     http.Response response = (await foodDetailRepo.getFoodDetail(id));
     if (response.statusCode == 200) {
@@ -71,13 +77,16 @@ class FoodDetailController extends GetxController {
     exist = _cart.existInCart(food);
     if(exist){
       _inCartItems=_cart.getQuantity(food);
+      _listTopping=_cart.getListTopping(food);
+      print(_listTopping.length);
     }
   }
 
-  void addItem(FoodTopping food) {
-    if (_quantity > 0) {
-      _cart.addItem(food, _quantity);
+  void addItem(FoodTopping food,List<ListTopping> topping) {
+    if (inCartItems>= 0) {
+      _cart.addItem(food, _quantity,topping);
       _quantity = 0;
+      _inCartItems=_cart.getQuantity(food);
     } else {
       Get.snackbar("Không hợp lệ", "Bạn chưa chọn số lượng",
           backgroundColor: AppColors.mainColor, colorText: Colors.white);
@@ -86,5 +95,14 @@ class FoodDetailController extends GetxController {
   }
   int get totalItems{
     return _cart.totalItems;
+  }
+  var check=false;
+  void addTopping(isSelected, toppingID){
+    if(isSelected){
+      _topping.add(toppingID);
+    }else{
+      _topping.remove(toppingID);
+    }
+    print(topping);
   }
 }
