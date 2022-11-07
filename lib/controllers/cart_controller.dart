@@ -6,7 +6,7 @@ import '../models/cart_model.dart';
 class CartController extends GetxController {
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
-  Map<String, CartModel> _items = {};
+  final Map<String, CartModel> _items = {};
   Map<String, CartModel> get items => _items;
   List<CartModel> storageItems=[];
   String? topping;
@@ -67,9 +67,9 @@ class CartController extends GetxController {
      if(_items.containsKey(food.foodId)){
        _items.forEach((key, value) {
          if(key==food.foodId){
-           value.listFoodTopping.forEach((element) {
+           for (var element in value.listFoodTopping) {
              toppingID.add(element.iD);
-           });
+           }
          }
        });
      }
@@ -107,22 +107,22 @@ class CartController extends GetxController {
   int getTotalMoneyItems(foodID){
     var totalMoney=0;
     topping="";
-    _items.values.forEach((element) {
+    for (var element in _items.values) {
       if(element.foodId==foodID){
          totalMoney=element.price!*element.quantity!;
-        element.listFoodTopping.forEach((element) {
+        for (var element in element.listFoodTopping) {
           totalMoney+=element.price!;
           topping="${topping!},${element.name!}";
-        });
+        }
       }
 
-    });
+    }
     return totalMoney;
   }
   int get totalAmount{
     var total=0;
     _items.forEach((key, value) {
-      total+=getTotalMoneyItems(value.foodId)!;
+      total+=getTotalMoneyItems(value.foodId);
     });
     return total;
   }
