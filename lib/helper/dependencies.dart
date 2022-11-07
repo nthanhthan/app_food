@@ -5,6 +5,7 @@ import 'package:app_food/data/api/api_client.dart';
 import 'package:app_food/data/repository/cart_repo.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/foodDetail_controller.dart';
 import '../controllers/foodOfStore_controller.dart';
 import '../controllers/recommended_storenear_controller.dart';
@@ -14,6 +15,9 @@ import '../data/repository/recommended_storenear_repo.dart';
 
 
 Future<void> init()async {
+  final sharePreferences=await SharedPreferences.getInstance();
+ // await sharePreferences.remove("Cart-list");
+  Get.lazyPut(()=>sharePreferences);
 
   //api client
   Get.lazyPut(() =>ApiClient(appBaseUrl: "https://takefoodauthentication.azurewebsites.net/"));
@@ -30,7 +34,7 @@ Future<void> init()async {
   Get.lazyPut(() => FoodDetailRepo(apiClient: Get.find()));
   //controllers
   Get.lazyPut(() => FoodDetailController(foodDetailRepo: Get.find()));
-  Get.lazyPut(() => CartRepo());
+  Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
   //controllers
   Get.lazyPut(() =>CartController(cartRepo: Get.find()));
 }

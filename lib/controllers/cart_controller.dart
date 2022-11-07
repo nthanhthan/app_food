@@ -8,6 +8,8 @@ class CartController extends GetxController {
   CartController({required this.cartRepo});
   Map<String, CartModel> _items = {};
   Map<String, CartModel> get items => _items;
+  List<CartModel> storageItems=[];
+  String? topping;
   void addItem(FoodTopping food, int quantity, List<ListTopping> topping) {
 
     var totalQuantity = 0;
@@ -22,7 +24,8 @@ class CartController extends GetxController {
           quantity: value.quantity! + quantity,
           isExist: true,
           time: DateTime.now().toString(),
-          listFoodTopping: topping
+          listFoodTopping: topping,
+          food: food,
         );
       });
       if (totalQuantity <= 0) {
@@ -39,14 +42,18 @@ class CartController extends GetxController {
           isExist: true,
           time: DateTime.now().toString(),
           listFoodTopping: topping,
+          food: food,
         );
       });
     }
-    _items.values.forEach((element) {
-      element.listFoodTopping.forEach((element) {
-        print(element.name);
-      });
-    });
+    // _items.values.forEach((element) {
+    //   element.listFoodTopping.forEach((element) {
+    //     print(element.name);
+    //   });
+    // });
+
+    cartRepo.addToCartList(getItems);
+    update();
   }
 
   existInCart(FoodTopping food) {
@@ -72,8 +79,10 @@ class CartController extends GetxController {
   getQuantity(FoodTopping food) {
     var quantity = 0;
     if (_items.containsKey(food.foodId)) {
+      print("co ne");
       _items.forEach((key, value) {
         if (key == food.foodId) {
+          print("getquantity"+value.quantity.toString());
           quantity = value.quantity!;
         }
       });
@@ -84,8 +93,51 @@ class CartController extends GetxController {
   int get totalItems {
     var totalQuantity = 0;
     _items.forEach((key, value) {
+      print("totalItems"+value.quantity.toString());
       totalQuantity += value.quantity!;
     });
     return totalQuantity;
   }
+  List<CartModel> get getItems{
+   return  _items.entries.map((e){
+     print("getItems${e.value.quantity}");
+       return e.value;
+    }).toList();
+  }
+  int getTotalMoneyItems(foodID){
+    var totalMoney=0;
+    topping="";
+    _items.values.forEach((element) {
+      if(element.foodId==foodID){
+         totalMoney=element.price!*element.quantity!;
+        element.listFoodTopping.forEach((element) {
+          totalMoney+=element.price!;
+          topping="${topping!},${element.name!}";
+        });
+      }
+
+    });
+    return totalMoney;
+  }
+  int get totalAmount{
+    var total=0;
+    _items.forEach((key, value) {
+      total+=getTotalMoneyItems(value.foodId)!;
+    });
+    return total;
+  }
+  List<CartModel> getCartData(){
+    setCart=cartRepo.getCartList();
+    return storageItems;
+  }
+  set setCart(List<CartModel> items){
+    storageItems=items;
+    print("Length i  cart"+storageItems.length.toString());
+    for(int i=0;i<storageItems.length;i++){
+      _items.putIfAbsent(storageItems[i].food!.foodId!, () => storageItems[i]);
+    }
+    print(_items.toString());
+  }
+
+
 }

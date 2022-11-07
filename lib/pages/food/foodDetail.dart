@@ -1,4 +1,4 @@
-import 'package:app_food/pages/food/topping.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
@@ -8,7 +8,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../controllers/foodDetail_controller.dart';
-import '../../models/food_model.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
@@ -18,23 +17,24 @@ import '../../widgets/expandable_text_widget.dart';
 
 class FoodDetail extends StatefulWidget {
   String foodID;
-   FoodDetail({Key? key,required this.foodID}) : super(key: key);
+  FoodDetail({Key? key,required this.foodID}) : super(key: key);
 
   @override
-  State<FoodDetail> createState() => _FoodDetailState();
+  State<FoodDetail> createState() => _FoodDetailState(foodID);
 }
 
 class _FoodDetailState extends State<FoodDetail> {
   List _selectedIndexs=[];
-  List<ListTopping> listtopping= [];
-  int check=0;
+  String foodId="";
+  _FoodDetailState(String foodID){
+    this.foodId=foodID;
+  }
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
         backgroundColor: Colors.white,
         body: GetBuilder<FoodDetailController>(builder: (foodDetail) {
-
           return Stack(
             children: [
               //background image
@@ -69,10 +69,17 @@ class _FoodDetailState extends State<FoodDetail> {
                       GetBuilder<FoodDetailController>(builder: (controller) {
                         return Stack(
                           children: [
-                            AppIcon(
-                                iconColor: Colors.black54,
-                                icon: Icons.shopping_cart_outlined,
-                                size: ScreenUtil().setHeight(30)),
+                            GestureDetector(
+                              onTap:(){
+                                if(foodDetail.totalItems!>=1){
+                                Get.toNamed(RouteHelper.getCartPage(this.foodId));
+                                }
+                        },
+                              child: AppIcon(
+                                  iconColor: Colors.black54,
+                                  icon: Icons.shopping_cart_outlined,
+                                  size: ScreenUtil().setHeight(30)),
+                            ),
                             Get.find<FoodDetailController>().totalItems >= 1
                                 ? Positioned(
                               right: 3,
@@ -136,7 +143,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                 child: ExpandableTextWidget(
                                     text:foodDetail.foodsDetail.description!),
                               )),
-                           Expanded(
+                          Expanded(
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
@@ -155,20 +162,20 @@ class _FoodDetailState extends State<FoodDetail> {
                                       );
                                     }),
                                     GetBuilder<FoodDetailController>(builder: (topping){
-                                       return topping.toppingFood.isEmpty?Container():ListView.builder(
+                                      return topping.toppingFood.isEmpty?Container():ListView.builder(
                                           padding: EdgeInsets.only(top:ScreenUtil().setHeight(5)),
                                           physics: NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: topping.toppingFood.isEmpty?1:topping.toppingFood.length,
                                           itemBuilder: (context, index) {
-                                            var _isSelectedBefore=topping.listTopping.contains(topping.toppingFood[index].iD);
-                                            if(_isSelectedBefore && check<=topping.toppingFood.length){
-                                              _selectedIndexs.add(index);
-                                              listtopping.add(topping.toppingFood[index]);
-                                              ++check;
-                                            }
+                                           // var _isSelectedBefore=topping.listTopping.contains(topping.toppingFood[index].iD);
+                                           //  if(_isSelectedBefore ){
+                                           //    if(!listtopping.contains(topping.toppingFood[index])){
+                                           //      _selectedIndexs.add(index);
+                                           //    }
+                                           //    listtopping.add(topping.toppingFood[index]);
+                                           //  }
                                             var _isSelected=_selectedIndexs.contains(index);
-
 
                                             return Container(
                                               margin: EdgeInsets.only(
@@ -181,11 +188,10 @@ class _FoodDetailState extends State<FoodDetail> {
                                                         setState((){
                                                           if(_isSelected){
                                                             _selectedIndexs.remove(index);
-                                                            listtopping.remove(topping.toppingFood[index]);
+                                                            topping.addTopping(_isSelected, topping.toppingFood[index]);
                                                           }else{
-
                                                             _selectedIndexs.add(index);
-                                                            listtopping.add(topping.toppingFood[index]);
+                                                            topping.addTopping(_isSelected, topping.toppingFood[index]);
                                                           }
                                                         }
                                                         );
@@ -194,10 +200,10 @@ class _FoodDetailState extends State<FoodDetail> {
                                                         margin: EdgeInsets.only(
                                                             left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15),bottom: ScreenUtil().setHeight(8)),
                                                         decoration: BoxDecoration(
-                                                            color: _isSelected?AppColors.mainColor:Colors.white,
+                                                            color: Colors.white,
                                                             border: Border(
                                                                 bottom: BorderSide(
-                                                                    color: AppColors.borderBottom,
+                                                                    color: _isSelected?AppColors.mainColor:AppColors.borderBottom,
                                                                     width: 2.0
                                                                 )
                                                             )
@@ -205,7 +211,12 @@ class _FoodDetailState extends State<FoodDetail> {
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            BigText(text: topping.toppingFood[index].name!,size: ScreenUtil().setSp(10),),
+                                                            Row(
+                                                              children: [
+                                                                _isSelected?AppIcon(icon: Icons.check_outlined,iconColor: AppColors.mainColor,size: ScreenUtil().setWidth(20),):Container(),
+                                                                BigText(text: topping.toppingFood[index].name!,size: ScreenUtil().setSp(10),),
+                                                              ],
+                                                            ),
                                                             BigText(text: topping.toppingFood[index].price.toString()!.toVND(unit: 'đ'),size: ScreenUtil().setSp(10),),
                                                           ],
 
@@ -270,7 +281,7 @@ class _FoodDetailState extends State<FoodDetail> {
                         SizedBox(
                           width: ScreenUtil().setWidth(10),
                         ),
-                        BigText(text: foodDetail.inCartItems.toString()),
+                        BigText(text: foodDetail.quantity!.toString()),
                         SizedBox(
                           width: ScreenUtil().setWidth(10),
                         ),
@@ -298,10 +309,10 @@ class _FoodDetailState extends State<FoodDetail> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () {
-                        foodDetail.addItem(foodDetail.foodsDetail,listtopping);
+                        foodDetail.addItem(foodDetail.foodsDetail);
                       },
                       child: BigText(
-                        text: "Thêm ${(foodDetail.foodsDetail.price*foodDetail.inCartItems).toString()!.toVND(unit: 'đ')}",
+                        text: "Thêm  ${(foodDetail.foodsDetail.price*foodDetail.quantity+foodDetail.totalMoney).toString()!.toVND(unit: 'đ')}",
                         color: Colors.white,
                       ),
                     ),

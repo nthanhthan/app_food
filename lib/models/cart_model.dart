@@ -10,6 +10,7 @@ class CartModel {
   String? time;
   late List<ListTopping> _listFoodTopping;
   List<ListTopping> get listFoodTopping=>_listFoodTopping;
+  FoodTopping? food;
 
 
   CartModel({
@@ -21,6 +22,7 @@ class CartModel {
     this.isExist,
     this.time,
     required listFoodTopping,
+    this.food
   }
   ){
     _listFoodTopping=listFoodTopping;
@@ -40,6 +42,7 @@ class CartModel {
         listFoodTopping!.add(new ListTopping.fromJson(v));
       });
     }
+    food=FoodTopping.fromJson(json['food']);
 
   }
 
@@ -51,7 +54,8 @@ class CartModel {
     data['imageUrl'] = this.imageUrl;
     if (this.listFoodTopping != null) {
       data['ListTopping'] = this.listFoodTopping!.map((v) => v.toJson()).toList();
-    }
+    };
+    data['food']=this.food!.toJson();
     return data;
   }
 }

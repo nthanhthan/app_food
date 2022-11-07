@@ -183,7 +183,7 @@ class StorePage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () async {
-                            bool check=await Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
+                           await Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
                             Get.toNamed(RouteHelper.getDetailFood(foodsStore.foodOfStoreList[index].foodId!));
                           },
                           child: Container(

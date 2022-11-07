@@ -1,3 +1,4 @@
+import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       "radiusOut": 1
     };
     Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
+    //Get.find<CartController>().getCartData();
    // Get.find<FoodOfStoreController>().getAllFoodOfStore("6358eb4c814c0de88aeb3d8a","16.073877","108.149892");
     return ScreenUtilInit(
       designSize: const Size(410, 730),
