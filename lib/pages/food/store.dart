@@ -48,7 +48,7 @@ class StorePage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap:(){
-                              Get.toNamed(RouteHelper.homepage);
+                             Navigator.pop(context);
                       },
                             child: AppIcon(
                               icon: Icons.arrow_back,
@@ -184,7 +184,8 @@ class StorePage extends StatelessWidget {
                         return GestureDetector(
                           onTap: () async {
                            await Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
-                            Get.toNamed(RouteHelper.getDetailFood(foodsStore.foodOfStoreList[index].foodId!));
+                           //print(foodsStore.foodOfStoreList[index].storeId.toString());
+                            Get.toNamed(RouteHelper.getDetailFood(storeId));
                           },
                           child: Container(
                             margin: EdgeInsets.only(

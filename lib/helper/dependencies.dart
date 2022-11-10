@@ -16,7 +16,7 @@ import '../data/repository/recommended_storenear_repo.dart';
 
 Future<void> init()async {
   final sharePreferences=await SharedPreferences.getInstance();
- // await sharePreferences.remove("Cart-list");
+  //await sharePreferences.remove("Cart-list");
   Get.lazyPut(()=>sharePreferences);
 
   //api client

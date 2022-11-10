@@ -1,6 +1,7 @@
 import 'food_model.dart';
 
 class CartModel {
+  String? storeID;
   String? foodId;
   String? foodName;
   int? price;
@@ -14,6 +15,7 @@ class CartModel {
 
 
   CartModel({
+    this.storeID,
     this.foodId,
     this.foodName,
     this.price,
@@ -29,6 +31,7 @@ class CartModel {
   }
 
   CartModel.fromJson(Map<String, dynamic> json) {
+    storeID=json['storeID'];
     foodId = json['foodId'];
     foodName = json['foodName'];
     price = json['price'];
@@ -48,8 +51,10 @@ class CartModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['storeID']=this.storeID;
     data['foodId'] = this.foodId;
     data['foodName'] = this.foodName;
+    data['quantity']=this.quantity;
     data['price'] = this.price;
     data['imageUrl'] = this.imageUrl;
     if (this.listFoodTopping != null) {

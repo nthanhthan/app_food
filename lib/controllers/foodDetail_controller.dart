@@ -24,7 +24,6 @@ class FoodDetailController extends GetxController {
   int _quantity = 1;
   int get quantity => _quantity;
   int _inCartItems = 0;
-  late Foods food;
   int get inCartItems => _inCartItems+_quantity;
  late List<ListTopping> _listTopping;
   List<ListTopping> get listTopping=>_listTopping;
@@ -35,6 +34,7 @@ class FoodDetailController extends GetxController {
   Future<bool> getFoodDetailById(id) async {
     http.Response response = (await foodDetailRepo.getFoodDetail(id));
     if (response.statusCode == 200) {
+
       _foodsDetail = null;
       _foodsDetail = FoodTopping.fromJson(jsonDecode(response.body));
       _toppingFood = [];
@@ -82,9 +82,11 @@ class FoodDetailController extends GetxController {
     }
   }
 
-  void addItem(FoodTopping food) {
-    if (quantity! > 0) {
-      _cart.addItem(food, _quantity,listTopping);
+  void addItem(FoodTopping food, String storeID) {
+    if (quantity > 0) {
+      if(checkStore(storeID)){
+        _cart.addItem(food, _quantity,listTopping,storeID);
+      }
       _quantity = 1;
       _inCartItems=_cart.getQuantity(food);
     } else {
@@ -92,6 +94,17 @@ class FoodDetailController extends GetxController {
           backgroundColor: AppColors.mainColor, colorText: Colors.white);
     }
     update();
+  }
+  bool checkStore(storeID){
+    if(getItems.isEmpty){
+      return true;
+    }
+    if(getItems[0].storeID==storeID){
+      return true;
+    }
+    Get.snackbar("Không hợp lệ", "Vui lòng thanh toán đơn hàng hiện tại",
+        backgroundColor: AppColors.mainColor, colorText: Colors.white);
+   return false;
   }
   int get totalItems{
     return _cart.totalItems;

@@ -12,8 +12,8 @@ import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
 
 class CartPage extends StatelessWidget {
-  String foodID;
-   CartPage({Key? key,required this.foodID}) : super(key: key);
+
+   CartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class CartPage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap:(){
-
+                    Navigator.pop(context);
                     },
                   child: AppIcon(
                     iconColor: Colors.black54,
@@ -125,7 +125,7 @@ class CartPage extends StatelessWidget {
                                                   children: [
                                                     GestureDetector(
                                                       onTap: () {
-                                                        cartController.addItem(_cartItems[index].food!, -1, _cartItems[index].listFoodTopping);
+                                                        cartController.addItem(_cartItems[index].food!, -1, _cartItems[index].listFoodTopping,_cartItems[index].storeID.toString());
                                                         print("tru");
                                                       },
                                                       child: Icon(
@@ -142,7 +142,7 @@ class CartPage extends StatelessWidget {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
-                                                        cartController.addItem(_cartItems[index].food!, 1, _cartItems[index].listFoodTopping);
+                                                        cartController.addItem(_cartItems[index].food!, 1, _cartItems[index].listFoodTopping,_cartItems[index].storeID.toString());
                                                       },
                                                       child: Icon(
                                                         Icons.add,
@@ -154,7 +154,7 @@ class CartPage extends StatelessWidget {
                                               ),
                                               GestureDetector(
                                                 onTap:(){
-                                                  cartController.addItem(_cartItems[index].food!, -_cartItems[index].quantity!, _cartItems[index].listFoodTopping);
+                                                  cartController.addItem(_cartItems[index].food!, -_cartItems[index].quantity!, _cartItems[index].listFoodTopping,_cartItems[index].storeID.toString());
                           },
                                                 child: AppIcon(
                                                   iconColor: Colors.grey,

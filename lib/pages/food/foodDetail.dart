@@ -1,12 +1,8 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-
 import '../../controllers/foodDetail_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
@@ -16,22 +12,21 @@ import '../../widgets/big_text.dart';
 import '../../widgets/expandable_text_widget.dart';
 
 class FoodDetail extends StatefulWidget {
-  String foodID;
-  FoodDetail({Key? key,required this.foodID}) : super(key: key);
+  String storeID;
+  FoodDetail({Key? key,required this.storeID}) : super(key: key);
 
   @override
-  State<FoodDetail> createState() => _FoodDetailState(foodID);
+  State<FoodDetail> createState() => _FoodDetailState(storeID);
 }
 
 class _FoodDetailState extends State<FoodDetail> {
-  List _selectedIndexs=[];
-  String foodId="";
-  _FoodDetailState(String foodID){
-    this.foodId=foodID;
+  final List _selectedIndexs=[];
+  var storeId;
+  _FoodDetailState(storeID){
+    storeId=storeID;
   }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.white,
         body: GetBuilder<FoodDetailController>(builder: (foodDetail) {
@@ -44,59 +39,72 @@ class _FoodDetailState extends State<FoodDetail> {
                   child: Container(
                     width: double.maxFinite,
                     height: ScreenUtil().setHeight(240),
-                    decoration:  BoxDecoration(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(20),
                         image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(foodDetail.foodsDetail.urlImage!))),
+                          image: Image.network(foodDetail.foodsDetail.urlImage,
+                            errorBuilder:  (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return const Text("...");
+                            },
+                            ).image,
+                          fit: BoxFit.cover
+                        )
+                      ),
+                    ),
                   )),
               //icon widgets
               Positioned(
                   top: ScreenUtil().setHeight(20),
                   left: ScreenUtil().setWidth(20),
                   right: ScreenUtil().setWidth(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RouteHelper.storeDetail);
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                             Navigator.pop(context);
+                            },
+                            child: AppIcon(
+                              iconColor: Colors.black54,
+                              icon: Icons.arrow_back,
+                              size: ScreenUtil().setHeight(30),
+                            )),
+                        GetBuilder<FoodDetailController>(builder: (controller) {
+                          return Stack(
+                            children: [
+                              GestureDetector(
+                                onTap:(){
+                                  if(foodDetail.totalItems>=1){
+                                  Get.toNamed(RouteHelper.getCartPage(storeId));
+                                  }
                           },
-                          child: AppIcon(
-                            iconColor: Colors.black54,
-                            icon: Icons.arrow_back,
-                            size: ScreenUtil().setHeight(30),
-                          )),
-                      GetBuilder<FoodDetailController>(builder: (controller) {
-                        return Stack(
-                          children: [
-                            GestureDetector(
-                              onTap:(){
-                                if(foodDetail.totalItems!>=1){
-                                Get.toNamed(RouteHelper.getCartPage(this.foodId));
-                                }
-                        },
-                              child: AppIcon(
-                                  iconColor: Colors.black54,
-                                  icon: Icons.shopping_cart_outlined,
-                                  size: ScreenUtil().setHeight(30)),
-                            ),
-                            Get.find<FoodDetailController>().totalItems >= 1
-                                ? Positioned(
-                              right: 3,
-                              top: 3,
-                              child: BigText(
-                                text: Get.find<FoodDetailController>()
-                                    .totalItems
-                                    .toString(),
-                                size: ScreenUtil().setSp(5),
-                                color: Colors.red,
+                                child: AppIcon(
+                                    iconColor: Colors.black54,
+                                    icon: Icons.shopping_cart_outlined,
+                                    size: ScreenUtil().setHeight(30)),
                               ),
-                            )
-                                : Container()
-                          ],
-                        );
-                      })
-                    ],
+                              Get.find<FoodDetailController>().totalItems >= 1
+                                  ? Positioned(
+                                right: 3,
+                                top: 3,
+                                child: BigText(
+                                  text: Get.find<FoodDetailController>()
+                                      .totalItems
+                                      .toString(),
+                                  size: ScreenUtil().setSp(5),
+                                  color: Colors.red,
+                                ),
+                              )
+                                  : Container()
+                            ],
+                          );
+                        })
+                      ],
+                    ),
                   )),
               //introduction of food
               Positioned(
@@ -128,7 +136,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                   size: ScreenUtil().setSp(12),
                                 ),
                                 BigText(
-                                  text: foodDetail.foodsDetail.price.toString()!.toVND(unit: 'đ'),
+                                  text: foodDetail.foodsDetail.price.toString().toVND(unit: 'đ'),
                                   size: ScreenUtil().setSp(12),
                                 ),
                               ],
@@ -217,7 +225,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                                                 BigText(text: topping.toppingFood[index].name!,size: ScreenUtil().setSp(10),),
                                                               ],
                                                             ),
-                                                            BigText(text: topping.toppingFood[index].price.toString()!.toVND(unit: 'đ'),size: ScreenUtil().setSp(10),),
+                                                            BigText(text: topping.toppingFood[index].price.toString().toVND(unit: 'đ'),size: ScreenUtil().setSp(10),),
                                                           ],
 
 
@@ -281,7 +289,7 @@ class _FoodDetailState extends State<FoodDetail> {
                         SizedBox(
                           width: ScreenUtil().setWidth(10),
                         ),
-                        BigText(text: foodDetail.quantity!.toString()),
+                        BigText(text: foodDetail.quantity.toString()),
                         SizedBox(
                           width: ScreenUtil().setWidth(10),
                         ),
@@ -309,10 +317,10 @@ class _FoodDetailState extends State<FoodDetail> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () {
-                        foodDetail.addItem(foodDetail.foodsDetail);
+                        foodDetail.addItem(foodDetail.foodsDetail,storeId);
                       },
                       child: BigText(
-                        text: "Thêm  ${(foodDetail.foodsDetail.price*foodDetail.quantity+foodDetail.totalMoney).toString()!.toVND(unit: 'đ')}",
+                        text: "Thêm  ${(foodDetail.foodsDetail.price*foodDetail.quantity+foodDetail.totalMoney).toString().toVND(unit: 'đ')}",
                         color: Colors.white,
                       ),
                     ),

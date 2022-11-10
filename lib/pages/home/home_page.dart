@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     return [
       MainFoodPage(),
       Container(),
-      CartPage(foodID: "foodID"),
+      CartPage(),
       ProfileUser()
 
     ];

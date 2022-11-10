@@ -10,13 +10,13 @@ class CartController extends GetxController {
   Map<String, CartModel> get items => _items;
   List<CartModel> storageItems=[];
   String? topping;
-  void addItem(FoodTopping food, int quantity, List<ListTopping> topping) {
-
+  void addItem(FoodTopping food, int quantity, List<ListTopping> topping, String storeID) {
     var totalQuantity = 0;
     if (_items.containsKey(food.foodId!)) {
       _items.update(food.foodId!, (value) {
         totalQuantity = value.quantity! + quantity;
         return CartModel(
+          storeID: value.storeID,
           foodId: value.foodId,
           foodName: value.foodName,
           price: value.price,
@@ -34,6 +34,7 @@ class CartController extends GetxController {
     } else {
       _items.putIfAbsent(food.foodId!, () {
         return CartModel(
+          storeID: storeID,
           foodId: food.foodId,
           foodName: food.name,
           price: food.price,
@@ -79,10 +80,8 @@ class CartController extends GetxController {
   getQuantity(FoodTopping food) {
     var quantity = 0;
     if (_items.containsKey(food.foodId)) {
-      print("co ne");
       _items.forEach((key, value) {
         if (key == food.foodId) {
-          print("getquantity"+value.quantity.toString());
           quantity = value.quantity!;
         }
       });
@@ -93,14 +92,12 @@ class CartController extends GetxController {
   int get totalItems {
     var totalQuantity = 0;
     _items.forEach((key, value) {
-      print("totalItems"+value.quantity.toString());
       totalQuantity += value.quantity!;
     });
     return totalQuantity;
   }
   List<CartModel> get getItems{
    return  _items.entries.map((e){
-     print("getItems${e.value.quantity}");
        return e.value;
     }).toList();
   }
@@ -132,11 +129,9 @@ class CartController extends GetxController {
   }
   set setCart(List<CartModel> items){
     storageItems=items;
-    print("Length i  cart"+storageItems.length.toString());
     for(int i=0;i<storageItems.length;i++){
       _items.putIfAbsent(storageItems[i].food!.foodId!, () => storageItems[i]);
     }
-    print(_items.toString());
   }
 
 
