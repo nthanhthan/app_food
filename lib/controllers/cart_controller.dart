@@ -103,18 +103,28 @@ class CartController extends GetxController {
   }
   int getTotalMoneyItems(foodID){
     var totalMoney=0;
-    topping="";
     for (var element in _items.values) {
       if(element.foodId==foodID){
          totalMoney=element.price!*element.quantity!;
         for (var element in element.listFoodTopping) {
           totalMoney+=element.price!;
-          topping="${topping!},${element.name!}";
         }
       }
 
     }
     return totalMoney;
+  }
+  String? getTopping(foodID){
+    topping="";
+    for (var element in _items.values) {
+      if(element.foodId==foodID){
+        for (var element in element.listFoodTopping) {
+          topping="${topping!},${element.name!}";
+        }
+      }
+
+    }
+    return topping;
   }
   int get totalAmount{
     var total=0;

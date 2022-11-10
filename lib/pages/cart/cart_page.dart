@@ -108,7 +108,8 @@ class CartPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       BigText(text: cartController.getItems[index].foodName!),
-                                      cartController.topping!.isEmpty?Container():SmallText(text: cartController.topping!,maxLines: 1,),
+                                      cartController.getTopping(cartController.getItems[index].foodId!)==""
+                                          ? Container(): SmallText(text: cartController.getTopping(cartController.getItems[index].foodId!)!,maxLines: 1,),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
@@ -236,9 +237,14 @@ class CartPage extends StatelessWidget {
                       onTap: () {
                        // foodDetail.addItem(foodDetail.foodsDetail);
                       },
-                      child: BigText(
-                        text: "Thanh toán",
-                        color: Colors.white,
+                      child: GestureDetector(
+                        onTap: (){
+                          Get.toNamed(RouteHelper.paymentPage);
+                        },
+                        child: BigText(
+                          text: "Thanh toán",
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   )

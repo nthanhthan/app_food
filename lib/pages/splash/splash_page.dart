@@ -35,7 +35,7 @@ class _SplashSreeenState extends State<SplashSreeen> with TickerProviderStateMix
     animation=  CurvedAnimation(parent: controller, curve: Curves.linear);
     Timer(
         const Duration(seconds:5),
-            ()=>Get.offNamed(token==null? RouteHelper.getInitial():RouteHelper.getPaymentPage())
+            ()=>Get.offNamed(token==null? RouteHelper.getInitial():RouteHelper.getHomePage())
     );
   }
 
