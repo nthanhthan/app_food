@@ -233,11 +233,7 @@ class CartPage extends StatelessWidget {
                         borderRadius:
                         BorderRadius.circular(ScreenUtil().radius(10)),
                         color: AppColors.mainColor),
-                    child: GestureDetector(
-                      onTap: () {
-                       // foodDetail.addItem(foodDetail.foodsDetail);
-                      },
-                      child: GestureDetector(
+                    child:  GestureDetector(
                         onTap: (){
                           Get.toNamed(RouteHelper.paymentPage);
                         },
@@ -247,7 +243,6 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
                 ],
               ),
             );

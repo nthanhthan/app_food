@@ -1,4 +1,5 @@
-import 'package:app_food/auth/sign_in_page.dart';
+
+import 'package:app_food/pages/auth/myOrder_page.dart';
 import 'package:app_food/pages/cart/cart_page.dart';
 import 'package:app_food/pages/cart/payment_page.dart';
 import 'package:app_food/pages/cart/voucher_page.dart';
@@ -6,6 +7,7 @@ import 'package:app_food/pages/food/store.dart';
 import 'package:app_food/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import '../pages/auth/sign_in_page.dart';
 import '../pages/food/foodDetail.dart';
 import '../pages/home/home_page.dart';
 
@@ -18,6 +20,7 @@ class RouteHelper{
   static const String cartPage="/cart_page";
   static const String paymentPage="/payment_page";
   static const String voucherPage="/voucher_page";
+  static const String myOrderPage="/myorder_page";
   static String getInitial()=>'$initial';
   static String getHomePage()=>'$homepage';
   static String getSplashPage()=>'$Splashpage';
@@ -26,6 +29,7 @@ class RouteHelper{
   static String getCartPage(String FoodID)=>'$cartPage';
   static String getPaymentPage()=>'$paymentPage';
   static String getVoucherPage()=>'$voucherPage';
+  static String getMyOrderPage()=>'$myOrderPage';
   static List<GetPage> routes=[
     GetPage(name: initial, page: ()=>SignInPage()),
     GetPage(name: homepage, page:(){
@@ -51,6 +55,9 @@ class RouteHelper{
     },transition: Transition.rightToLeftWithFade),
     GetPage(name: voucherPage, page: (){
       return VoucherPage();
+    },transition: Transition.rightToLeftWithFade),
+    GetPage(name: myOrderPage, page: (){
+      return MyOrderPage();
     },transition: Transition.rightToLeftWithFade),
   ];
 }

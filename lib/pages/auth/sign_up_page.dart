@@ -3,10 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../controllers/user_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/app_text_field.dart';
-import '../widgets/big_text.dart';
+import '../../controllers/user_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/app_text_field.dart';
+import '../../widgets/big_text.dart';
 import 'sign_in_page.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -37,7 +37,7 @@ class SignUpPage extends StatelessWidget {
             SizedBox(height: ScreenUtil().setHeight(50),),
             Container(
               height: ScreenUtil().setHeight(150),
-              child: Center(
+              child: const Center(
                 child: CircleAvatar(
                   backgroundColor:Colors.white,
                   radius: 90,

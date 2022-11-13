@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:app_food/models/order_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,19 +11,6 @@ import '../../models/user_model.dart';
 class ApiClient extends GetConnect implements GetxService {
   final String  appBaseUrl;
   Map<String, String> cookies = {};
-  // String _setCookie(String rawCookie)  {
-  //   if (rawCookie.isNotEmpty) {
-  //     var keyValue = rawCookie.split('=');
-  //     if (keyValue.length > 2) {
-  //       var key = keyValue[4].trim();
-  //       var value = key.split(';');
-  //       return value[0].trim();
-  //       //prefs!.setString("token", value[0].trim());
-  //     }
-  //   }
-  //   return "";
-  // }
-
   ApiClient({required this.appBaseUrl}) {
       baseUrl = appBaseUrl;
       timeout = Duration(seconds: 30);
@@ -37,6 +25,16 @@ class ApiClient extends GetConnect implements GetxService {
         );
         print(response.body);
         return response;
+    }
+    Future<http.Response> postOrder(String apiUrl,Order order) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token=prefs?.getString("token");
+      http.Response response=await http.post(
+          Uri.parse(apiUrl),
+          body: jsonEncode(order),
+          headers: _mainHeaders(token)
+      );
+      return response;
     }
     Future<http.Response> SignUp(data,apiUrl) async{
       http.Response response= await http.post(

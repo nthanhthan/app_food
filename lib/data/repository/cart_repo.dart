@@ -13,6 +13,7 @@ class CartRepo{
     cartList.forEach((element) {
       return cart.add(jsonEncode(element));
     });
+    print(cart.toString());
     sharedPreferences.setStringList("Cart-list", cart);
     getCartList();
   }

@@ -31,9 +31,12 @@ class UserController extends GetxController{
 
     print(response.statusCode);
     if(response.statusCode==200){
-      Map<String,dynamic> output=json.decode(response.body);
+      // Map<String,dynamic> output=json.decode(response.body);
       User user=User.fromJson(jsonDecode(response.body));
       prefs.setString("token",user.accessToken!);
+      prefs.setString("UserId", user.id!);
+      print(user.phone.toString());
+      prefs.setString("phoneUser", user.phone!);
       prefs.setString("refreshToken",user.refreshToken!);
       var checkRole=user.getRoles!.contains("User");
       print(checkRole);

@@ -1,3 +1,4 @@
+import 'package:app_food/controllers/payment_controller.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/small_text.dart';
@@ -24,66 +25,71 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     var note = TextEditingController();
-    var total=0;
+    int total = 0;
     return Scaffold(
         appBar: AppBar(
-          //backgroundColor: ,
+          backgroundColor: AppColors.mainColor,
           title: const Center(child: Text("Thanh toán")),
         ),
         body: Column(
           children: [
-            Container(
-              padding: EdgeInsets.only(
-                  top: ScreenUtil().setHeight(4),
-                  left: ScreenUtil().setWidth(20),
-                  right: ScreenUtil().setWidth(10)),
-              height: ScreenUtil().setHeight(150),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          color: AppColors.borderBottom, width: 5.0))),
-              width: double.maxFinite,
-              //color: AppColors.paraColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SmallText(
-                        text: "Địa chỉ",
-                        color: const Color(0xFFFF8357),
-                        fontWeight: "bold",
-                      ),
-                      SmallText(
-                          text: "Thay đổi",
-                          color: AppColors.mainColor,
-                          fontWeight: "bold")
-                    ],
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setWidth(3),
-                  ),
-                  SmallText(
-                      text:
-                          "155 đường Nguyễn Tất Thành, Hòa Minh, Liên Chiểu, TP Đà Nẵng",
-                      maxLines: 2,
-                      color: AppColors.mainBlackColor),
-                  SizedBox(
-                    height: ScreenUtil().setWidth(3),
-                  ),
-                  SmallText(
-                      text: "SĐT",
-                      color: Color(0xFFFF8357),
-                      fontWeight: "bold"),
-                  SmallText(
-                    text: "0901948483",
-                    color: AppColors.mainBlackColor,
-                  ),
-                ],
-              ),
-            ),
+            GetBuilder<PaymentController>(builder: (infoUser) {
+              return Container(
+                padding: EdgeInsets.only(
+                    top: ScreenUtil().setHeight(4),
+                    left: ScreenUtil().setWidth(20),
+                    right: ScreenUtil().setWidth(10)),
+                height: ScreenUtil().setHeight(150),
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            color: AppColors.borderBottom, width: 5.0))),
+                width: double.maxFinite,
+                //color: AppColors.paraColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SmallText(
+                          text: "Địa chỉ",
+                          color: const Color(0xFFFF8357),
+                          fontWeight: "bold",
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: SmallText(
+                              text: "Thay đổi",
+                              color: AppColors.mainColor,
+                              fontWeight: "bold"),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: ScreenUtil().setWidth(3),
+                    ),
+                    SmallText(
+                        text:
+                        infoUser.addressUser,
+                        maxLines: 2,
+                        color: AppColors.mainBlackColor),
+                    SizedBox(
+                      height: ScreenUtil().setWidth(3),
+                    ),
+                    SmallText(
+                        text: "SĐT",
+                        color: Color(0xFFFF8357),
+                        fontWeight: "bold"),
+                    SmallText(
+                      text: infoUser.phoneNumberUser,
+                      color: AppColors.mainBlackColor,
+                    ),
+                  ],
+                ),
+              );
+            }),
             SizedBox(
               height: ScreenUtil().setWidth(4),
             ),
@@ -104,55 +110,72 @@ class _PaymentPageState extends State<PaymentPage> {
                       fontWeight: "bold"),
                   Expanded(child: SingleChildScrollView(
                       child: GetBuilder<CartController>(builder: (cartStorage) {
-                        total=cartStorage.totalAmount;
-                    return  cartStorage.getItems.isEmpty?Container():ListView.builder(
+                    total = cartStorage.totalAmount;
+                    return cartStorage.getItems.isEmpty
+                        ? Container()
+                        : ListView.builder(
                             padding:
-                            EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: cartStorage.getItems.isEmpty?1:cartStorage.getItems.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: ScreenUtil().setHeight(50),
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: AppColors.borderBottom, width: 1.0))),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: cartStorage.getItems.isEmpty
+                                ? 1
+                                : cartStorage.getItems.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: ScreenUtil().setHeight(50),
+                                width: double.maxFinite,
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: AppColors.borderBottom,
+                                            width: 1.0))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SmallText(
-                                      text: "${cartStorage.getItems[index].quantity}x",
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: ScreenUtil().setWidth(10),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SmallText(
-                                          text: cartStorage.getItems[index].foodName!,
+                                          text:
+                                              "${cartStorage.getItems[index].quantity}x",
                                           color: Colors.black,
                                         ),
-                                        SmallText(text:cartStorage.getTopping(cartStorage.getItems[index].foodId!)!,),
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(10),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SmallText(
+                                              text: cartStorage
+                                                  .getItems[index].foodName!,
+                                              color: Colors.black,
+                                            ),
+                                            SmallText(
+                                              text: cartStorage.getTopping(
+                                                  cartStorage.getItems[index]
+                                                      .foodId!)!,
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
+                                    SmallText(
+                                      text: cartStorage
+                                          .getTotalMoneyItems(cartStorage
+                                              .getItems[index].foodId!)
+                                          .toString()
+                                          .toVND(unit: "đ"),
+                                      color: Colors.black,
+                                    )
                                   ],
                                 ),
-                                SmallText(
-                                  text:cartStorage.getTotalMoneyItems(cartStorage.getItems[index].foodId!).toString().toVND(unit: "đ"),
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          );
-                        });
+                              );
+                            });
                   }))),
                 ],
               ),
@@ -176,20 +199,20 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                    width: 0.5,
-                    color: AppColors.paraColor,
+                    width: 1,
+                    color: AppColors.borderBottom,
                   )),
-                  enabledBorder: const OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                    width: 1.0,
-                    color: Colors.black,
+                    width: 1,
+                    color: AppColors.borderBottom,
                   )),
                 ),
                 style: TextStyle(fontSize: ScreenUtil().setSp(5)),
               ),
             ),
-            GetBuilder<CartController>(builder: (totalItem){
-              return   Container(
+            GetBuilder<CartController>(builder: (totalItem) {
+              return Container(
                 padding: EdgeInsets.only(
                     top: ScreenUtil().setHeight(4),
                     left: ScreenUtil().setWidth(20),
@@ -221,8 +244,12 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: ScreenUtil().setWidth(5),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        Get.toNamed(RouteHelper.voucherPage);
+                      onTap: () async {
+                        bool check = await Get.find<PaymentController>()
+                            .getVoucher(totalItem.getItems[0].storeID!);
+                        if (check) {
+                          Get.toNamed(RouteHelper.voucherPage);
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,15 +266,22 @@ class _PaymentPageState extends State<PaymentPage> {
                                   fontWeight: "bold"),
                             ],
                           ),
-                          SmallText(text: "Chọn tại đây >>>"),
+                          GetBuilder<PaymentController>(builder: (discount) {
+                            return discount.amountDiscount == 0
+                                ? SmallText(text: "Chọn tại đây >>>")
+                                : SmallText(
+                                    text:
+                                        "-${discount.amountDiscount.toString().toVND(unit: "đ")}",
+                                    color: Colors.black,
+                                  );
+                          })
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               );
             }),
-
             Container(
               padding: EdgeInsets.only(
                   top: ScreenUtil().setHeight(4),
@@ -273,8 +307,8 @@ class _PaymentPageState extends State<PaymentPage> {
             )
           ],
         ),
-        bottomNavigationBar: GetBuilder<CartController>(
-          builder: (cart) {
+        bottomNavigationBar: GetBuilder<PaymentController>(
+          builder: (payment) {
             return Container(
               height: ScreenUtil().setHeight(80),
               padding: EdgeInsets.only(
@@ -306,7 +340,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           width: ScreenUtil().setWidth(10),
                         ),
                         BigText(
-                          text: cart.totalAmount.toString().toVND(unit: "đ"),
+                          text: payment.getTotal().toString().toVND(unit: "đ"),
                           color: Colors.redAccent,
                         ),
                         SizedBox(
@@ -326,8 +360,13 @@ class _PaymentPageState extends State<PaymentPage> {
                             BorderRadius.circular(ScreenUtil().radius(10)),
                         color: AppColors.mainColor),
                     child: GestureDetector(
-                      onTap: () {
-                        // foodDetail.addItem(foodDetail.foodsDetail);
+                      onTap: () async {
+                        bool checkOder=await payment.confirmOrder();
+                        if(checkOder){
+                          Get.toNamed(RouteHelper.myOrderPage);
+                        }else{
+                          print("Sai");
+                        }
                       },
                       child: BigText(
                         text: "Đặt hàng",

@@ -47,12 +47,6 @@ class CartController extends GetxController {
         );
       });
     }
-    // _items.values.forEach((element) {
-    //   element.listFoodTopping.forEach((element) {
-    //     print(element.name);
-    //   });
-    // });
-
     cartRepo.addToCartList(getItems);
     update();
   }
@@ -143,6 +137,4 @@ class CartController extends GetxController {
       _items.putIfAbsent(storageItems[i].food!.foodId!, () => storageItems[i]);
     }
   }
-
-
 }

@@ -31,18 +31,18 @@ class _MainFoodPageState extends State<MainFoodPage> {
                 children: [
                   Row(
                     children: [
-                      AppIcon(icon: Icons.location_on_sharp,iconColor: AppColors.mainColor,),
+                      AppIcon(icon: Icons.location_on_sharp,iconColor: AppColors.mainColor,size:  ScreenUtil().setHeight(25),),
                       BigText(
                         text: "TP.Đà Nẵng",
                         color: AppColors.mainColor,
-                        size: ScreenUtil().setSp(15),
+                        size: ScreenUtil().setSp(12),
                       ),
                     ],
                   ),
                   Center(
                     child: Container(
-                      width: ScreenUtil().setWidth(40),
-                      height: ScreenUtil().setHeight(35),
+                      width: ScreenUtil().setWidth(35),
+                      height: ScreenUtil().setHeight(30),
                       child: Icon(Icons.search,
                           color: Colors.white, size: ScreenUtil().setHeight(25)),
                       decoration: BoxDecoration(

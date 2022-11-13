@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-
-import '../../auth/sign_in_page.dart';
 import '../../controllers/user_controller.dart';
 import '../../utils/colors.dart';
 import '../../widgets/big_text.dart';
+import '../auth/sign_in_page.dart';
 
 class ProfileUser extends StatelessWidget {
   const ProfileUser({Key? key}) : super(key: key);

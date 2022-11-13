@@ -17,7 +17,6 @@ Future<void> init()async {
   final sharePreferences=await SharedPreferences.getInstance();
   //await sharePreferences.remove("Cart-list");
   Get.lazyPut(()=>sharePreferences);
-
   //api client
   Get.lazyPut(() =>ApiClient(appBaseUrl: "https://takefoodauthentication.azurewebsites.net/"));
   //repo
@@ -39,6 +38,9 @@ Future<void> init()async {
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
   //controllers
   Get.lazyPut(() =>CartController(cartRepo: Get.find()));
-  Get.lazyPut(() => PaymentRepo(apiClient: Get.find()));
-  Get.lazyPut(() => PaymentController(paymentRepo: Get.find()));
+  Get.lazyPut(() => PaymentRepo(apiClient: Get.find(),sharedPreferences: Get.find(),cart: Get.find()));
+  Get.lazyPut(() {
+    return PaymentController(paymentRepo: Get.find(),cartController: Get.find());
+  },
+      fenix: true);
 }

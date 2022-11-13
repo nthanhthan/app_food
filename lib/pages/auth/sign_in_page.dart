@@ -4,10 +4,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../controllers/user_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/app_text_field.dart';
-import '../widgets/big_text.dart';
+import '../../controllers/user_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/app_text_field.dart';
+import '../../widgets/big_text.dart';
 import 'sign_up_page.dart';
 
 class SignInPage extends StatelessWidget {
