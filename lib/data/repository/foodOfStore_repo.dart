@@ -11,6 +11,6 @@ class FoodOfStoreRepo extends GetxService {
         "${"https://takefoodstoreservice.azurewebsites.net/GetStore?storeId=" + id + "&lat=" + lat}&lng=" +
             lng;
 
-    return await apiClient.getFood(fullApiUrl);
+    return await apiClient.Get(fullApiUrl);
   }
 }

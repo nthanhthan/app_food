@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/models/cart_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../models/order_model.dart';
 import '../api/api_client.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +19,7 @@ class PaymentRepo extends GetxService{
 
   Future<http.Response> getVoucher(id) async {
     var fullApiUrl ="https://takefoodvoucherservice.azurewebsites.net/GetVoucher?storeId=$id";
-    return await apiClient.getFood(fullApiUrl);
+    return await apiClient.Get(fullApiUrl);
   }
    getUser() async {
      userID=sharedPreferences.getString("UserId")!;
@@ -30,7 +28,7 @@ class PaymentRepo extends GetxService{
      if(sharedPreferences.getString("address") != null){
        addressUser=sharedPreferences.getString("address").toString();
      }else{
-       http.Response response=await apiClient.getFood(fullApiUrl);
+       http.Response response=await apiClient.Get(fullApiUrl);
        if(response.statusCode==200){
          addressUser=jsonDecode(response.body).toString()=="[]"? "Chưa có địa chỉ":jsonDecode(response.body).toString();
          sharedPreferences.setString("address", addressUser);
@@ -40,7 +38,7 @@ class PaymentRepo extends GetxService{
      }
 
   }
-  Future<bool> confirmOrder(voucherID,note) async {
+  Future<bool> confirmOrder(voucherID,String note) async {
     var fullApiUrl ="https://takefoodorderuser.azurewebsites.net/CreateOrder";
   List<CartModel> carts=cart.getItems;
   List<FoodOrder> foodOrder=[];
@@ -77,6 +75,7 @@ class PaymentRepo extends GetxService{
     Get.find<CartController>().getCartData();
     return true;
   }else{
+    print(response.statusCode);
     print("Failed");
     return false;
   }

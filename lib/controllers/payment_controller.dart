@@ -5,6 +5,8 @@ import 'package:app_food/models/voucher_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import 'myOrdered_controller.dart';
+
 class PaymentController extends GetxController{
   final PaymentRepo paymentRepo;
   final CartController cartController;
@@ -16,7 +18,6 @@ class PaymentController extends GetxController{
   num amountDiscount=0;
   String addressUser="";
   String phoneNumberUser="";
-  String? note="";
   PaymentController({required this.paymentRepo,required this.cartController})  {
      initUser();
   }
@@ -60,10 +61,11 @@ class PaymentController extends GetxController{
   getTotal(){
     return cartController.totalAmount-amountDiscount;
   }
-  Future<bool> confirmOrder() async {
-    bool checkOrder=await paymentRepo.confirmOrder(voucherID,"nothing");
+  Future<bool> confirmOrder(String note) async {
+    bool checkOrder=await paymentRepo.confirmOrder(voucherID,note);
     if(checkOrder){
       cartController.getCartData();
+     await  Get.find<MyOrderController>().getListMyOrdered();
       return true;
     }
     return false;

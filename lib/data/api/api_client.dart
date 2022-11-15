@@ -15,7 +15,7 @@ class ApiClient extends GetConnect implements GetxService {
       baseUrl = appBaseUrl;
       timeout = Duration(seconds: 30);
   }
-    Future<http.Response>  getFood(String uri) async {
+    Future<http.Response>  Get(String uri) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token=prefs?.getString("token");
         print(token);
@@ -23,7 +23,6 @@ class ApiClient extends GetConnect implements GetxService {
           Uri.parse(uri),
           headers: _mainHeaders(token)
         );
-        print(response.body);
         return response;
     }
     Future<http.Response> postOrder(String apiUrl,Order order) async {

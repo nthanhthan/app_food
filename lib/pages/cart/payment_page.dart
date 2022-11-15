@@ -24,288 +24,291 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
-    var note = TextEditingController();
+    var note = TextEditingController(text: "");
     int total = 0;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor,
           title: const Center(child: Text("Thanh toán")),
         ),
-        body: Column(
-          children: [
-            GetBuilder<PaymentController>(builder: (infoUser) {
-              return Container(
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              GetBuilder<PaymentController>(builder: (infoUser) {
+                return Container(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setHeight(4),
+                      left: ScreenUtil().setWidth(20),
+                      right: ScreenUtil().setWidth(10)),
+                  height: ScreenUtil().setHeight(150),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: AppColors.borderBottom, width: 5.0))),
+                  width: double.maxFinite,
+                  //color: AppColors.paraColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SmallText(
+                            text: "Địa chỉ",
+                            color: const Color(0xFFFF8357),
+                            fontWeight: "bold",
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: SmallText(
+                                text: "Thay đổi",
+                                color: AppColors.mainColor,
+                                fontWeight: "bold"),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(3),
+                      ),
+                      SmallText(
+                          text:
+                          infoUser.addressUser,
+                          maxLines: 2,
+                          color: AppColors.mainBlackColor),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(3),
+                      ),
+                      SmallText(
+                          text: "SĐT",
+                          color: Color(0xFFFF8357),
+                          fontWeight: "bold"),
+                      SmallText(
+                        text: infoUser.phoneNumberUser,
+                        color: AppColors.mainBlackColor,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              SizedBox(
+                height: ScreenUtil().setWidth(4),
+              ),
+              Container(
+                // color: AppColors.paraColor,
                 padding: EdgeInsets.only(
                     top: ScreenUtil().setHeight(4),
                     left: ScreenUtil().setWidth(20),
                     right: ScreenUtil().setWidth(10)),
-                height: ScreenUtil().setHeight(150),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: AppColors.borderBottom, width: 5.0))),
+                height: ScreenUtil().setHeight(200),
                 width: double.maxFinite,
-                //color: AppColors.paraColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SmallText(
-                          text: "Địa chỉ",
-                          color: const Color(0xFFFF8357),
-                          fontWeight: "bold",
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: SmallText(
-                              text: "Thay đổi",
-                              color: AppColors.mainColor,
-                              fontWeight: "bold"),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setWidth(3),
-                    ),
                     SmallText(
-                        text:
-                        infoUser.addressUser,
-                        maxLines: 2,
-                        color: AppColors.mainBlackColor),
-                    SizedBox(
-                      height: ScreenUtil().setWidth(3),
-                    ),
-                    SmallText(
-                        text: "SĐT",
+                        text: "Đơn hàng của bạn",
                         color: Color(0xFFFF8357),
                         fontWeight: "bold"),
-                    SmallText(
-                      text: infoUser.phoneNumberUser,
-                      color: AppColors.mainBlackColor,
-                    ),
+                    Expanded(child: SingleChildScrollView(
+                        child: GetBuilder<CartController>(builder: (cartStorage) {
+                      total = cartStorage.totalAmount;
+                      return cartStorage.getItems.isEmpty
+                          ? Container()
+                          : ListView.builder(
+                              padding:
+                                  EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: cartStorage.getItems.isEmpty
+                                  ? 1
+                                  : cartStorage.getItems.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: ScreenUtil().setHeight(50),
+                                  width: double.maxFinite,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: AppColors.borderBottom,
+                                              width: 1.0))),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SmallText(
+                                            text:
+                                                "${cartStorage.getItems[index].quantity}x",
+                                            color: Colors.black,
+                                          ),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SmallText(
+                                                text: cartStorage
+                                                    .getItems[index].foodName!,
+                                                color: Colors.black,
+                                              ),
+                                              SmallText(
+                                                text: cartStorage.getTopping(
+                                                    cartStorage.getItems[index]
+                                                        .foodId!)!,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SmallText(
+                                        text: cartStorage
+                                            .getTotalMoneyItems(cartStorage
+                                                .getItems[index].foodId!)
+                                            .toString()
+                                            .toVND(unit: "đ"),
+                                        color: Colors.black,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              });
+                    }))),
                   ],
                 ),
-              );
-            }),
-            SizedBox(
-              height: ScreenUtil().setWidth(4),
-            ),
-            Container(
-              // color: AppColors.paraColor,
-              padding: EdgeInsets.only(
-                  top: ScreenUtil().setHeight(4),
-                  left: ScreenUtil().setWidth(20),
-                  right: ScreenUtil().setWidth(10)),
-              height: ScreenUtil().setHeight(200),
-              width: double.maxFinite,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SmallText(
-                      text: "Đơn hàng của bạn",
-                      color: Color(0xFFFF8357),
-                      fontWeight: "bold"),
-                  Expanded(child: SingleChildScrollView(
-                      child: GetBuilder<CartController>(builder: (cartStorage) {
-                    total = cartStorage.totalAmount;
-                    return cartStorage.getItems.isEmpty
-                        ? Container()
-                        : ListView.builder(
-                            padding:
-                                EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: cartStorage.getItems.isEmpty
-                                ? 1
-                                : cartStorage.getItems.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: ScreenUtil().setHeight(50),
-                                width: double.maxFinite,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: AppColors.borderBottom,
-                                            width: 1.0))),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SmallText(
-                                          text:
-                                              "${cartStorage.getItems[index].quantity}x",
-                                          color: Colors.black,
-                                        ),
-                                        SizedBox(
-                                          width: ScreenUtil().setWidth(10),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SmallText(
-                                              text: cartStorage
-                                                  .getItems[index].foodName!,
-                                              color: Colors.black,
-                                            ),
-                                            SmallText(
-                                              text: cartStorage.getTopping(
-                                                  cartStorage.getItems[index]
-                                                      .foodId!)!,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SmallText(
-                                      text: cartStorage
-                                          .getTotalMoneyItems(cartStorage
-                                              .getItems[index].foodId!)
-                                          .toString()
-                                          .toVND(unit: "đ"),
-                                      color: Colors.black,
-                                    )
-                                  ],
-                                ),
-                              );
-                            });
-                  }))),
-                ],
               ),
-            ),
-            SizedBox(
-              height: ScreenUtil().setWidth(5),
-            ),
-            SizedBox(
-              child: TextField(
-                controller: note,
-                obscureText: false,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: "Lời nhắn cho cửa hàng",
-                  hintStyle: TextStyle(
+              SizedBox(
+                height: ScreenUtil().setWidth(5),
+              ),
+              SizedBox(
+                child: TextField(
+                  controller: note,
+                  obscureText: false,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    hintText: "Lời nhắn cho cửa hàng",
+                    hintStyle: TextStyle(
+                        color: Color(0xFFFF8357),
+                        fontSize: ScreenUtil().setSp(10)),
+                    prefixIcon: const Icon(
+                      Icons.assessment_rounded,
                       color: Color(0xFFFF8357),
-                      fontSize: ScreenUtil().setSp(7)),
-                  prefixIcon: const Icon(
-                    Icons.assessment_rounded,
-                    color: Color(0xFFFF8357),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                      width: 1,
+                      color: AppColors.borderBottom,
+                    )),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                      width: 1,
+                      color: AppColors.borderBottom,
+                    )),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    width: 1,
-                    color: AppColors.borderBottom,
-                  )),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    width: 1,
-                    color: AppColors.borderBottom,
-                  )),
+                  style: TextStyle(fontSize: ScreenUtil().setSp(10)),
                 ),
-                style: TextStyle(fontSize: ScreenUtil().setSp(5)),
               ),
-            ),
-            GetBuilder<CartController>(builder: (totalItem) {
-              return Container(
+              GetBuilder<CartController>(builder: (totalItem) {
+                return Container(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setHeight(4),
+                      left: ScreenUtil().setWidth(20),
+                      right: ScreenUtil().setWidth(10)),
+                  height: ScreenUtil().setHeight(80),
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: AppColors.borderBottom, width: 2.0))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SmallText(
+                              text: "Tạm tính:",
+                              color: Colors.black,
+                              fontWeight: "bold"),
+                          SmallText(
+                              text: totalItem.totalAmount.toVND(unit: "đ"),
+                              color: Colors.black,
+                              fontWeight: "bold"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(5),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          bool check = await Get.find<PaymentController>()
+                              .getVoucher(totalItem.getItems[0].storeID!);
+                          if (check) {
+                            Get.toNamed(RouteHelper.voucherPage);
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                AppIcon(
+                                    icon: Icons.discount_rounded,
+                                    iconColor: Color(0xFFFF8357),
+                                    size: ScreenUtil().setWidth(20)),
+                                SmallText(
+                                    text: "Voucher:",
+                                    color: Colors.black,
+                                    fontWeight: "bold"),
+                              ],
+                            ),
+                            GetBuilder<PaymentController>(builder: (discount) {
+                              return discount.amountDiscount == 0
+                                  ? SmallText(text: "Chọn tại đây >>>")
+                                  : SmallText(
+                                      text:
+                                          "-${discount.amountDiscount.toString().toVND(unit: "đ")}",
+                                      color: Colors.black,
+                                    );
+                            })
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
+              Container(
                 padding: EdgeInsets.only(
                     top: ScreenUtil().setHeight(4),
                     left: ScreenUtil().setWidth(20),
                     right: ScreenUtil().setWidth(10)),
-                height: ScreenUtil().setHeight(80),
+                height: ScreenUtil().setHeight(70),
                 width: double.maxFinite,
                 decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
                             color: AppColors.borderBottom, width: 2.0))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SmallText(
-                            text: "Tạm tính:",
-                            color: Colors.black,
-                            fontWeight: "bold"),
-                        SmallText(
-                            text: totalItem.totalAmount.toVND(unit: "đ"),
-                            color: Colors.black,
-                            fontWeight: "bold"),
-                      ],
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setWidth(5),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        bool check = await Get.find<PaymentController>()
-                            .getVoucher(totalItem.getItems[0].storeID!);
-                        if (check) {
-                          Get.toNamed(RouteHelper.voucherPage);
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              AppIcon(
-                                  icon: Icons.discount_rounded,
-                                  iconColor: Color(0xFFFF8357),
-                                  size: ScreenUtil().setWidth(20)),
-                              SmallText(
-                                  text: "Voucher:",
-                                  color: Colors.black,
-                                  fontWeight: "bold"),
-                            ],
-                          ),
-                          GetBuilder<PaymentController>(builder: (discount) {
-                            return discount.amountDiscount == 0
-                                ? SmallText(text: "Chọn tại đây >>>")
-                                : SmallText(
-                                    text:
-                                        "-${discount.amountDiscount.toString().toVND(unit: "đ")}",
-                                    color: Colors.black,
-                                  );
-                          })
-                        ],
-                      ),
-                    )
+                    SmallText(
+                        text: "Phương thức thanh toán:",
+                        fontWeight: "bold",
+                        color: Colors.black),
+                    SmallText(text: "Tiền mặt", color: Colors.black),
                   ],
                 ),
-              );
-            }),
-            Container(
-              padding: EdgeInsets.only(
-                  top: ScreenUtil().setHeight(4),
-                  left: ScreenUtil().setWidth(20),
-                  right: ScreenUtil().setWidth(10)),
-              height: ScreenUtil().setHeight(70),
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          color: AppColors.borderBottom, width: 2.0))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SmallText(
-                      text: "Phương thức thanh toán:",
-                      fontWeight: "bold",
-                      color: Colors.black),
-                  SmallText(text: "Tiền mặt", color: Colors.black),
-                ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
         bottomNavigationBar: GetBuilder<PaymentController>(
           builder: (payment) {
@@ -361,7 +364,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () async {
-                        bool checkOder=await payment.confirmOrder();
+                        bool checkOder=await payment.confirmOrder(note.text);
                         if(checkOder){
                           Get.toNamed(RouteHelper.myOrderPage);
                         }else{

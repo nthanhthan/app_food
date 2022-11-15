@@ -9,6 +9,6 @@ class FoodDetailRepo extends GetxService {
   Future<http.Response> getFoodDetail(id) async {
     var fullApiUrl ="https://takefoodstoreservice.azurewebsites.net/api/Food/GetFoodViewMobile?FoodID="+id;
 
-    return await apiClient.getFood(fullApiUrl);
+    return await apiClient.Get(fullApiUrl);
   }
 }

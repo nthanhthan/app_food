@@ -1,8 +1,10 @@
 import 'package:app_food/controllers/cart_controller.dart';
+import 'package:app_food/controllers/myOrdered_controller.dart';
 import 'package:app_food/controllers/payment_controller.dart';
 import 'package:app_food/controllers/user_controller.dart';
 import 'package:app_food/data/api/api_client.dart';
 import 'package:app_food/data/repository/cart_repo.dart';
+import 'package:app_food/data/repository/myOrdered_repo.dart';
 import 'package:app_food/data/repository/payment_repo.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,7 @@ Future<void> init()async {
   Get.lazyPut(() => FoodDetailRepo(apiClient: Get.find()));
   //controllers
   Get.lazyPut(() {
-    return FoodDetailController(foodDetailRepo: Get.find());
+    return FoodDetailController(foodDetailRepo: Get.find(),sharedPreferences: Get.find());
   },
   fenix: true);
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
@@ -43,4 +45,6 @@ Future<void> init()async {
     return PaymentController(paymentRepo: Get.find(),cartController: Get.find());
   },
       fenix: true);
+  Get.lazyPut(() => MyOrderController(myOrderedRepo: Get.find(),sharedPreferences: Get.find()));
+  Get.lazyPut(() => MyOrderedRepo(apiClient: Get.find()));
 }

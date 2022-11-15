@@ -38,6 +38,7 @@ class UserController extends GetxController{
       print(user.phone.toString());
       prefs.setString("phoneUser", user.phone!);
       prefs.setString("refreshToken",user.refreshToken!);
+      prefs.setString("nameUser", user.name!);
       var checkRole=user.getRoles!.contains("User");
       print(checkRole);
       if(checkRole==true){
