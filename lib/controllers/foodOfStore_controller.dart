@@ -1,9 +1,9 @@
 import 'dart:convert';
-
-import 'package:app_food/models/foodStore_model.dart';
 import 'package:get/get.dart';
 import '../data/repository/foodOfStore_repo.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/foodStore_model.dart';
 class FoodOfStoreController extends GetxController{
   final FoodOfStoreRepo foodOfStoreRepo;
   FoodOfStoreController({required this.foodOfStoreRepo});

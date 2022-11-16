@@ -18,9 +18,7 @@ class VoucherPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: GetBuilder<PaymentController>(builder: (voucher){
-          return   voucher.listVoucher.isEmpty?Container(
-            child: Center(child: SmallText(text: "Cửa hàng không có voucher!",),),
-          ):ListView.builder( padding:
+          return   voucher.isLoaded? ListView.builder( padding:
           EdgeInsets.only(top: ScreenUtil().setHeight(5)),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -60,7 +58,11 @@ class VoucherPage extends StatelessWidget {
                     ),
                   ),
                 );
-              });
+              }):Center(
+                child: CircularProgressIndicator(
+          color: AppColors.mainColor,
+          ),
+              );
         })
 
       )

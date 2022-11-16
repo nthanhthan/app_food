@@ -1,3 +1,6 @@
+import 'package:app_food/widgets/account_widget.dart';
+import 'package:app_food/widgets/app_icon.dart';
+import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../controllers/user_controller.dart';
 import '../../utils/colors.dart';
-import '../../widgets/big_text.dart';
 import '../auth/sign_in_page.dart';
 
 class ProfileUser extends StatelessWidget {
@@ -14,34 +16,126 @@ class ProfileUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-       body:Column(
-         children:[
-          SizedBox(height: ScreenUtil().setHeight(350),),
-           Container(
-             width: ScreenUtil().setWidth(250),
-             height: ScreenUtil().setHeight(70),
-             decoration: BoxDecoration(
-                 borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
-                 color: AppColors.mainColor
-             ),
-             child: Center(
-                 child:GestureDetector(
-                   onTap: ()  async {
-                     if(await Get.find<UserController>().LogOut()){
-                       Get.to(()=>SignInPage());
-                     }
-                   },
-                   child: BigText(
-                     text: "ĐĂNG Xuất",
-                     size:  ScreenUtil().setSp(15),
-                     color: Colors.white,
-                   ),
-                 )
-             ),
-           ),
-         ]
-       ),
+      appBar: AppBar(
+        backgroundColor: AppColors.mainColor,
+        title: const Center(child: Text("Cá nhân")),
+      ),
+      body: SingleChildScrollView(
+        child: GetBuilder<UserController>(builder: (user){
+          return Container(
+            width: double.maxFinite,
+            margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
+            child: Column(
+              children: [
+                AppIcon(
+                  icon: Icons.person,
+                  backgroundColor: AppColors.mainColor,
+                  iconColor: Colors.white,
+                  iconSize: 80,
+                  size: 130,
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(20),
+                ),
+                AccountWidget(
+                    appIcon: AppIcon(
+                      icon: Icons.person,
+                      backgroundColor: AppColors.mainColor,
+                      iconColor: Colors.white,
+                      iconSize: 20,
+                      size: 40,
+                    ),
+                    smallText: SmallText(
+                      text: user.user.name.toString(),
+                      color: AppColors.mainBlackColor,
+                    )),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                AccountWidget(
+                    appIcon: const AppIcon(
+                      icon: Icons.phone,
+                      backgroundColor: Color(0xFFFBC78D),
+                      iconColor: Colors.white,
+                      iconSize: 20,
+                      size: 40,
+                    ),
+                    smallText: SmallText(
+                      text:user.user.phone.toString(),
+                      color: AppColors.mainBlackColor,
+                    )),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                AccountWidget(
+                    appIcon: const AppIcon(
+                      icon: Icons.mail,
+                      backgroundColor: Color(0xFFFBC78D),
+                      iconColor: Colors.white,
+                      iconSize: 20,
+                      size: 40,
+                    ),
+                    smallText: SmallText(
+                      text: user.user.email.toString(),
+                      color: AppColors.mainBlackColor,
+                    )),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                AccountWidget(
+                    appIcon: const AppIcon(
+                      icon: Icons.location_on_sharp,
+                      backgroundColor: Color(0xFFFBC78D),
+                      iconColor: Colors.white,
+                      iconSize: 20,
+                      size: 40,
+                    ),
+                    smallText: SmallText(
+                      text: user.address.toString(),
+                      color: AppColors.mainBlackColor,
+                    )),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                AccountWidget(
+                    appIcon: const AppIcon(
+                      icon: Icons.store,
+                      backgroundColor: Color(0xFFADC965),
+                      iconColor: Colors.white,
+                      iconSize: 20,
+                      size: 40,
+                    ),
+                    smallText: SmallText(
+                      text: "Đăng ký bán hàng",
+                      color: AppColors.mainBlackColor,
+                    )),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    if(await Get.find<UserController>().LogOut()){
+                      Get.to(()=>SignInPage());
+                    }
+                  },
+                  child: AccountWidget(
+                      appIcon: const AppIcon(
+                        icon: Icons.logout,
+                        backgroundColor: Color(0xFFD33B23),
+                        iconColor: Colors.white,
+                        iconSize: 20,
+                        size: 40,
+                      ),
+                      smallText: SmallText(
+                        text: "Đăng xuất",
+                        color: AppColors.mainBlackColor,
+                      )),
+                ),
+              ],
+            ),
+          );
+        })
+      ),
     );
   }
 }

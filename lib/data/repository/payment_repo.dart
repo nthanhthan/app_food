@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/models/cart_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/order_model.dart';
+import '../../models/user_model.dart';
 import '../api/api_client.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,8 +24,14 @@ class PaymentRepo extends GetxService{
     return await apiClient.Get(fullApiUrl);
   }
    getUser() async {
-     userID=sharedPreferences.getString("UserId")!;
-     phoneNumberUser=sharedPreferences.getString("phoneUser")!;
+     String? getuser;
+     var user;
+     if(sharedPreferences.containsKey("user")){
+       getuser=sharedPreferences.getString("user");
+       user=User.fromJson(jsonDecode(getuser!));
+       userID=user.id;
+       phoneNumberUser=user.phone;
+     }
     var fullApiUrl ="https://takefoodauthentication.azurewebsites.net/GetAddress";
      if(sharedPreferences.getString("address") != null){
        addressUser=sharedPreferences.getString("address").toString();
@@ -41,6 +49,10 @@ class PaymentRepo extends GetxService{
   Future<bool> confirmOrder(voucherID,String note) async {
     var fullApiUrl ="https://takefoodorderuser.azurewebsites.net/CreateOrder";
   List<CartModel> carts=cart.getItems;
+  if(carts.length==0){
+    showCustomSnackBar("Vui lòng chọn món",title: "Không hợp lệ");
+    return false;
+  }
   List<FoodOrder> foodOrder=[];
   List<ToppingOrder> toppingOrder=[];
   carts.forEach((element) {
@@ -71,6 +83,7 @@ class PaymentRepo extends GetxService{
   http.Response response=await apiClient.postOrder(fullApiUrl,order!);
   if(response.statusCode==200){
     print("Done");
+    removeCart();
     await sharedPreferences.remove("Cart-list");
     Get.find<CartController>().getCartData();
     return true;
@@ -79,5 +92,8 @@ class PaymentRepo extends GetxService{
     print("Failed");
     return false;
   }
+  }
+  void removeCart(){
+    sharedPreferences.remove("Cart-list");
   }
 }

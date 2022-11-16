@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../base/show_custom_snackbar.dart';
 import '../../controllers/user_controller.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_text_field.dart';
@@ -19,14 +20,30 @@ class SignUpPage extends StatelessWidget {
     var nameController=TextEditingController();
     var phoneController=TextEditingController();
     Future<bool> _register() async{
-      var data={
-        'name':nameController.text,
-        'email':emailController.text,
-        'password':passwordController.text,
-        'phoneNumber':phoneController.text,
-      };
-     var check=await Get.find<UserController>().SignUp(data, "SignUp");
-     return check;
+      String name=nameController.text.trim();
+      String email=emailController.text.trim();
+      String password=passwordController.text.trim();
+      String phoneNumber=phoneController.text.trim();
+      if(name.isEmpty){
+        showCustomSnackBar("Vui lòng nhập tên", title: "Tên");
+      }else if(email.isEmpty){
+        showCustomSnackBar("Vui lòng nhập email", title: "Email");
+      }else if(password.isEmpty){
+        showCustomSnackBar("Vui lòng nhập mật khẩu", title: "Mật khẩu");
+      }else if(phoneNumber.isEmpty){
+        showCustomSnackBar("Vui lòng nhập số điện thoại", title: "Số điện thoại");
+      }else{
+        var data={
+          'name':name,
+          'email':email,
+          'password':password,
+          'phoneNumber':phoneNumber,
+        };
+        var check=await Get.find<UserController>().SignUp(data, "SignUp");
+        return check;
+      }
+      return false;
+
     }
     return Scaffold(
       backgroundColor: Colors.white,

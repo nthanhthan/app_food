@@ -24,7 +24,10 @@ Future<void> init()async {
   //repo
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
   //controllers
-  Get.lazyPut(() => UserController(popularProductRepo: Get.find()));
+  Get.lazyPut(() {
+    return UserController(userRepo: Get.find());
+  },
+      fenix: true);
   Get.lazyPut(() => RecommendedStoreNearRepo(apiClient: Get.find()));
   //controllers
   Get.lazyPut(() => RecommendedStoreNearController(recommendedStoreNearRepo: Get.find()));

@@ -52,15 +52,19 @@ class StorePage extends StatelessWidget {
                       },
                             child: AppIcon(
                               icon: Icons.arrow_back,
-                              size: ScreenUtil().setHeight(25),
+                                size: ScreenUtil().setHeight(40),
+                                iconSize:ScreenUtil().setHeight(25) , backgroundColor: AppColors.mainColor
                             ),
                           ),
                           Row(
                             children: [
                               AppIcon(
-                                  icon: Icons.favorite, size: ScreenUtil().setHeight(25)),
+                                  icon: Icons.favorite,  size: ScreenUtil().setHeight(40),
+                                iconSize:ScreenUtil().setHeight(25) , backgroundColor: AppColors.mainColor,),
+                              SizedBox(width: ScreenUtil().setWidth(5),),
                               AppIcon(
-                                  icon: Icons.search, size: ScreenUtil().setHeight(25)),
+                                  icon: Icons.search,  size: ScreenUtil().setHeight(40),
+                                  iconSize:ScreenUtil().setHeight(25) , backgroundColor: AppColors.mainColor),
                             ],
                           )
 

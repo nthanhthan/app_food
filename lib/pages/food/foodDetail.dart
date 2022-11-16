@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../controllers/foodDetail_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
-import '../../utils/dimensions.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/expandable_text_widget.dart';
@@ -71,7 +70,9 @@ class _FoodDetailState extends State<FoodDetail> {
                             child: AppIcon(
                               iconColor: Colors.black54,
                               icon: Icons.arrow_back,
-                              size: ScreenUtil().setHeight(30),
+                              size: ScreenUtil().setHeight(40),
+                              iconSize:ScreenUtil().setHeight(25) ,
+                              backgroundColor: AppColors.mainColor,
                             )),
                         GetBuilder<FoodDetailController>(builder: (controller) {
                           return Stack(
@@ -85,7 +86,9 @@ class _FoodDetailState extends State<FoodDetail> {
                                 child: AppIcon(
                                     iconColor: Colors.black54,
                                     icon: Icons.shopping_cart_outlined,
-                                    size: ScreenUtil().setHeight(30)),
+                                  size: ScreenUtil().setHeight(40),
+                                  iconSize:ScreenUtil().setHeight(25) ,
+                                  backgroundColor: AppColors.mainColor,),
                               ),
                               Get.find<FoodDetailController>().totalItems >= 1
                                   ? Positioned(
@@ -114,9 +117,9 @@ class _FoodDetailState extends State<FoodDetail> {
                   top: ScreenUtil().setHeight(220),
                   child: Container(
                       padding: EdgeInsets.only(
-                          left: Dimensions.width20,
-                          right: Dimensions.width20,
-                          top: Dimensions.height20),
+                          left: ScreenUtil().setWidth(20),
+                          right: ScreenUtil().setWidth(20),
+                          top: ScreenUtil().setWidth(20)),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               topRight:
@@ -134,6 +137,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                 BigText(
                                   text: foodDetail.foodsDetail.name!,
                                   size: ScreenUtil().setSp(12),
+                                  maxLines: 2,
                                 ),
                                 BigText(
                                   text: foodDetail.foodsDetail.price.toString().toVND(unit: 'đ'),
@@ -313,11 +317,12 @@ class _FoodDetailState extends State<FoodDetail> {
                         right: ScreenUtil().setWidth(10)),
                     decoration: BoxDecoration(
                         borderRadius:
-                        BorderRadius.circular(Dimensions.radius20),
+                        BorderRadius.circular(ScreenUtil().radius(10)),
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () {
                         foodDetail.addItem(foodDetail.foodsDetail,storeId);
+                        Get.toNamed(RouteHelper.cartPage);
                       },
                       child: BigText(
                         text: "Thêm  ${(foodDetail.foodsDetail.price*foodDetail.quantity+foodDetail.totalMoney).toString().toVND(unit: 'đ')}",

@@ -246,12 +246,9 @@ class _PaymentPageState extends State<PaymentPage> {
                         height: ScreenUtil().setWidth(5),
                       ),
                       GestureDetector(
-                        onTap: () async {
-                          bool check = await Get.find<PaymentController>()
-                              .getVoucher(totalItem.getItems[0].storeID!);
-                          if (check) {
+                        onTap: ()  {
+                            Get.find<PaymentController>().getVoucher(totalItem.getItems[0].storeID!);
                             Get.toNamed(RouteHelper.voucherPage);
-                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -364,12 +361,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () async {
-                        bool checkOder=await payment.confirmOrder(note.text);
-                        if(checkOder){
+                          payment.confirmOrder(note.text);
                           Get.toNamed(RouteHelper.myOrderPage);
-                        }else{
-                          print("Sai");
-                        }
                       },
                       child: BigText(
                         text: "Đặt hàng",

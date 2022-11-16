@@ -13,6 +13,8 @@ class MyOrderController extends GetxController{
   final SharedPreferences sharedPreferences;
   dynamic detailOrdered;
   List<Food> listFood=[];
+  bool _isLoaded = false;
+  bool get isLoaded => _isLoaded;
   List<Toppings> listTopping=[];
   String? nameUser="";
   MyOrderController({required this.myOrderedRepo,required this.sharedPreferences});
@@ -20,7 +22,9 @@ class MyOrderController extends GetxController{
     listMyOrdered = [];
     //for(int i=1;;i++){
     List<MyOrdered>  ordered = await myOrderedRepo.getMyOrdered(1);
+
     listMyOrdered.addAll(ordered);
+    _isLoaded=true;
     update();
      // if(ordered.length<10){
      //  break;
@@ -28,6 +32,7 @@ class MyOrderController extends GetxController{
   //}
   }
   Future<bool> getDetailOrdered(orderedID) async {
+    _isLoaded=false;
     http.Response response=await myOrderedRepo.getDetailOrdered(orderedID);
     if(response.statusCode==200){
       nameUser=sharedPreferences.getString("nameUser");
@@ -39,9 +44,8 @@ class MyOrderController extends GetxController{
       listFood.forEach((element) {
         listTopping.addAll(element.toppings!);
       });
-      listTopping.forEach((element) {
-        print(element.toppingName);
-      });
+      _isLoaded=true;
+      update();
       return true;
     }
     return false;

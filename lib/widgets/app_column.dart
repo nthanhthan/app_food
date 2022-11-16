@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-
 import '../utils/colors.dart';
-import '../utils/dimensions.dart';
 import 'big_text.dart';
 import 'icon_and_text_widget.dart';
 import 'small_text.dart';

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/colors.dart';
-import '../utils/dimensions.dart';
-
 class AppTextField extends StatelessWidget {
   final TextEditingController textController;
   final String hintText;

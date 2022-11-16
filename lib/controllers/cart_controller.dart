@@ -6,7 +6,7 @@ import '../models/cart_model.dart';
 class CartController extends GetxController {
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
-  final Map<String, CartModel> _items = {};
+  Map<String, CartModel> _items = {};
   Map<String, CartModel> get items => _items;
   List<CartModel> storageItems=[];
   String? topping;
@@ -136,5 +136,9 @@ class CartController extends GetxController {
     for(int i=0;i<storageItems.length;i++){
       _items.putIfAbsent(storageItems[i].food!.foodId!, () => storageItems[i]);
     }
+  }
+  set setItems(Map<String, CartModel> items){
+    _items=items;
+    update();
   }
 }

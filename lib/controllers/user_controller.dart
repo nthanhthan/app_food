@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
@@ -7,11 +8,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController{
-  final UserRepo popularProductRepo;
-  UserController({required this.popularProductRepo});
+  final UserRepo userRepo;
+  UserController({required this.userRepo});
+  var user;
+  String address="";
 
   Future<bool> SignUp(data,url) async{
-    http.Response response=(await popularProductRepo.SignUp(data, url));
+    http.Response response=(await userRepo.SignUp(data, url));
     if(response.statusCode==200){
      print("Register success");
      return true;
@@ -21,33 +24,28 @@ class UserController extends GetxController{
     }
   }
   Future<bool> LogOut(){
-    return popularProductRepo.LogOut();
+    return userRepo.LogOut();
+  }
+  getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+   user=await userRepo.getUser();
+   address=prefs.getString("address")!;
   }
   Future<bool> SignIn(data,url) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    http.Response response=(await popularProductRepo.SignIn(data, url));
-    String? allSetCookie=response.headers['set-cookie'];
-    print(allSetCookie);
-
-    print(response.statusCode);
+    http.Response response=(await userRepo.SignIn(data, url));
     if(response.statusCode==200){
-      // Map<String,dynamic> output=json.decode(response.body);
-      User user=User.fromJson(jsonDecode(response.body));
-      prefs.setString("token",user.accessToken!);
-      prefs.setString("UserId", user.id!);
-      print(user.phone.toString());
-      prefs.setString("phoneUser", user.phone!);
-      prefs.setString("refreshToken",user.refreshToken!);
-      prefs.setString("nameUser", user.name!);
+      user=User.fromJson(jsonDecode(response.body));
+      String userStorage=jsonEncode(user);
+      prefs.setString("user", userStorage);
       var checkRole=user.getRoles!.contains("User");
-      print(checkRole);
       if(checkRole==true){
         return true;
       }else {
         return false;
       }
     }else{
-      print("Failed Login");
+      showCustomSnackBar("Login Failed",title: "Login");
       return false;
     }
   }

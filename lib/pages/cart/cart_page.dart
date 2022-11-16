@@ -34,7 +34,9 @@ class CartPage extends StatelessWidget {
                   child: AppIcon(
                     iconColor: Colors.black54,
                     icon: Icons.arrow_back,
-                    size: ScreenUtil().setHeight(30),
+                    size: ScreenUtil().setHeight(40),
+                    iconSize:ScreenUtil().setHeight(25) ,
+                    backgroundColor: AppColors.mainColor,
                   ),
                 ),
                 SizedBox(width: ScreenUtil().setWidth(120),),
@@ -45,13 +47,17 @@ class CartPage extends StatelessWidget {
                   child: AppIcon(
                     iconColor: Colors.black54,
                     icon: Icons.home_outlined,
-                    size: ScreenUtil().setHeight(30),
+                    size: ScreenUtil().setHeight(40),
+                    iconSize:ScreenUtil().setHeight(25) ,
+                    backgroundColor: AppColors.mainColor,
                   ),
                 ),
                 AppIcon(
                   iconColor: Colors.black54,
                   icon: Icons.shopping_cart,
-                  size: ScreenUtil().setHeight(30),
+                  size: ScreenUtil().setHeight(40),
+                  iconSize:ScreenUtil().setHeight(25) ,
+                  backgroundColor: AppColors.mainColor,
                 ),
 
               ],
@@ -160,7 +166,9 @@ class CartPage extends StatelessWidget {
                                                 child: AppIcon(
                                                   iconColor: Colors.grey,
                                                   icon: Icons.delete,
-                                                  size: ScreenUtil().setHeight(30),
+                                                  size: ScreenUtil().setHeight(40),
+                                                  iconSize:ScreenUtil().setHeight(25) ,
+                                                  backgroundColor: Colors.white,
                                                 ),
                                               ),
                                             ],

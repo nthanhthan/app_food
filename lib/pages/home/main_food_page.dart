@@ -31,7 +31,8 @@ class _MainFoodPageState extends State<MainFoodPage> {
                 children: [
                   Row(
                     children: [
-                      AppIcon(icon: Icons.location_on_sharp,iconColor: AppColors.mainColor,size:  ScreenUtil().setHeight(25),),
+                      AppIcon(icon: Icons.location_on_sharp,iconColor: AppColors.mainColor, size: ScreenUtil().setHeight(40),backgroundColor: Colors.white,
+                          iconSize:ScreenUtil().setHeight(25),),
                       BigText(
                         text: "TP.Đà Nẵng",
                         color: AppColors.mainColor,

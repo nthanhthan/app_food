@@ -1,12 +1,9 @@
 import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/widgets/app_icon.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../controllers/myOrdered_controller.dart';
 import '../../utils/colors.dart';
@@ -29,22 +26,16 @@ class _MyOrderPageState extends State<MyOrderPage> {
         ),
         body: SingleChildScrollView(
             child: GetBuilder<MyOrderController>(builder: (myOrdered)  {
-              return   myOrdered.listMyOrdered.isEmpty?Container(
-                child: Center(child: SmallText(text: "CHƯA CÓ ĐƠN HÀNG NÀO",),),
-              ):ListView.builder( padding:
+              return   myOrdered.isLoaded? ListView.builder( padding:
               EdgeInsets.only(top: ScreenUtil().setHeight(5)),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount:myOrdered.listMyOrdered.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () async {
-                        bool check=await myOrdered.getDetailOrdered(myOrdered.listMyOrdered[index].orderId);
-                        if(check){
+                      onTap: ()  {
+                         myOrdered.getDetailOrdered(myOrdered.listMyOrdered[index].orderId);
                         Get.toNamed(RouteHelper.detailOrdered);
-                        }else{
-                          print("false");
-                        }
                       },
                       child: Container(
                         padding: EdgeInsets.only(
@@ -55,7 +46,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    color: AppColors.borderBottom, width: 5.0))),
+                                    color: AppColors.borderBottom, width: 2.0)),
+                        ),
                         width: double.maxFinite,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +55,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
                           children: [
                             Row(
                               children: [
-                                AppIcon(icon: Icons.check_circle_rounded,size: ScreenUtil().setHeight(25),backgroundColor: Colors.grey,iconColor: AppColors.mainBlackColor,),
-                                SmallText(text: "Đã giao hàng",fontWeight: "bold",size: ScreenUtil().setSp(8),),
+                                AppIcon(icon: Icons.check,size: ScreenUtil().setHeight(20),backgroundColor: Colors.grey,iconColor: Colors.white,iconSize: ScreenUtil().setHeight(15),),
+                                SizedBox(width: ScreenUtil().setWidth(8),),
+                                SmallText(text: "Đã giao hàng",color: AppColors.mainBlackColor,size: ScreenUtil().setSp(8),),
                               ],
                             ),
                             
@@ -82,7 +75,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
                         ),
                       ),
                     );
-                  });
+                  }):Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.mainColor,
+                ),
+              );
             })
 
         )

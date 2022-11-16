@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/data/repository/payment_repo.dart';
 import 'package:app_food/models/voucher_model.dart';
+import 'package:app_food/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,7 @@ class PaymentController extends GetxController{
       List<VoucherStore> posts = List<VoucherStore>.from(decodedList.map((model)=> VoucherStore.fromJson(model)));
       _listVoucher.addAll(posts);
       _isLoaded=true;
+      update();
       // return _foodsDetail;
       return true;
     } else {
@@ -62,13 +64,20 @@ class PaymentController extends GetxController{
     return cartController.totalAmount-amountDiscount;
   }
   Future<bool> confirmOrder(String note) async {
+    _isLoaded=false;
     bool checkOrder=await paymentRepo.confirmOrder(voucherID,note);
     if(checkOrder){
+      await Get.find<MyOrderController>().getListMyOrdered();
+      clear();
       cartController.getCartData();
-     await  Get.find<MyOrderController>().getListMyOrdered();
       return true;
+    }else{
+      Get.toNamed(RouteHelper.homepage);
     }
     return false;
   }
-
+  void clear(){
+    cartController.setItems={};
+    update();
+  }
 }

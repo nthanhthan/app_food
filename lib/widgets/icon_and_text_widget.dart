@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../utils/dimensions.dart';
 import 'small_text.dart';
 
 class IconAndTextWidget extends StatelessWidget {
