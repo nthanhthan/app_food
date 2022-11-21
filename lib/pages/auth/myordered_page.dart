@@ -61,7 +61,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                               ],
                             ),
                             
-                            SmallText(text: myOrdered.listMyOrdered[index].storeName!, color: AppColors.mainBlackColor,size: ScreenUtil().setSp(12),),
+                            SmallText(text: myOrdered.listMyOrdered[index].storeName!, color: AppColors.mainBlackColor,size: ScreenUtil().setSp(12),maxLines: 1,),
                             SmallText(text:"${myOrdered.listMyOrdered[index].foodQuantity}món",fontWeight: "bold",size: ScreenUtil().setSp(8),),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

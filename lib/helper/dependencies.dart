@@ -48,6 +48,10 @@ Future<void> init()async {
     return PaymentController(paymentRepo: Get.find(),cartController: Get.find());
   },
       fenix: true);
-  Get.lazyPut(() => MyOrderController(myOrderedRepo: Get.find(),sharedPreferences: Get.find()));
+  Get.lazyPut(() {
+    return MyOrderController(myOrderedRepo: Get.find(),sharedPreferences: Get.find());
+  },
+      fenix: true);
+
   Get.lazyPut(() => MyOrderedRepo(apiClient: Get.find()));
 }

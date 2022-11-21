@@ -1,6 +1,7 @@
 import 'package:app_food/controllers/myOrdered_controller.dart';
 import 'package:app_food/widgets/big_text.dart';
 import 'package:app_food/widgets/small_text.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
@@ -44,10 +45,11 @@ class DetailOrderPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SmallText(text: "Mã đơn hàng:"),
-                            SmallText(text: "Tên:"),
-                            SmallText(text: "SĐT:"),
-                            SmallText(text: "Địa chỉ:"),
+                            SmallText(text: "Mã đơn hàng:",size: ScreenUtil().setSp(8)),
+                            SmallText(text: "Tên:",size: ScreenUtil().setSp(8)),
+                            SmallText(text: "Số điện thoại:",size: ScreenUtil().setSp(8)),
+                            SmallText(text: "Địa chỉ:",size: ScreenUtil().setSp(8)),
+                            SmallText(text: "Thời gian đặt hàng:", size: ScreenUtil().setSp(8),),
                           ],
                         ),
                       ),
@@ -82,6 +84,12 @@ class DetailOrderPage extends StatelessWidget {
                                 color: AppColors.mainBlackColor,
                                 size: ScreenUtil().setSp(8.5),
                                 maxLines: 1,
+                              ),
+                              SmallText(
+                                text: detailOrder.dateOrdered,
+                                color: AppColors.mainBlackColor,
+                                size: ScreenUtil().setSp(8.5),
+                                maxLines: 2,
                               ),
                             ],
                           ),
@@ -245,7 +253,6 @@ class DetailOrderPage extends StatelessWidget {
                           top: ScreenUtil().setHeight(4),
                           left: ScreenUtil().setWidth(20),
                           right: ScreenUtil().setWidth(10)),
-                      height: ScreenUtil().setHeight(50),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
@@ -253,7 +260,7 @@ class DetailOrderPage extends StatelessWidget {
                       width: double.maxFinite,
                       child: Column(
                         children: [
-                          ordered.detailOrdered.discount == null
+                          ordered.detailOrdered.discount == 0
                               ? SizedBox(
                                   height: ScreenUtil().setHeight(1),
                                 )
@@ -262,7 +269,7 @@ class DetailOrderPage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SmallText(
-                                      text: "Giảm giá :",
+                                      text: "Giảm giá:",
                                       color: AppColors.mainBlackColor,
                                     ),
                                     SmallText(

@@ -13,7 +13,7 @@ class ApiClient extends GetConnect implements GetxService {
   Map<String, String> cookies = {};
   ApiClient({required this.appBaseUrl}) {
       baseUrl = appBaseUrl;
-      timeout = Duration(seconds: 30);
+      timeout = const Duration(seconds: 30);
   }
     Future<http.Response>  Get(String uri) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -25,7 +25,19 @@ class ApiClient extends GetConnect implements GetxService {
         );
         return response;
     }
-    Future<http.Response> postOrder(String apiUrl,Order order) async {
+    Future<http.Response> PutData(String uri, data) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token=prefs?.getString("token");
+      http.Response response=await http.put(
+          Uri.parse(uri),
+          body: jsonEncode(data),
+          headers: _mainHeaders(token)
+      );
+      print(response.statusCode);
+      return response;
+    }
+    Future<http.Response> postOrder(String apiUrl,order) async {
+    print(jsonEncode(order));
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token=prefs?.getString("token");
       http.Response response=await http.post(
@@ -33,6 +45,8 @@ class ApiClient extends GetConnect implements GetxService {
           body: jsonEncode(order),
           headers: _mainHeaders(token)
       );
+      print("return ordered");
+      print(response.body);
       return response;
     }
     Future<http.Response> SignUp(data,apiUrl) async{

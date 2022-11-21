@@ -24,7 +24,7 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
-    var note = TextEditingController(text: "");
+    var note = TextEditingController(text: "Không có ghi chú");
     int total = 0;
     return Scaffold(
         appBar: AppBar(

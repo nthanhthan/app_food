@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../controllers/user_controller.dart';
+import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
 import '../auth/sign_in_page.dart';
 
@@ -27,12 +28,34 @@ class ProfileUser extends StatelessWidget {
             margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
             child: Column(
               children: [
-                AppIcon(
-                  icon: Icons.person,
-                  backgroundColor: AppColors.mainColor,
-                  iconColor: Colors.white,
-                  iconSize: 80,
-                  size: 130,
+                Stack(
+                 alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      child: AppIcon(
+                        icon: Icons.person,
+                        backgroundColor: AppColors.mainColor,
+                        iconColor: Colors.white,
+                        iconSize: 80,
+                        size: 130,
+                      ),
+                    ),
+                    Positioned(
+                        top: ScreenUtil().setHeight(100),
+                        right: 10,
+                        child: GestureDetector(
+                          onTap: (){
+                            Get.toNamed(RouteHelper.editProfile);
+                          },
+                          child: Container(
+                            child: Row(
+                              children: const [
+                                AppIcon(icon: Icons.edit,backgroundColor: Color(0xFFFBC78D), size: 30,iconSize: 25,),
+                              ],
+                            ),
+                          ),
+                        ))
+                  ],
                 ),
                 SizedBox(
                   height: ScreenUtil().setHeight(20),

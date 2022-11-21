@@ -5,7 +5,6 @@ import 'package:app_food/models/voucher_model.dart';
 import 'package:app_food/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import 'myOrdered_controller.dart';
 
 class PaymentController extends GetxController{
@@ -65,6 +64,7 @@ class PaymentController extends GetxController{
   }
   Future<bool> confirmOrder(String note) async {
     _isLoaded=false;
+    print(voucherID);
     bool checkOrder=await paymentRepo.confirmOrder(voucherID,note);
     if(checkOrder){
       await Get.find<MyOrderController>().getListMyOrdered();

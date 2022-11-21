@@ -44,10 +44,9 @@ class PaymentRepo extends GetxService{
          print(response.statusCode);
        }
      }
-
   }
   Future<bool> confirmOrder(voucherID,String note) async {
-    var fullApiUrl ="https://takefoodorderuser.azurewebsites.net/CreateOrder";
+    var fullApiUrl ="https://takefooduserorder.azurewebsites.net/CreateOrder";
   List<CartModel> carts=cart.getItems;
   if(carts.length==0){
     showCustomSnackBar("Vui lòng chọn món",title: "Không hợp lệ");

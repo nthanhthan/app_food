@@ -8,6 +8,7 @@ class DetailOrdered {
   String? note;
   int? total;
   int? discount;
+  String? orderDate;
   late List<Food>? foods;
   List<Food>? get listFoods=>foods;
 
@@ -20,6 +21,8 @@ class DetailOrdered {
         this.state,
         this.note,
         this.total,
+        this.discount,
+        this.orderDate,
         this.foods});
 
   DetailOrdered.fromJson(Map<String, dynamic> json) {
@@ -31,6 +34,8 @@ class DetailOrdered {
     state = json['state'];
     note = json['note'];
     total = json['total'];
+    discount=json['discount'];
+    orderDate=json['orderDate'];
     if (json['foods'] != null) {
       foods = <Food>[];
       json['foods'].forEach((v) {
@@ -49,6 +54,8 @@ class DetailOrdered {
     data['state'] = this.state;
     data['note'] = this.note;
     data['total'] = this.total;
+    data['discount']=this.discount;
+    data['orderDate']=this.orderDate;
     if (this.foods != null) {
       data['foods'] = this.foods!.map((v) => v.toJson()).toList();
     }

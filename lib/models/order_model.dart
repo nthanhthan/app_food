@@ -18,7 +18,8 @@ class Order {
         this.paymentMethod,
         this.deliveryMode,
         this.storeId,
-        this.foodOrder});
+        this.foodOrder
+      });
 
   Order.fromJson(Map<String, dynamic> json) {
     address = json['address'];

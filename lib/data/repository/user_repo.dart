@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:app_food/data/api/api_client.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../models/user_model.dart';
 
 class UserRepo extends GetxService{
@@ -39,5 +37,16 @@ class UserRepo extends GetxService{
       print(response.statusCode);
     }
     return user;
+  }
+  Future<bool> editProfile(data, address) async {
+    var fullApiUrlUpdateInfo ="https://takefoodauthentication.azurewebsites.net/UpdateInfo";
+    var fullApiUrlAddress ="https://takefoodauthentication.azurewebsites.net/AddAddress";
+    http.Response response=await apiClient.PutData(fullApiUrlUpdateInfo, data);
+    http.Response res=await apiClient.postOrder(fullApiUrlAddress, address);
+    if(response.statusCode==200 && res.statusCode==200){
+      return true;
+    }else{
+     return false;
+    }
   }
 }
