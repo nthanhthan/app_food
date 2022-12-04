@@ -8,6 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/detailOrdered_model.dart';
 import '../models/myOrdered_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/review_model.dart';
+import '../models/user_model.dart';
 class MyOrderController extends GetxController{
   final MyOrderedRepo myOrderedRepo;
   List<MyOrdered> listMyOrdered=[];
@@ -19,6 +22,7 @@ class MyOrderController extends GetxController{
   List<Toppings> listTopping=[];
   String dateOrdered="";
   String? nameUser="";
+  Review? review;
   MyOrderController({required this.myOrderedRepo,required this.sharedPreferences});
   Future<void> getListMyOrdered() async {
     listMyOrdered = [];
@@ -32,16 +36,26 @@ class MyOrderController extends GetxController{
      }
   }
   }
+  getReviewByorderId(orderedId) async {
+    review=await myOrderedRepo.getReviewByOrderId(orderedId);
+    update();
+  }
   Future<bool> getDetailOrdered(orderedID) async {
     _isLoaded=false;
     http.Response response=await myOrderedRepo.getDetailOrdered(orderedID);
+
     if(response.statusCode==200){
-      nameUser=sharedPreferences.getString("nameUser");
+      if(sharedPreferences.containsKey("user")){
+        String? getuser=sharedPreferences.getString("user");
+         User user=User.fromJson(jsonDecode(getuser!));
+         nameUser=user.name;
+      }else{
+        nameUser="No Name";
+      }
       detailOrdered = null;
       print(response.body);
       detailOrdered = DetailOrdered.fromJson(jsonDecode(response.body));
       // DateTime now = DateTime.now();
-
       DateTime parseDate =
       new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(detailOrdered.orderDate,true);
       var inputDate = DateTime.parse(parseDate.toString());
@@ -59,6 +73,12 @@ class MyOrderController extends GetxController{
       return true;
     }
     return false;
+  }
+  Future<bool> reviewOrder(data ) async {
+    print(data);
+    bool check=await myOrderedRepo.revieworder(data);
+    return check;
+
   }
 
 }

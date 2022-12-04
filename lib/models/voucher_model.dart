@@ -29,9 +29,9 @@ class VoucherStore {
     name = json['name'];
     code = json['code'];
     description = json['description'];
-    minSpend = json['minSpend'];
-    amount = json['amount'] ;
-    maxDiscount = json['maxDiscount'];
+    minSpend = json['minSpend'].toInt();
+    amount = json['amount'].toInt() ;
+    maxDiscount = json['maxDiscount'].toInt();
     startDate = json['startDate'];
     endDate = json['endDate'];
     createDate = json['createDate'];

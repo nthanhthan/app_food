@@ -2,8 +2,11 @@ import 'package:app_food/pages/auth/DetailOrdered_page.dart';
 import 'package:app_food/pages/cart/cart_page.dart';
 import 'package:app_food/pages/cart/payment_page.dart';
 import 'package:app_food/pages/cart/voucher_page.dart';
+import 'package:app_food/pages/food/comment_store.dart';
 import 'package:app_food/pages/food/store.dart';
+import 'package:app_food/pages/home/search_page.dart';
 import 'package:app_food/pages/profile/edit_profile.dart';
+import 'package:app_food/pages/profile/infoUser_Order.dart';
 import 'package:app_food/pages/profile/profile_user.dart';
 import 'package:app_food/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
@@ -26,11 +29,15 @@ class RouteHelper{
   static const String detailOrdered="/detailOrdered_page";
   static const String editProfile="/editProfile_page";
   static const String profile='/profile_page';
+  static const String infoUserOrder='/infoUserOrder_page';
+  static const String searchPage='/search_page';
+  static const String reviewPage='/review_page';
+
 
   static String getInitial()=>'$initial';
   static String getHomePage()=>'$homepage';
   static String getSplashPage()=>'$Splashpage';
-  static String getDetailFood(String storeID)=>'$foodDetail?storeID=$storeID';
+    static String getDetailFood(String storeID)=>'$foodDetail?storeID=$storeID';
   static String getStoreDetail(String storeId)=>'$storeDetail?storeId=$storeId';
   static String getCartPage(String FoodID)=>'$cartPage';
   static String getPaymentPage()=>'$paymentPage';
@@ -39,6 +46,9 @@ class RouteHelper{
   static String getDetailOrdered()=>'$detailOrdered';
   static String getEditProfile()=>'$editProfile';
   static String getProfileUser()=>'$profile';
+  static String getInfoUserOrder()=>'$infoUserOrder';
+  static String getSearchPage()=>'$searchPage';
+  static String getReviewPage()=>'$reviewPage';
   static List<GetPage> routes=[
     GetPage(name: initial, page: ()=>SignInPage()),
     GetPage(name: homepage, page:(){
@@ -76,6 +86,12 @@ class RouteHelper{
     },transition: Transition.rightToLeftWithFade),
     GetPage(name: profile, page: (){
       return ProfileUser();
+    },transition: Transition.rightToLeftWithFade),
+    GetPage(name: infoUserOrder, page: (){
+      return InfoUserOrder();
+    },transition: Transition.rightToLeftWithFade),
+    GetPage(name: reviewPage, page: (){
+      return CommentStore();
     },transition: Transition.rightToLeftWithFade),
   ];
 }

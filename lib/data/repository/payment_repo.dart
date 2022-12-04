@@ -20,7 +20,7 @@ class PaymentRepo extends GetxService{
   PaymentRepo({required this.apiClient,required this.sharedPreferences,required this.cart});
 
   Future<http.Response> getVoucher(id) async {
-    var fullApiUrl ="https://takefoodvoucherservice.azurewebsites.net/GetVoucher?storeId=$id";
+    var fullApiUrl ="${apiClient.appBaseUrl}GetVoucher?storeId=$id";
     return await apiClient.Get(fullApiUrl);
   }
    getUser() async {
@@ -32,7 +32,7 @@ class PaymentRepo extends GetxService{
        userID=user.id;
        phoneNumberUser=user.phone;
      }
-    var fullApiUrl ="https://takefoodauthentication.azurewebsites.net/GetAddress";
+    var fullApiUrl ="${apiClient.appBaseUrl}GetAddress";
      if(sharedPreferences.getString("address") != null){
        addressUser=sharedPreferences.getString("address").toString();
      }else{
@@ -45,13 +45,15 @@ class PaymentRepo extends GetxService{
        }
      }
   }
-  Future<bool> confirmOrder(voucherID,String note) async {
-    var fullApiUrl ="https://takefooduserorder.azurewebsites.net/CreateOrder";
+  Future<bool> confirmOrder(voucherID,String note, String addressUser, String phoneNumberOrder) async {
+    var fullApiUrl ="${apiClient.appBaseUrl}CreateOrder";
   List<CartModel> carts=cart.getItems;
   if(carts.length==0){
     showCustomSnackBar("Vui lòng chọn món",title: "Không hợp lệ");
     return false;
   }
+  print(phoneNumberOrder);
+  print(voucherID);
   List<FoodOrder> foodOrder=[];
   List<ToppingOrder> toppingOrder=[];
   carts.forEach((element) {
@@ -71,7 +73,7 @@ class PaymentRepo extends GetxService{
       address: addressUser,
       addressId: "",
       note: note,
-      phoneNumber: phoneNumberUser,
+      phoneNumber: phoneNumberOrder ?? phoneNumberUser,
       voucherId: voucherID,
       paymentMethod: "Tien mat",
       deliveryMode: "nhan tai cua hang",

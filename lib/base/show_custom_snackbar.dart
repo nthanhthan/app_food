@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void showCustomSnackBar(String message,
-    {bool isError = true, String title = "Error"}) {
+    {bool isError = true, String title = "Error",bool type=true}) {
   Get.snackbar(title, message,
       titleText: SmallText(
         text: title,
@@ -15,6 +15,9 @@ void showCustomSnackBar(String message,
       ),
     colorText: Colors.white,
     snackPosition: SnackPosition.TOP,
-    backgroundColor: Colors.redAccent
+    backgroundColor: type?Colors.redAccent:Colors.blueAccent,
+     onTap: (snack){
+
+     }
   );
 }

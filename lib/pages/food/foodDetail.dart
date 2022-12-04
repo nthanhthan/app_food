@@ -180,13 +180,6 @@ class _FoodDetailState extends State<FoodDetail> {
                                           shrinkWrap: true,
                                           itemCount: topping.toppingFood.isEmpty?1:topping.toppingFood.length,
                                           itemBuilder: (context, index) {
-                                           // var _isSelectedBefore=topping.listTopping.contains(topping.toppingFood[index].iD);
-                                           //  if(_isSelectedBefore ){
-                                           //    if(!listtopping.contains(topping.toppingFood[index])){
-                                           //      _selectedIndexs.add(index);
-                                           //    }
-                                           //    listtopping.add(topping.toppingFood[index]);
-                                           //  }
                                             var _isSelected=_selectedIndexs.contains(index);
 
                                             return Container(
@@ -225,7 +218,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                _isSelected?AppIcon(icon: Icons.check_outlined,iconColor: AppColors.mainColor,size: ScreenUtil().setWidth(20),):Container(),
+                                                                _isSelected?AppIcon(icon: Icons.check_outlined,iconColor: Colors.white70,size: ScreenUtil().setWidth(20),backgroundColor: AppColors.mainColor,):Container(),
                                                                 BigText(text: topping.toppingFood[index].name!,size: ScreenUtil().setSp(10),),
                                                               ],
                                                             ),

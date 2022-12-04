@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:app_food/base/show_custom_snackbar.dart';
+import 'package:app_food/controllers/recommended_storenear_controller.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'cart_controller.dart';
 
 class UserController extends GetxController{
   final UserRepo userRepo;
@@ -19,19 +22,19 @@ class UserController extends GetxController{
      print("Register success");
      return true;
     }else{
-      print("Failed Register");
+      showCustomSnackBar("Register Failed",title: "Register");
       return false;
     }
   }
   Future<bool> LogOut(){
     return userRepo.LogOut();
   }
-  getUser() async {
+    getUser() async {
     address="";
     SharedPreferences prefs = await SharedPreferences.getInstance();
-   user=await userRepo.getUser();
-   address=prefs.getString("address")!;
-   update();
+    user=await userRepo.getUser();
+    address=prefs.getString("address")!;
+    update();
   }
   Future<bool> editProfile(data, address)async {
     String? getuser;
@@ -46,8 +49,8 @@ class UserController extends GetxController{
         user.phone=data['phoneNumber'];
         String userStorage=jsonEncode(user);
         prefs.setString("user", userStorage);
-        prefs.setString("address",address['address']);
-         getUser();
+        await getUser();
+        update();
         return true;
       }
     }else{
@@ -60,10 +63,15 @@ class UserController extends GetxController{
     http.Response response=(await userRepo.SignIn(data, url));
     if(response.statusCode==200){
       user=User.fromJson(jsonDecode(response.body));
+      prefs.setString("token", user.accessToken);
+      prefs.setString("refreshToken", user.refreshToken);
       String userStorage=jsonEncode(user);
       prefs.setString("user", userStorage);
       var checkRole=user.getRoles!.contains("User");
       if(checkRole==true){
+        Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
+        Get.find<CartController>().getCartData();
+        getUser();
         return true;
       }else {
         return false;

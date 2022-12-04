@@ -1,6 +1,13 @@
+import 'package:app_food/controllers/recommended_storenear_controller.dart';
+import 'package:app_food/pages/home/search_page.dart';
+import 'package:app_food/routes/route_helper.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../../models/store_model.dart';
 import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/big_text.dart';
@@ -41,15 +48,21 @@ class _MainFoodPageState extends State<MainFoodPage> {
                     ],
                   ),
                   Center(
-                    child: Container(
-                      width: ScreenUtil().setWidth(35),
-                      height: ScreenUtil().setHeight(30),
-                      child: Icon(Icons.search,
-                          color: Colors.white, size: ScreenUtil().setHeight(25)),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().radius(10)),
-                        color: AppColors.mainColor,
+                    child: GestureDetector(
+                      onTap: () async{
+                        List storeList=Get.find<RecommendedStoreNearController>().storeNearList;
+                        showSearch(context: context, delegate: SearchStore(allStore: storeList,storeSuggestion:storeList));
+                      },
+                      child: Container(
+                        width: ScreenUtil().setWidth(35),
+                        height: ScreenUtil().setHeight(30),
+                        child: Icon(Icons.search,
+                            color: Colors.white, size: ScreenUtil().setHeight(25)),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().radius(10)),
+                          color: AppColors.mainColor,
+                        ),
                       ),
                     ),
                   )

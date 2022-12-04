@@ -9,14 +9,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-
 import '../../controllers/cart_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../widgets/big_text.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
-
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
@@ -24,7 +22,7 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
-    var note = TextEditingController(text: "Không có ghi chú");
+    var note = TextEditingController();
     int total = 0;
     return Scaffold(
         appBar: AppBar(
@@ -62,10 +60,16 @@ class _PaymentPageState extends State<PaymentPage> {
                           ),
                           GestureDetector(
                             onTap: () {},
-                            child: SmallText(
-                                text: "Thay đổi",
-                                color: AppColors.mainColor,
-                                fontWeight: "bold"),
+                            child: GestureDetector(
+                              onTap: () async {
+                                final result=await Get.toNamed(RouteHelper.infoUserOrder);
+                                infoUser.editInfoUser(result);
+                              },
+                              child: SmallText(
+                                  text: "Thay đổi",
+                                  color: AppColors.mainColor,
+                                  fontWeight: "bold"),
+                            ),
                           )
                         ],
                       ),
@@ -125,55 +129,60 @@ class _PaymentPageState extends State<PaymentPage> {
                                   : cartStorage.getItems.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  height: ScreenUtil().setHeight(50),
+                                  //height: ScreenUtil().setHeight(100),
                                   width: double.maxFinite,
                                   decoration: BoxDecoration(
                                       border: Border(
                                           bottom: BorderSide(
                                               color: AppColors.borderBottom,
                                               width: 1.0))),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SmallText(
-                                            text:
-                                                "${cartStorage.getItems[index].quantity}x",
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(10),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                             children: [
                                               SmallText(
-                                                text: cartStorage
-                                                    .getItems[index].foodName!,
+                                                text:
+                                                "${cartStorage.getItems[index].quantity}x",
                                                 color: Colors.black,
+                                                fontWeight: "bold",
+                                                size: ScreenUtil().setSp(8),
+                                              ),
+                                              SizedBox(
+                                                width: ScreenUtil().setWidth(10),
                                               ),
                                               SmallText(
-                                                text: cartStorage.getTopping(
-                                                    cartStorage.getItems[index]
-                                                        .foodId!)!,
+                                                text:
+                                                cartStorage.getItems[index].foodName!,
+                                                fontWeight: "bold",
+                                                size: ScreenUtil().setSp(11),
+                                                color: Colors.black,
                                               ),
                                             ],
                                           ),
+                                          SmallText(
+                                            text: cartStorage
+                                                .getTotalMoneyItems(cartStorage
+                                                .getItems[index].foodId!)
+                                                .toString()
+                                                .toVND(unit: "đ"),
+                                            fontWeight: "bold",
+                                            color: Colors.black,
+                                          )
                                         ],
                                       ),
-                                      SmallText(
-                                        text: cartStorage
-                                            .getTotalMoneyItems(cartStorage
-                                                .getItems[index].foodId!)
-                                            .toString()
-                                            .toVND(unit: "đ"),
-                                        color: Colors.black,
-                                      )
+                                  SizedBox(height: ScreenUtil().setHeight(5)),
+                                  SmallText(
+                                    text: cartStorage.getTopping(
+                                        cartStorage.getItems[index]
+                                            .foodId!)!,maxLines: 5,color: AppColors.paraColor,size: ScreenUtil().setSp(8),
+                                            ),
                                     ],
                                   ),
                                 );

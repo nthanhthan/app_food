@@ -80,13 +80,13 @@ class CartPage extends StatelessWidget {
                         itemBuilder: (_,index){
                           Get.find<CartController>().getTotalMoneyItems(cartController.getItems[index].foodId);
                           return Container(
-                            height: ScreenUtil().setHeight(100),
+                           // height: ScreenUtil().setHeight(100),
                             width: double.maxFinite,
                             margin: EdgeInsets.only(top:ScreenUtil().setHeight(10)),
                             child: Row(
                               children: [
                                 Container(
-                                  height: ScreenUtil().setWidth(100),
+                                 // height: ScreenUtil().setWidth(100),
                                   width: ScreenUtil().setWidth(100),
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
@@ -108,14 +108,14 @@ class CartPage extends StatelessWidget {
                                 ),
                                 SizedBox(width: ScreenUtil().setWidth(5),),
                                 Expanded(child: Container(
-                                  height: ScreenUtil().setHeight(100),
+                                  //height: ScreenUtil().setHeight(100),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       BigText(text: cartController.getItems[index].foodName!),
                                       cartController.getTopping(cartController.getItems[index].foodId!)==""
-                                          ? Container(): SmallText(text: cartController.getTopping(cartController.getItems[index].foodId!)!,maxLines: 1,),
+                                          ? Container(): SmallText(text: cartController.getTopping(cartController.getItems[index].foodId!)!,maxLines: 5, color: AppColors.paraColor,),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [

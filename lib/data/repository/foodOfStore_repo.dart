@@ -7,10 +7,13 @@ class FoodOfStoreRepo extends GetxService {
   FoodOfStoreRepo({required this.apiClient});
 
   Future<http.Response> getAllFoodOfStore(id, lat, lng) async {
-    var fullApiUrl =
-        "${"https://takefoodstoreservice.azurewebsites.net/GetStore?storeId=" + id + "&lat=" + lat}&lng=" +
-            lng;
+    var fullApiUrl ="${apiClient.appBaseUrl+ "GetStore?storeId=" + id + "&lat=" + lat}lng=" +lng;
 
+
+    return await apiClient.Get(fullApiUrl);
+  }
+  Future<http.Response> getAllCommentStore(id,index) async {
+    var fullApiUrl ="${apiClient.appBaseUrl+ "GetReviews?index=$index"}&storeId=$id";
     return await apiClient.Get(fullApiUrl);
   }
 }

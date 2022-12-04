@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:app_food/helper/signalHelper.dart' as socket;
 import '../../controllers/recommended_storenear_controller.dart';
 import '../../controllers/user_controller.dart';
 
@@ -23,10 +23,7 @@ class _SplashSreeenState extends State<SplashSreeen> with TickerProviderStateMix
   Future<void > _loadResource()async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
      token= prefs.getString("token");
-     if(token!=null){
-       Get.find<UserController>().getUser();
-     }
-     print(token);
+
   }
   @override
  void  initState()  {

@@ -28,10 +28,13 @@ class UserRepo extends GetxService{
       getuser=prefs.getString("user");
       user=User.fromJson(jsonDecode(getuser!));
     }
-    var fullApiUrl ="https://takefoodauthentication.azurewebsites.net/GetAddress";
+    var fullApiUrl ="${apiClient.appBaseUrl}GetAddress";
     http.Response response=await apiClient.Get(fullApiUrl);
     if(response.statusCode==200){
-      address=jsonDecode(response.body).toString()=="[]"? "Chưa có địa chỉ":jsonDecode(response.body).toString();
+      address="";
+      var data=jsonDecode(response.body);
+      address=data.toString()=="[]"? "Chưa có địa chỉ":data.last['address'];
+      print("address$address");
       prefs.setString("address", address);
     }else{
       print(response.statusCode);
@@ -39,8 +42,8 @@ class UserRepo extends GetxService{
     return user;
   }
   Future<bool> editProfile(data, address) async {
-    var fullApiUrlUpdateInfo ="https://takefoodauthentication.azurewebsites.net/UpdateInfo";
-    var fullApiUrlAddress ="https://takefoodauthentication.azurewebsites.net/AddAddress";
+    var fullApiUrlUpdateInfo ="${apiClient.appBaseUrl}UpdateInfo";
+    var fullApiUrlAddress ="${apiClient.appBaseUrl}AddAddress";
     http.Response response=await apiClient.PutData(fullApiUrlUpdateInfo, data);
     http.Response res=await apiClient.postOrder(fullApiUrlAddress, address);
     if(response.statusCode==200 && res.statusCode==200){

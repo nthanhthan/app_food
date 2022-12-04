@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import '../../controllers/myOrdered_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
@@ -134,6 +135,27 @@ class ProfileUser extends StatelessWidget {
                     )),
                 SizedBox(
                   height: ScreenUtil().setHeight(7),
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(7),
+                ),
+                GestureDetector(
+                  onTap: ()  {
+                    Get.find<MyOrderController>().getListMyOrdered();
+                    Get.toNamed(RouteHelper.myOrderPage);
+                  },
+                  child: AccountWidget(
+                      appIcon: const AppIcon(
+                        icon: Icons.history,
+                        backgroundColor: Color(0xFFADC965),
+                        iconColor: Colors.white,
+                        iconSize: 20,
+                        size: 40,
+                      ),
+                      smallText: SmallText(
+                        text: "Lịch sử đặt hàng",
+                        color: AppColors.mainBlackColor,
+                      )),
                 ),
                 GestureDetector(
                   onTap: () async {

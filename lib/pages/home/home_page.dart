@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import '../auth/myordered_page.dart';
 import '../profile/profile_user.dart';
 import 'main_food_page.dart';
 
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       MainFoodPage(),
-      Container(),
+      MyOrderPage(),
       CartPage(),
       ProfileUser()
 

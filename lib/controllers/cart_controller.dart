@@ -115,8 +115,10 @@ class CartController extends GetxController {
         for (var element in element.listFoodTopping) {
           topping="${topping!},${element.name!}";
         }
+        if(topping!="") {
+          topping=topping?.substring(1,topping?.length);
+        }
       }
-
     }
     return topping;
   }

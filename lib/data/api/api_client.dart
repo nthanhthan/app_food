@@ -16,6 +16,7 @@ class ApiClient extends GetConnect implements GetxService {
       timeout = const Duration(seconds: 30);
   }
     Future<http.Response>  Get(String uri) async {
+    print(uri);
       SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token=prefs?.getString("token");
         print(token);
@@ -23,9 +24,11 @@ class ApiClient extends GetConnect implements GetxService {
           Uri.parse(uri),
           headers: _mainHeaders(token)
         );
+    print("Get${response.statusCode}");
         return response;
     }
     Future<http.Response> PutData(String uri, data) async {
+      print(uri);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token=prefs?.getString("token");
       http.Response response=await http.put(
@@ -33,23 +36,24 @@ class ApiClient extends GetConnect implements GetxService {
           body: jsonEncode(data),
           headers: _mainHeaders(token)
       );
-      print(response.statusCode);
+      print("putdata${response.statusCode}");
       return response;
     }
     Future<http.Response> postOrder(String apiUrl,order) async {
-    print(jsonEncode(order));
+      print(apiUrl);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token=prefs?.getString("token");
+
       http.Response response=await http.post(
           Uri.parse(apiUrl),
           body: jsonEncode(order),
           headers: _mainHeaders(token)
       );
-      print("return ordered");
-      print(response.body);
+      print("postOrder${response.statusCode}");
       return response;
     }
     Future<http.Response> SignUp(data,apiUrl) async{
+      print(apiUrl);
       http.Response response= await http.post(
         Uri.parse(apiUrl),
         body: jsonEncode(data),
@@ -59,18 +63,23 @@ class ApiClient extends GetConnect implements GetxService {
 
     }
   Future<http.Response> SignIn(data,apiUrl) async{
+    print(apiUrl);
    // SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response= await http.post(
       Uri.parse(apiUrl),
       body: jsonEncode(data),
       headers: _setHeaders(),
     );
+    print("SignIn${response.statusCode}");
     return response;
   }
   Future<bool> LogOut() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove("token");
+      await prefs.remove("user");
+      await prefs.remove("address");
+      await prefs.remove("nameUser");
     return true;
     }
     catch(e){
@@ -78,6 +87,7 @@ class ApiClient extends GetConnect implements GetxService {
     }
   }
   Future<http.Response> getStoreNear(data,apiUrl) async{
+    print(apiUrl);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token=prefs.getString("token");
     http.Response response= await http.post(
@@ -85,17 +95,18 @@ class ApiClient extends GetConnect implements GetxService {
       body: jsonEncode(data),
       headers: _mainHeaders(token),
     );
-    print(token);
+    print("huhu");
     print(response.statusCode);
     if(response.statusCode==401){
-      var refreshToken="https://takefoodauthentication.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
+      var refreshToken="https://takefoodmobile.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
+      print(refreshToken);
       http.Response res=await http.get(
           Uri.parse(refreshToken),
           headers: _setHeaders()
       );
+      print("token"+res.statusCode.toString());
       if(res.statusCode==200){
         User user=User.fromJson(jsonDecode(res.body));
-        //await prefs.remove("token");
         await prefs.setString("token", user.accessToken!);
       }
       http.Response response= await http.post(
