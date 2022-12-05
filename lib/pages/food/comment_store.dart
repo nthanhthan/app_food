@@ -30,8 +30,8 @@ class CommentStore extends StatelessWidget {
                           return Container(
                             padding: EdgeInsets.only(
                                 top: ScreenUtil().setHeight(4),
-                                left: ScreenUtil().setWidth(20),
-                                right: ScreenUtil().setWidth(10)),
+                                left: ScreenUtil().setWidth(30),
+                                right: ScreenUtil().setWidth(20)),
                             decoration: BoxDecoration(
                               border: Border(
                                   bottom: BorderSide(
@@ -46,6 +46,7 @@ class CommentStore extends StatelessWidget {
                                   text: commentStore
                                       .listCommentStore[index].userName,
                                   color: AppColors.mainColor,
+                                  size: 8,
                                 ),
                                 RatingBar.builder(
                                   initialRating: commentStore
@@ -55,6 +56,7 @@ class CommentStore extends StatelessWidget {
                                   direction: Axis.horizontal,
                                   allowHalfRating: false,
                                   itemCount: 5,
+                                  itemSize: 20,
                                   itemPadding:
                                       EdgeInsets.symmetric(horizontal: 1.0),
                                   itemBuilder: (context, _) => const Icon(

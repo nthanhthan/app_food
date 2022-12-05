@@ -1,14 +1,9 @@
-import 'dart:async';
-import 'package:app_food/pages/home/home_page.dart';
+import 'package:app_food/controllers/myOrdered_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
-import 'package:app_food/widgets/app_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import '../../controllers/myOrdered_controller.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../utils/colors.dart';
-import '../../widgets/small_text.dart';
+import 'myOrderedByType_page.dart';
 
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({Key? key}) : super(key: key);
@@ -17,80 +12,73 @@ class MyOrderPage extends StatefulWidget {
   State<MyOrderPage> createState() => _MyOrderPageState();
 }
 
-class _MyOrderPageState extends State<MyOrderPage> {
+class _MyOrderPageState extends State<MyOrderPage>
+    with SingleTickerProviderStateMixin {
+  late TabController controller;
   @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 4, vsync: this);
+    controller.addListener(() {
+      setState(() {
 
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(RouteHelper.homepage, (route) => false),
-          ),
-          backgroundColor:AppColors.mainColor,
-          title: const Center(child: Text("Đơn hàng của tôi")),
-        ),
-        body: SingleChildScrollView(
-            child: GetBuilder<MyOrderController>(builder: (myOrdered)   {
-              return myOrdered.isLoaded? ListView.builder( padding:
-              EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount:myOrdered.listMyOrdered.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: ()  {
-                         myOrdered.getDetailOrdered(myOrdered.listMyOrdered[index].orderId);
-                         myOrdered.getReviewByorderId(myOrdered.listMyOrdered[index].orderId);
+    return GetBuilder<MyOrderController>(builder: (myOrdered){
+      return Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              controller: controller,
+              labelStyle: TextStyle(fontSize: 10),
+              physics: BouncingScrollPhysics(),
 
-                        Get.toNamed(RouteHelper.detailOrdered);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(4),
-                            left: ScreenUtil().setWidth(20),
-                            right: ScreenUtil().setWidth(10)),
-                        height: ScreenUtil().setHeight(120),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: AppColors.borderBottom, width: 2.0)),
-                        ),
-                        width: double.maxFinite,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                AppIcon(icon: Icons.check,size: ScreenUtil().setHeight(20),backgroundColor: Colors.grey,iconColor: Colors.white,iconSize: ScreenUtil().setHeight(15),),
-                                SizedBox(width: ScreenUtil().setWidth(8),),
-                                SmallText(text: myOrdered.listMyOrdered[index].state!,color: AppColors.mainBlackColor,size: ScreenUtil().setSp(8),),
-                              ],
-                            ),
-                            
-                            SmallText(text: myOrdered.listMyOrdered[index].storeName!, color: AppColors.mainBlackColor,size: ScreenUtil().setSp(12),maxLines: 1,),
-                            SmallText(text:"${myOrdered.listMyOrdered[index].foodQuantity}món",fontWeight: "bold",size: ScreenUtil().setSp(8),),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SmallText(text: myOrdered.listMyOrdered[index].total.toString().toVND(unit: "đ"), color: AppColors.mainBlackColor,fontWeight: "bold",size: ScreenUtil().setSp(10),),
-                                SmallText(text: "Xem chi tiết", color: AppColors.mainColor,fontWeight: "bold",size: ScreenUtil().setSp(8),)
-                              ],
-                            )
-
-                          ],
-                        ),
-                      ),
-                    );
-                  }):Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.mainColor,
+              isScrollable: true,
+              tabs: const [
+                Tab(text: "Đã đặt"),
+                Tab(
+                  text: "Đang xử lí",
                 ),
-              );
-            })
+                Tab(
+                  text: "Đang giao",
+                ),
+                Tab(
+                  text: "Đã giao",
+                ),
+              ],
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteHelper.homepage, (route) => false),
+            ),
+            backgroundColor: AppColors.mainColor,
+            title: Text("Đơn hàng của tôi"),
+            centerTitle: true,
+          ),
+          body: Navigator(
+            onGenerateRoute: (_) => MaterialPageRoute(
+              builder: (_) => TabBarView(
+                controller: controller,
+                children: [
+                  MyOrderedByType(data: myOrdered.listMyOrderedOrdered),
+                  MyOrderedByType(data: myOrdered.listMyOrderedProcessing),
+                  MyOrderedByType(data: myOrdered.listMyOrderedDelivering),
+                  MyOrderedByType(data: myOrdered.listMyOrderedDelivered),
 
-        )
-    );
+                ],
+              ),
+            ),
+          ));
+    });
   }
 }

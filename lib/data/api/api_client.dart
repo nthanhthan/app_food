@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:app_food/models/order_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,7 +95,7 @@ class ApiClient extends GetConnect implements GetxService {
     print("huhu");
     print(response.statusCode);
     if(response.statusCode==401){
-      var refreshToken="https://takefoodmobile.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
+      var refreshToken="https://takefoodauthentication.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
       print(refreshToken);
       http.Response res=await http.get(
           Uri.parse(refreshToken),

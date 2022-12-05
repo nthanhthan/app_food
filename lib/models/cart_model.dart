@@ -13,7 +13,6 @@ class CartModel {
   List<ListTopping> get listFoodTopping=>_listFoodTopping;
   FoodTopping? food;
 
-
   CartModel({
     this.storeID,
     this.foodId,

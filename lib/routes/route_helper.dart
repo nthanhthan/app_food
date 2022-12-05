@@ -4,7 +4,6 @@ import 'package:app_food/pages/cart/payment_page.dart';
 import 'package:app_food/pages/cart/voucher_page.dart';
 import 'package:app_food/pages/food/comment_store.dart';
 import 'package:app_food/pages/food/store.dart';
-import 'package:app_food/pages/home/search_page.dart';
 import 'package:app_food/pages/profile/edit_profile.dart';
 import 'package:app_food/pages/profile/infoUser_Order.dart';
 import 'package:app_food/pages/profile/profile_user.dart';

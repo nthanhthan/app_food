@@ -416,7 +416,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                               ],
                             ),
                           ),
-                          Container(
+                          ordered.detailOrdered.state=="Delivered"?Container(
                             padding: EdgeInsets.only(
                                 top: ScreenUtil().setHeight(4),
                                 left: ScreenUtil().setWidth(20),
@@ -432,6 +432,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                   direction: Axis.horizontal,
                                   allowHalfRating: false,
                                   itemCount: 5,
+                                  itemSize: 30,
                                   itemPadding:
                                       EdgeInsets.symmetric(horizontal: 4.0),
                                   itemBuilder: (context, _) => const Icon(
@@ -574,9 +575,9 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                 )
                               ],
                             ),
-                          )
+                          ):Container()
                         ],
-                      ),
+                      )
                     )
                   ],
                 ))
