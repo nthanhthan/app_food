@@ -95,7 +95,7 @@ class ApiClient extends GetConnect implements GetxService {
     print("huhu");
     print(response.statusCode);
     if(response.statusCode==401){
-      var refreshToken="https://takefoodauthentication.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
+      var refreshToken="https://takefood-apigateway-mobile.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
       print(refreshToken);
       http.Response res=await http.get(
           Uri.parse(refreshToken),

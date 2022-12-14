@@ -105,10 +105,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () async {
-                   bool check=await Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.073877", "108.149892");
-                   if(check){
+                    Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.073877", "108.149892");
                      Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeNearList[index].storeId!));
-                   }
                   },
                   child: Container(
                     margin: EdgeInsets.only(
@@ -207,11 +205,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     return Transform(
       transform: matrix,
       child: GestureDetector(
-        onTap: () async {
-          bool check=await Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeId!, "16.073877", "108.149892");
-          if(check){
-            Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeId!));
-          }
+        onTap: () {
+          Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeId!, "16.073877", "108.149892");
+          Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeId!));
         },
         child: Stack(
           children: [
@@ -237,7 +233,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(ScreenUtil().radius(25)),
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Color(0xFFe8e8e8),
                           blurRadius: 5.0,

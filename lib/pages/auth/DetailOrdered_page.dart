@@ -426,7 +426,25 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                             child: Column(
                               children: [
                                 SmallText(text: "Đánh giá đơn hàng"),
-                                RatingBar.builder(
+                                ordered.detailOrdered.state=="Delivered"?RatingBar.builder(
+                                  initialRating: ordered.review!.star!.toDouble(),
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  itemCount: 5,
+                                  itemSize: 20,
+                                  tapOnlyMode: true,
+                                  ignoreGestures: true,
+                                  itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 1.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    //ratingStar=rating.toInt();
+                                  },
+                                ):RatingBar.builder(
                                   initialRating: ratingStar!.toDouble(),
                                   minRating: 1,
                                   direction: Axis.horizontal,
@@ -446,6 +464,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                 TextField(
                                   controller: rateText,
                                   obscureText: false,
+                                  enabled: ordered.detailOrdered.state=="Delivered"?false:true,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                     hintText: "Thêm nhận xét",

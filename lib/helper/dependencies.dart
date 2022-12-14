@@ -20,7 +20,7 @@ Future<void> init()async {
   //await sharePreferences.remove("Cart-list");
   Get.lazyPut(()=>sharePreferences);
   //api client
-  Get.lazyPut(() =>ApiClient(appBaseUrl: "https://takefoodmobile.azurewebsites.net/"));
+  Get.lazyPut(() =>ApiClient(appBaseUrl: "https://takefood-apigateway-mobile.azurewebsites.net/"));
   //repo
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
   //controllers

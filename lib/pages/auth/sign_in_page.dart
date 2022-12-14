@@ -1,5 +1,6 @@
 
 import 'package:app_food/pages/home/home_page.dart';
+import 'package:app_food/routes/route_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -81,11 +82,7 @@ class SignInPage extends StatelessWidget {
                   onTap: () async {
                     var signup=await _login();
                     if(signup==true){
-                      Get.to(()=>HomePage());
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const HomePage()),
-                      // );
+                      Get.offNamed(RouteHelper.homepage);
                     }else{
                       print("SAI");
                     }

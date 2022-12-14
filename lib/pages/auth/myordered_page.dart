@@ -20,9 +20,7 @@ class _MyOrderPageState extends State<MyOrderPage>
     super.initState();
     controller = TabController(length: 4, vsync: this);
     controller.addListener(() {
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
@@ -34,14 +32,13 @@ class _MyOrderPageState extends State<MyOrderPage>
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<MyOrderController>(builder: (myOrdered){
+    return GetBuilder<MyOrderController>(builder: (myOrdered) {
       return Scaffold(
           appBar: AppBar(
             bottom: TabBar(
               controller: controller,
               labelStyle: TextStyle(fontSize: 10),
               physics: BouncingScrollPhysics(),
-
               isScrollable: true,
               tabs: const [
                 Tab(text: "Đã đặt"),
@@ -70,11 +67,34 @@ class _MyOrderPageState extends State<MyOrderPage>
               builder: (_) => TabBarView(
                 controller: controller,
                 children: [
-                  MyOrderedByType(data: myOrdered.listMyOrderedOrdered),
-                  MyOrderedByType(data: myOrdered.listMyOrderedProcessing),
-                  MyOrderedByType(data: myOrdered.listMyOrderedDelivering),
-                  MyOrderedByType(data: myOrdered.listMyOrderedDelivered),
-
+                  myOrdered.isLoaded
+                      ? MyOrderedByType(data: myOrdered.listMyOrderedOrdered)
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        ),
+                  myOrdered.isLoaded
+                      ? MyOrderedByType(data: myOrdered.listMyOrderedProcessing)
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        ),
+                  myOrdered.isLoaded
+                      ? MyOrderedByType(data: myOrdered.listMyOrderedDelivering)
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        ),
+                  myOrdered.isLoaded
+                      ? MyOrderedByType(data: myOrdered.listMyOrderedDelivered)
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        ),
                 ],
               ),
             ),

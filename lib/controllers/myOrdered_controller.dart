@@ -29,17 +29,24 @@ class MyOrderController extends GetxController {
       {required this.myOrderedRepo, required this.sharedPreferences});
   Future<void> getListMyOrdered() async {
     listMyOrdered = [];
+    listMyOrderedOrdered = [];
+    listMyOrderedProcessing = [];
+     listMyOrderedDelivering = [];
+     listMyOrderedDelivered = [];
     for (int i = 1;; i++) {
       List<MyOrdered> ordered = await myOrderedRepo.getMyOrdered(i);
+      listMyOrdered=[];
       listMyOrdered.addAll(ordered);
       getListMyOrderedByType();
       if (ordered.length < 10) {
         break;
       }
+      update();
     }
   }
 
   getListMyOrderedByType() {
+    _isLoaded=false;
     if (listMyOrdered.isNotEmpty) {
       for (var element in listMyOrdered) {
         if (element.state == "Ordered") {
@@ -56,10 +63,12 @@ class MyOrderController extends GetxController {
         }
       }
     }
+    _isLoaded=true;
   }
 
   getReviewByorderId(orderedId) async {
     review = await myOrderedRepo.getReviewByOrderId(orderedId);
+    update();
   }
 
   Future<bool> getDetailOrdered(orderedID) async {

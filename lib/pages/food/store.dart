@@ -1,16 +1,15 @@
+import 'package:app_food/controllers/foodDetail_controller.dart';
 import 'package:app_food/controllers/foodOfStore_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
+import 'package:app_food/utils/colors.dart';
+import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/big_text.dart';
+import 'package:app_food/widgets/icon_and_text_widget.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../controllers/foodDetail_controller.dart';
-import '../../utils/colors.dart';
-import '../../widgets/app_icon.dart';
-import '../../widgets/icon_and_text_widget.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class StorePage extends StatelessWidget {
@@ -24,7 +23,7 @@ class StorePage extends StatelessWidget {
       body:
         Column(children: [
           GetBuilder<FoodOfStoreController>(builder: (foodStore){
-            return  Container(
+            return  foodStore.isLoaded?Container(
               height: ScreenUtil().setHeight(320),
               child: Stack(
                 children: [
@@ -136,10 +135,10 @@ class StorePage extends StatelessWidget {
                   ),
                 ],
               ),
-            );
+            ):Container(height: ScreenUtil().setHeight(320),);
           }),
           GetBuilder<FoodOfStoreController>(builder: (foodsStore){
-            return Container(
+            return foodsStore.isLoaded?Container(
               margin: EdgeInsets.only(
                 left: ScreenUtil().setWidth(10),
                 right: ScreenUtil().setWidth(10),
@@ -180,10 +179,10 @@ class StorePage extends StatelessWidget {
                   ],
                 ),
               ),
-            );
+            ):Container(    height: ScreenUtil().setWidth(60),);
           }),
           GetBuilder<FoodOfStoreController>(builder: (foodsStore){
-            return  Expanded(
+            return  foodsStore.isLoaded?Expanded(
                 child: SingleChildScrollView(
                   child: ListView.builder(
                       padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
@@ -257,11 +256,6 @@ class StorePage extends StatelessWidget {
                                       foodsStore.foodOfStoreList[index].imageUrl!,
                                       errorBuilder:
                                           (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        // Appropriate logging or analytics, e.g.
-                                        // myAnalytics.recordError(
-                                        //   'An error occurred loading "https://example.does.not.exist/image.jpg"',
-                                        //   exception,
-                                        //   stackTrace,
                                         // );
                                         return const Text("...");
                                       },
@@ -273,7 +267,11 @@ class StorePage extends StatelessWidget {
                           ),
                         );
                       }),
-                ));
+                )):Center(
+                child: CircularProgressIndicator(
+                color: AppColors.mainColor,
+              ),
+            );
           }),
 
         ]),

@@ -1,9 +1,6 @@
-import 'package:app_food/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../controllers/foodOfStore_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';

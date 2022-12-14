@@ -16,11 +16,12 @@ class FoodOfStoreController extends GetxController{
   bool _isLoaded=false;
   bool get isLoaded=>_isLoaded;
   Future<bool> getAllFoodOfStore(id,lat,lng)async{
+    _isLoaded=false;
     http.Response response=(await foodOfStoreRepo.getAllFoodOfStore(id,lat,lng));
+    _foodOfStoreList=[];
     if(response.statusCode==200){
       _foodsStore=null;
       _foodsStore=FoodStore.fromJson(jsonDecode(response.body));
-      _foodOfStoreList=[];
       _foodOfStoreList.addAll(FoodStore.fromJson(jsonDecode(response.body)).foods);
       _isLoaded=true;
       update();
@@ -31,16 +32,19 @@ class FoodOfStoreController extends GetxController{
   }
   getAllComment(id) async {
     _isLoaded=false;
+    List<Review> reviews=[];
     for(int i=1;;i++){
       http.Response response=await foodOfStoreRepo.getAllCommentStore(id, i);
+      listCommentStore=[];
       if(response.statusCode==200){
-        listCommentStore=[];
         List<dynamic>  decodedList = json.decode(response.body);
-        List<Review> reviews=List<Review>.from(decodedList.map((e) => Review.fromJson(e)));
+        reviews=[];
+        reviews=List<Review>.from(decodedList.map((e) => Review.fromJson(e)));
         listCommentStore.addAll(reviews);
-        _isLoaded=true;
-        update();
-        if(reviews.length<10){
+        print(listCommentStore.isNotEmpty);
+         _isLoaded=true;
+         update();
+        if(reviews.length<10||i>10){
           break;
         }
       }

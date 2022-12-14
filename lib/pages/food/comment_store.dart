@@ -57,6 +57,8 @@ class CommentStore extends StatelessWidget {
                                   allowHalfRating: false,
                                   itemCount: 5,
                                   itemSize: 20,
+                                  tapOnlyMode: true,
+                                  ignoreGestures: true,
                                   itemPadding:
                                       EdgeInsets.symmetric(horizontal: 1.0),
                                   itemBuilder: (context, _) => const Icon(
