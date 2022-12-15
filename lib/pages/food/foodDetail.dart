@@ -29,7 +29,7 @@ class _FoodDetailState extends State<FoodDetail> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: GetBuilder<FoodDetailController>(builder: (foodDetail) {
-          return Stack(
+          return foodDetail.isLoaded?Stack(
             children: [
               //background image
               Positioned(
@@ -135,9 +135,9 @@ class _FoodDetailState extends State<FoodDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 BigText(
-                                  text: foodDetail.foodsDetail.name!,
+                                  text: foodDetail.foodsDetail.name!.toString(),
                                   size: ScreenUtil().setSp(12),
-                                  maxLines: 2,
+                                  maxLines: 5,
                                 ),
                                 BigText(
                                   text: foodDetail.foodsDetail.price.toString().toVND(unit: 'đ'),
@@ -178,7 +178,7 @@ class _FoodDetailState extends State<FoodDetail> {
                                           padding: EdgeInsets.only(top:ScreenUtil().setHeight(5)),
                                           physics: NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
-                                          itemCount: topping.toppingFood.isEmpty?1:topping.toppingFood.length,
+                                          itemCount: topping.toppingFood.isEmpty?0:topping.toppingFood.length,
                                           itemBuilder: (context, index) {
                                             var _isSelected=_selectedIndexs.contains(index);
 
@@ -243,11 +243,15 @@ class _FoodDetailState extends State<FoodDetail> {
                         ],
                       )))
             ],
+          ):Center(
+            child: CircularProgressIndicator(
+              color: AppColors.mainColor,
+            ),
           );
         }),
         bottomNavigationBar: GetBuilder<FoodDetailController>(
           builder: (foodDetail) {
-            return Container(
+            return foodDetail.isLoaded?Container(
               height: ScreenUtil().setHeight(80),
               padding: EdgeInsets.only(
                   top: ScreenUtil().setHeight(10),
@@ -325,7 +329,7 @@ class _FoodDetailState extends State<FoodDetail> {
                   )
                 ],
               ),
-            );
+            ):Container();
           },
         ));
   }

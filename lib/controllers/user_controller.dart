@@ -69,8 +69,8 @@ class UserController extends GetxController{
       prefs.setString("user", userStorage);
       var checkRole=user.getRoles!.contains("User");
       if(checkRole==true){
-        Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
-        Get.find<CartController>().getCartData();
+       // await Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
+       //  Get.find<CartController>().getCartData();
         getUser();
         return true;
       }else {

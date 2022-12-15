@@ -71,6 +71,7 @@ class ProfileUser extends StatelessWidget {
                     ),
                     smallText: SmallText(
                       text: user.user.name.toString(),
+                     // text: "Thành Thân",
                       color: AppColors.mainBlackColor,
                     )),
                 SizedBox(

@@ -5,6 +5,7 @@ import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/big_text.dart';
 import 'package:app_food/widgets/icon_and_text_widget.dart';
+import 'package:app_food/widgets/shimmer.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -192,8 +193,7 @@ class StorePage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () async {
-                           await Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
-                           //print(foodsStore.foodOfStoreList[index].storeId.toString());
+                            Get.find<FoodDetailController>().getFoodDetailById(foodsStore.foodOfStoreList[index].foodId);
                             Get.toNamed(RouteHelper.getDetailFood(storeId));
                           },
                           child: Container(
@@ -267,11 +267,7 @@ class StorePage extends StatelessWidget {
                           ),
                         );
                       }),
-                )):Center(
-                child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
+                )):const ShimmerLoad();
           }),
 
         ]),

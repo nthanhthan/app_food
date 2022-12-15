@@ -12,12 +12,13 @@ class RecommendedStoreNearController extends GetxController{
   bool _isLoaded=false;
   bool get isLoaded=>_isLoaded;
   Future<void> getRecommendedStoreNearList(data)async{
-    _storeNearList=[];
+    _isLoaded=false;
     http.Response response=(await recommendedStoreNearRepo.getRecommendedStoreNearList(data));
-    print(response.statusCode);
+    _storeNearList=[];
     if(response.statusCode==200){
       List<dynamic>  decodedList = json.decode(response.body);
       List<Store> posts = List<Store>.from(decodedList.map((model)=> Store.fromJson(model)));
+      print(posts.length);
      _storeNearList.addAll(posts);
      print(_storeNearList);
      _isLoaded=true;

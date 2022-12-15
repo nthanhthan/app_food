@@ -1,4 +1,5 @@
 
+import 'package:app_food/widgets/shimmer.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -101,7 +102,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
             physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: storeNear.storeNearList.isEmpty?1:storeNear.storeNearList.length,
+              itemCount: storeNear.storeNearList.isEmpty?0:storeNear.storeNearList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () async {
@@ -168,9 +169,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     ),
                   ),
                 );
-              }):CircularProgressIndicator(
-            color: AppColors.mainColor,
-          );
+              }):const ShimmerLoad();
         })
 
       ]

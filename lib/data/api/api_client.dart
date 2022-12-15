@@ -92,8 +92,6 @@ class ApiClient extends GetConnect implements GetxService {
       body: jsonEncode(data),
       headers: _mainHeaders(token),
     );
-    print("huhu");
-    print(response.statusCode);
     if(response.statusCode==401){
       var refreshToken="https://takefood-apigateway-mobile.azurewebsites.net/GetAccessToken?token=${prefs.getString("refreshToken")!}";
       print(refreshToken);
@@ -104,6 +102,7 @@ class ApiClient extends GetConnect implements GetxService {
       print("token"+res.statusCode.toString());
       if(res.statusCode==200){
         User user=User.fromJson(jsonDecode(res.body));
+        print(user.accessToken);
         await prefs.setString("token", user.accessToken!);
       }
       http.Response response= await http.post(
@@ -111,7 +110,7 @@ class ApiClient extends GetConnect implements GetxService {
         body: jsonEncode(data),
         headers: _mainHeaders(prefs.getString("token")),
       );
-      print(response.statusCode);
+      print("store near"+response.statusCode.toString());
       return response;
     }
     return response;

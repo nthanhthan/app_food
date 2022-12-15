@@ -84,7 +84,8 @@ class SignInPage extends StatelessWidget {
                     if(signup==true){
                       Get.offNamed(RouteHelper.homepage);
                     }else{
-                      print("SAI");
+                      emailController.text="";
+                      passwordController.text="";
                     }
                   },
                   child: BigText(

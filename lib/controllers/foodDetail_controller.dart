@@ -33,9 +33,9 @@ class FoodDetailController extends GetxController {
 
 
   Future<bool> getFoodDetailById(id) async {
+    _isLoaded = false;
     http.Response response = (await foodDetailRepo.getFoodDetail(id));
     if (response.statusCode == 200) {
-
       _foodsDetail = null;
       _foodsDetail = FoodTopping.fromJson(jsonDecode(response.body));
       _toppingFood = [];

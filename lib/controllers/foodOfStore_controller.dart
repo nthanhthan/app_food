@@ -33,9 +33,9 @@ class FoodOfStoreController extends GetxController{
   getAllComment(id) async {
     _isLoaded=false;
     List<Review> reviews=[];
-    for(int i=1;;i++){
+    listCommentStore=[];
+    for(int i=0;;i++){
       http.Response response=await foodOfStoreRepo.getAllCommentStore(id, i);
-      listCommentStore=[];
       if(response.statusCode==200){
         List<dynamic>  decodedList = json.decode(response.body);
         reviews=[];
@@ -44,7 +44,7 @@ class FoodOfStoreController extends GetxController{
         print(listCommentStore.isNotEmpty);
          _isLoaded=true;
          update();
-        if(reviews.length<10||i>10){
+        if(reviews.length<10){
           break;
         }
       }

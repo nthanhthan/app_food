@@ -1,7 +1,10 @@
 import 'package:app_food/controllers/myOrdered_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
+import 'package:app_food/widgets/shimmer.dart';
+import 'package:app_food/widgets/skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../utils/colors.dart';
 import 'myOrderedByType_page.dart';
 
@@ -69,32 +72,16 @@ class _MyOrderPageState extends State<MyOrderPage>
                 children: [
                   myOrdered.isLoaded
                       ? MyOrderedByType(data: myOrdered.listMyOrderedOrdered)
-                      : Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        ),
+                      : const ShimmerLoad(),
                   myOrdered.isLoaded
                       ? MyOrderedByType(data: myOrdered.listMyOrderedProcessing)
-                      : Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        ),
+                      : const ShimmerLoad(),
                   myOrdered.isLoaded
                       ? MyOrderedByType(data: myOrdered.listMyOrderedDelivering)
-                      : Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        ),
+                      : const ShimmerLoad(),
                   myOrdered.isLoaded
                       ? MyOrderedByType(data: myOrdered.listMyOrderedDelivered)
-                      : Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        ),
+                      :const ShimmerLoad(),
                 ],
               ),
             ),

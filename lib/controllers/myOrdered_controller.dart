@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:app_food/data/repository/myOrdered_repo.dart';
+import 'package:app_food/models/detailOrdered_model.dart';
+import 'package:app_food/models/myOrdered_model.dart';
+import 'package:app_food/models/review_model.dart';
+import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/detailOrdered_model.dart';
-import '../models/myOrdered_model.dart';
 import 'package:http/http.dart' as http;
-import '../models/review_model.dart';
-import '../models/user_model.dart';
 
 class MyOrderController extends GetxController {
   final MyOrderedRepo myOrderedRepo;
@@ -17,7 +17,7 @@ class MyOrderController extends GetxController {
   List<MyOrdered> listMyOrderedDelivering = [];
   List<MyOrdered> listMyOrderedDelivered = [];
   final SharedPreferences sharedPreferences;
-  dynamic detailOrdered;
+  DetailOrdered detailOrdered=DetailOrdered();
   List<Food> listFood = [];
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
@@ -66,42 +66,40 @@ class MyOrderController extends GetxController {
     _isLoaded=true;
   }
 
-  getReviewByorderId(orderedId) async {
+   getReviewByOrderId(orderedId) async {
     review = await myOrderedRepo.getReviewByOrderId(orderedId);
     update();
+
   }
 
   Future<bool> getDetailOrdered(orderedID) async {
     _isLoaded = false;
     http.Response response = await myOrderedRepo.getDetailOrdered(orderedID);
-
+    await Get.find<MyOrderController>().getReviewByOrderId(orderedID);
     if (response.statusCode == 200) {
       if (sharedPreferences.containsKey("user")) {
-        String? getuser = sharedPreferences.getString("user");
-        User user = User.fromJson(jsonDecode(getuser!));
+        String? getUser = sharedPreferences.getString("user");
+        User user = User.fromJson(jsonDecode(getUser!));
         nameUser = user.name;
       } else {
         nameUser = "No Name";
       }
-      detailOrdered = null;
-      print(response.body);
       detailOrdered = DetailOrdered.fromJson(jsonDecode(response.body));
-      // DateTime now = DateTime.now();
-      DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-          .parse(detailOrdered.orderDate, true);
-      var inputDate = DateTime.parse(parseDate.toString());
-      var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
-      var outputDate = outputFormat.format(inputDate);
-      dateOrdered = outputDate.toString();
-      listFood = [];
-      listFood.addAll(detailOrdered.listFoods!);
-      listTopping = [];
-      listFood.forEach((element) {
-        listTopping.addAll(element.toppings!);
-      });
-      _isLoaded = true;
-      update();
-      return true;
+    DateTime parseDate =  DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        .parse(detailOrdered!.orderDate.toString(), true);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    dateOrdered = outputDate.toString();
+    listFood = [];
+    listFood.addAll(detailOrdered!.listFoods!);
+    listTopping = [];
+    for (var element in listFood) {
+      listTopping.addAll(element.toppings!);
+    }
+    _isLoaded = true;
+    update();
+    return true;
     }
     return false;
   }
