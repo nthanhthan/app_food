@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/myOrdered_controller.dart';
 import 'package:app_food/widgets/big_text.dart';
-import 'package:app_food/widgets/shimmer.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -609,7 +608,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                                                       height:
                                                                           100,
                                                                       fit: BoxFit
-                                                                          .fitHeight,
+                                                                          .cover,
                                                                     ),
                                                             )
                                                           : Container(

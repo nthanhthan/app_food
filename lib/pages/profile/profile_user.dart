@@ -33,14 +33,41 @@ class ProfileUser extends StatelessWidget {
                  alignment: Alignment.center,
                   children: [
                     Positioned(
-                      child: AppIcon(
+                      child: user.user.photo!.isNotEmpty?CircleAvatar(
+                        radius: 90,
+                        backgroundColor:
+                        AppColors.mainColor,
+                        child: ClipRRect(
+                          borderRadius:
+                          BorderRadius
+                              .circular(
+                              85),
+                          child: Image
+                              .network(
+                            user.user.photo.toString(),
+                            width:
+                            170,
+                            height:
+                            170,
+                            fit: BoxFit
+                                .cover,
+                            errorBuilder: (BuildContext context,
+                                Object
+                                exception,
+                                StackTrace?
+                                stackTrace) {
+                              return const Text(
+                                  "...");
+                            },
+                          )
+                    )
+                      ):AppIcon(
                         icon: Icons.person,
                         backgroundColor: AppColors.mainColor,
                         iconColor: Colors.white,
                         iconSize: 80,
                         size: 130,
-                      ),
-                    ),
+                      ),),
                     Positioned(
                         top: ScreenUtil().setHeight(100),
                         right: 10,
@@ -71,7 +98,6 @@ class ProfileUser extends StatelessWidget {
                     ),
                     smallText: SmallText(
                       text: user.user.name.toString(),
-                     // text: "Thành Thân",
                       color: AppColors.mainBlackColor,
                     )),
                 SizedBox(

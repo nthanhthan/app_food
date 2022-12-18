@@ -27,6 +27,7 @@ class UserRepo extends GetxService{
     if(prefs.containsKey("user")){
       getuser=prefs.getString("user");
       user=User.fromJson(jsonDecode(getuser!));
+      return user;
     }
     var fullApiUrl ="${apiClient.appBaseUrl}GetAddress";
     http.Response response=await apiClient.Get(fullApiUrl);
@@ -44,9 +45,15 @@ class UserRepo extends GetxService{
   Future<bool> editProfile(data, address) async {
     var fullApiUrlUpdateInfo ="${apiClient.appBaseUrl}UpdateInfo";
     var fullApiUrlAddress ="${apiClient.appBaseUrl}AddAddress";
+    var fullApiUrlUserInfo="${apiClient.appBaseUrl}GetUserInfo";
     http.Response response=await apiClient.PutData(fullApiUrlUpdateInfo, data);
     http.Response res=await apiClient.postOrder(fullApiUrlAddress, address);
     if(response.statusCode==200 && res.statusCode==200){
+      http.Response res=await apiClient.Get(fullApiUrlUserInfo);
+      if(res.statusCode==200){
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("user", res.body);
+      }
       return true;
     }else{
      return false;

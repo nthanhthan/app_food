@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cart_controller.dart';
-
 class UserController extends GetxController{
   final UserRepo userRepo;
   UserController({required this.userRepo});
