@@ -169,7 +169,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     ),
                   ),
                 );
-              }):const ShimmerLoad();
+              }): const ShimmerLoad();
         })
 
       ]

@@ -65,7 +65,7 @@ class _FoodDetailState extends State<FoodDetail> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                             Navigator.pop(context);
+                             Get.toNamed(RouteHelper.storeDetail);
                             },
                             child: AppIcon(
                               iconColor: Colors.black54,

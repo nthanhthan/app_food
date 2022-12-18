@@ -36,7 +36,7 @@ class RouteHelper{
   static String getInitial()=>'$initial';
   static String getHomePage()=>'$homepage';
   static String getSplashPage()=>'$Splashpage';
-    static String getDetailFood(String storeID)=>'$foodDetail?storeID=$storeID';
+  static String getDetailFood(String storeID)=>'$foodDetail?storeID=$storeID';
   static String getStoreDetail(String storeId)=>'$storeDetail?storeId=$storeId';
   static String getCartPage(String FoodID)=>'$cartPage';
   static String getPaymentPage()=>'$paymentPage';

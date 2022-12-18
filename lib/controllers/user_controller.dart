@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app_food/base/show_custom_snackbar.dart';
-import 'package:app_food/controllers/recommended_storenear_controller.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
 import 'package:get/get.dart';
@@ -13,7 +12,7 @@ import 'cart_controller.dart';
 class UserController extends GetxController{
   final UserRepo userRepo;
   UserController({required this.userRepo});
-  var user;
+  late User user;
   String address="";
 
   Future<bool> SignUp(data,url) async{
@@ -63,8 +62,8 @@ class UserController extends GetxController{
     http.Response response=(await userRepo.SignIn(data, url));
     if(response.statusCode==200){
       user=User.fromJson(jsonDecode(response.body));
-      prefs.setString("token", user.accessToken);
-      prefs.setString("refreshToken", user.refreshToken);
+      prefs.setString("token", user.accessToken.toString());
+      prefs.setString("refreshToken", user.refreshToken.toString());
       String userStorage=jsonEncode(user);
       prefs.setString("user", userStorage);
       var checkRole=user.getRoles!.contains("User");

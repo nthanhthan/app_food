@@ -8,18 +8,21 @@ class ShimmerLoad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200.0,
-      height: 100.0,
-      child: Shimmer.fromColors(
-        baseColor: Colors.red,
-        highlightColor: AppColors.mainColor,
-        child: ListView.separated(
-          itemCount: 5,
-          itemBuilder: (context, index) =>
-          const NewsCardSkeleton(),
-          separatorBuilder: (context, index) =>
-          const SizedBox(height: 16),
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Shimmer.fromColors(
+          baseColor: Colors.red,
+          highlightColor: AppColors.mainColor,
+          child: ListView.separated(
+            itemCount: 5,
+           // physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) =>
+            const NewsCardSkeleton(),
+            separatorBuilder: (context, index) =>
+            const SizedBox(height: 16),
+          ),
         ),
       ),
     );

@@ -48,7 +48,7 @@ class StorePage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap:(){
-                             Navigator.pop(context);
+                             Navigator.popAndPushNamed(context,RouteHelper.homepage);
                       },
                             child: AppIcon(
                               icon: Icons.arrow_back,
@@ -136,7 +136,7 @@ class StorePage extends StatelessWidget {
                   ),
                 ],
               ),
-            ):Container(height: ScreenUtil().setHeight(320),);
+            ):Container();
           }),
           GetBuilder<FoodOfStoreController>(builder: (foodsStore){
             return foodsStore.isLoaded?Container(
@@ -180,12 +180,12 @@ class StorePage extends StatelessWidget {
                   ],
                 ),
               ),
-            ):Container(    height: ScreenUtil().setWidth(60),);
+            ):Container( );
           }),
           GetBuilder<FoodOfStoreController>(builder: (foodsStore){
-            return  foodsStore.isLoaded?Expanded(
+            return  Expanded(
                 child: SingleChildScrollView(
-                  child: ListView.builder(
+                  child: foodsStore.isLoaded?ListView.builder(
                       padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -266,8 +266,9 @@ class StorePage extends StatelessWidget {
                             ),
                           ),
                         );
-                      }),
-                )):const ShimmerLoad();
+                      }):const ShimmerLoad()
+                )
+            );
           }),
 
         ]),

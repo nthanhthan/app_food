@@ -17,7 +17,7 @@ class MyOrderController extends GetxController {
   List<MyOrdered> listMyOrderedDelivering = [];
   List<MyOrdered> listMyOrderedDelivered = [];
   final SharedPreferences sharedPreferences;
-  DetailOrdered detailOrdered=DetailOrdered();
+  late DetailOrdered detailOrdered;
   List<Food> listFood = [];
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
@@ -75,7 +75,7 @@ class MyOrderController extends GetxController {
   Future<bool> getDetailOrdered(orderedID) async {
     _isLoaded = false;
     http.Response response = await myOrderedRepo.getDetailOrdered(orderedID);
-    await Get.find<MyOrderController>().getReviewByOrderId(orderedID);
+     await Get.find<MyOrderController>().getReviewByOrderId(orderedID);
     if (response.statusCode == 200) {
       if (sharedPreferences.containsKey("user")) {
         String? getUser = sharedPreferences.getString("user");

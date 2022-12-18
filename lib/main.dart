@@ -22,7 +22,7 @@ Future<void> main() async{
   String? token= prefs.getString("token");
   if(token!=null){
     await Get.find<UserController>().getUser();
-    String url="https://takefood-userorderservice.azurewebsites.net/notifysocket";
+    String url="https://takefood-apigateway-mobile.azurewebsites.net/notifysocket";
     HubConnection hubConnection;
     hubConnection = HubConnectionBuilder().withUrl(url,options: HttpConnectionOptions(accessTokenFactory: () =>Future.value(token),requestTimeout: 15000))
         .build();
