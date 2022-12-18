@@ -47,6 +47,7 @@ class ApiClient extends GetConnect implements GetxService {
           headers: _mainHeaders(token)
       );
       print("postOrder${response.statusCode}");
+      print(response.body);
       return response;
     }
     Future<http.Response> SignUp(data,apiUrl) async{

@@ -77,7 +77,7 @@ class MyOrderedByType extends StatelessWidget {
                               maxLines: 1,
                             ),
                             SmallText(
-                              text: "${data![index].foodQuantity}món",
+                              text: data![index].created.toString(),
                               fontWeight: "bold",
                               size: ScreenUtil().setSp(8),
                             ),

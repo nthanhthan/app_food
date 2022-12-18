@@ -16,6 +16,7 @@ class MyOrderController extends GetxController {
   List<MyOrdered> listMyOrderedProcessing = [];
   List<MyOrdered> listMyOrderedDelivering = [];
   List<MyOrdered> listMyOrderedDelivered = [];
+  List<MyOrdered> listOrdered=[];
   final SharedPreferences sharedPreferences;
   late DetailOrdered detailOrdered;
   List<Food> listFood = [];
@@ -25,6 +26,7 @@ class MyOrderController extends GetxController {
   String dateOrdered = "";
   String? nameUser = "";
   Review? review;
+  String dateOrderedOfList = "";
   MyOrderController(
       {required this.myOrderedRepo, required this.sharedPreferences});
   Future<void> getListMyOrdered() async {
@@ -34,12 +36,18 @@ class MyOrderController extends GetxController {
      listMyOrderedDelivering = [];
      listMyOrderedDelivered = [];
     for (int i = 1;; i++) {
-      List<MyOrdered> ordered = await myOrderedRepo.getMyOrdered(i);
       listMyOrdered=[];
-      listMyOrdered.addAll(ordered);
+      http.Response response = await myOrderedRepo.getMyOrdered(i);
+      if(response.statusCode==200){
+      List<dynamic>  decodedList = json.decode(response.body);
+      List<MyOrdered> posts = List<MyOrdered>.from(decodedList.map((model)=> MyOrdered.fromJson(model)));
+      listMyOrdered.addAll(posts);
+      // listMyOrdered=[];
+      // listMyOrdered.addAll(ordered);
       getListMyOrderedByType();
-      if (ordered.length < 10) {
+      if (posts.length < 10) {
         break;
+      }
       }
       update();
     }
@@ -85,7 +93,7 @@ class MyOrderController extends GetxController {
         nameUser = "No Name";
       }
       detailOrdered = DetailOrdered.fromJson(jsonDecode(response.body));
-    DateTime parseDate =  DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+      DateTime parseDate =  DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .parse(detailOrdered!.orderDate.toString(), true);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
