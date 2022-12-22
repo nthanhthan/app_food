@@ -27,7 +27,6 @@ class UserRepo extends GetxService{
     if(prefs.containsKey("user")){
       getuser=prefs.getString("user");
       user=User.fromJson(jsonDecode(getuser!));
-      return user;
     }
     var fullApiUrl ="${apiClient.appBaseUrl}GetAddress";
     http.Response response=await apiClient.Get(fullApiUrl);

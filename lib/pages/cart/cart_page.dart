@@ -12,7 +12,8 @@ import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
 
 class CartPage extends StatelessWidget {
-  CartPage({Key? key}) : super(key: key);
+  final storeID;
+  CartPage({Key? key,  this.storeID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class CartPage extends StatelessWidget {
                       //   Get.toNamed(RouteHelper.homepage);
                       // //  Navigator.pushNamed(context, newRouteName);
                       // }
-                    Navigator.popAndPushNamed(context, RouteHelper.foodDetail);
+                    Navigator.popAndPushNamed(context, RouteHelper.getDetailFood(storeID));
                     },
                     child: AppIcon(
                       iconColor: Colors.black54,

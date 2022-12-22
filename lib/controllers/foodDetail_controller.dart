@@ -84,9 +84,12 @@ class FoodDetailController extends GetxController {
   }
 
   void addItem(FoodTopping food, String storeID) {
+    //String? store=storeID;
+    print(storeID);
     if (quantity > 0) {
+
       if(checkStore(storeID)){
-        _cart.addItem(food, _quantity,listTopping,storeID);
+        _cart.addItem(food, _quantity,listTopping,storeID!);
       }
       _quantity = 1;
       _inCartItems=_cart.getQuantity(food);
@@ -100,6 +103,8 @@ class FoodDetailController extends GetxController {
     if(getItems.isEmpty){
       return true;
     }
+    print(getItems[0].storeID);
+    print(storeID);
     if(getItems[0].storeID==storeID){
       return true;
     }

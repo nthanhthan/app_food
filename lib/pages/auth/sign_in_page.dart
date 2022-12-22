@@ -1,19 +1,24 @@
 
-import 'package:app_food/pages/home/home_page.dart';
+import 'package:app_food/controllers/user_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
+import 'package:app_food/utils/colors.dart';
+import 'package:app_food/widgets/app_text_field.dart';
+import 'package:app_food/widgets/big_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../controllers/user_controller.dart';
-import '../../utils/colors.dart';
-import '../../widgets/app_text_field.dart';
-import '../../widgets/big_text.dart';
 import 'sign_up_page.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  bool _isLoaded=true;
   @override
   Widget build(BuildContext context) {
     var passwordController=TextEditingController();
@@ -70,7 +75,7 @@ class SignInPage extends StatelessWidget {
             AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: true,),
             SizedBox(height: ScreenUtil().setHeight(50),),
 
-            Container(
+        _isLoaded?Container(
               width: ScreenUtil().setWidth(250),
               height: ScreenUtil().setHeight(70),
               decoration: BoxDecoration(
@@ -80,9 +85,13 @@ class SignInPage extends StatelessWidget {
               child: Center(
                 child:GestureDetector(
                   onTap: () async {
+                    setState(() {
+                      _isLoaded=false;
+                    });
                     var signup=await _login();
                     if(signup==true){
-                      Get.offNamed(RouteHelper.homepage);
+                      Navigator.pushNamedAndRemoveUntil(context, RouteHelper.homepage, (route) => false);
+                     // Get.offNamed(RouteHelper.homepage);
                     }else{
                       emailController.text="";
                       passwordController.text="";
@@ -94,8 +103,10 @@ class SignInPage extends StatelessWidget {
                     color: Colors.white,
                   ),
                 )
-              ),
-            ),
+              )
+            ):CircularProgressIndicator(
+          color: AppColors.mainColor,
+        ),
             SizedBox(height:  ScreenUtil().setHeight(50)),
             RichText(
                 text: TextSpan(
@@ -122,3 +133,4 @@ class SignInPage extends StatelessWidget {
     );
   }
 }
+

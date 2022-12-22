@@ -13,6 +13,8 @@ import '../../controllers/cart_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../widgets/big_text.dart';
 
+List<String> list = <String>['Tiền mặt', 'Paypal'];
+
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
   @override
@@ -20,6 +22,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
     var note = TextEditingController();
@@ -62,7 +65,8 @@ class _PaymentPageState extends State<PaymentPage> {
                             onTap: () {},
                             child: GestureDetector(
                               onTap: () async {
-                                final result=await Get.toNamed(RouteHelper.infoUserOrder);
+                                final result = await Get.toNamed(
+                                    RouteHelper.infoUserOrder);
                                 infoUser.editInfoUser(result);
                               },
                               child: SmallText(
@@ -77,8 +81,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         height: ScreenUtil().setWidth(3),
                       ),
                       SmallText(
-                          text:
-                          infoUser.addressUser,
+                          text: infoUser.addressUser,
                           maxLines: 2,
                           color: AppColors.mainBlackColor),
                       SizedBox(
@@ -114,14 +117,14 @@ class _PaymentPageState extends State<PaymentPage> {
                         text: "Đơn hàng của bạn",
                         color: Color(0xFFFF8357),
                         fontWeight: "bold"),
-                    Expanded(child: SingleChildScrollView(
-                        child: GetBuilder<CartController>(builder: (cartStorage) {
+                    Expanded(child: SingleChildScrollView(child:
+                        GetBuilder<CartController>(builder: (cartStorage) {
                       total = cartStorage.totalAmount;
                       return cartStorage.getItems.isEmpty
                           ? Container()
                           : ListView.builder(
-                              padding:
-                                  EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(5)),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: cartStorage.getItems.isEmpty
@@ -137,29 +140,31 @@ class _PaymentPageState extends State<PaymentPage> {
                                               color: AppColors.borderBottom,
                                               width: 1.0))),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             children: [
                                               SmallText(
                                                 text:
-                                                "${cartStorage.getItems[index].quantity}x",
+                                                    "${cartStorage.getItems[index].quantity}x",
                                                 color: Colors.black,
                                                 fontWeight: "bold",
                                                 size: ScreenUtil().setSp(8),
                                               ),
                                               SizedBox(
-                                                width: ScreenUtil().setWidth(10),
+                                                width:
+                                                    ScreenUtil().setWidth(10),
                                               ),
                                               SmallText(
-                                                text:
-                                                cartStorage.getItems[index].foodName!,
+                                                text: cartStorage
+                                                    .getItems[index].foodName!,
                                                 fontWeight: "bold",
                                                 size: ScreenUtil().setSp(11),
                                                 color: Colors.black,
@@ -169,7 +174,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                           SmallText(
                                             text: cartStorage
                                                 .getTotalMoneyItems(cartStorage
-                                                .getItems[index].foodId!)
+                                                    .getItems[index].foodId!)
                                                 .toString()
                                                 .toVND(unit: "đ"),
                                             fontWeight: "bold",
@@ -177,12 +182,15 @@ class _PaymentPageState extends State<PaymentPage> {
                                           )
                                         ],
                                       ),
-                                  SizedBox(height: ScreenUtil().setHeight(5)),
-                                  SmallText(
-                                    text: cartStorage.getTopping(
-                                        cartStorage.getItems[index]
-                                            .foodId!)!,maxLines: 5,color: AppColors.paraColor,size: ScreenUtil().setSp(8),
-                                            ),
+                                      SizedBox(
+                                          height: ScreenUtil().setHeight(5)),
+                                      SmallText(
+                                        text: cartStorage.getTopping(cartStorage
+                                            .getItems[index].foodId!)!,
+                                        maxLines: 5,
+                                        color: AppColors.paraColor,
+                                        size: ScreenUtil().setSp(8),
+                                      ),
                                     ],
                                   ),
                                 );
@@ -255,9 +263,10 @@ class _PaymentPageState extends State<PaymentPage> {
                         height: ScreenUtil().setWidth(5),
                       ),
                       GestureDetector(
-                        onTap: ()  {
-                            Get.find<PaymentController>().getVoucher(totalItem.getItems[0].storeID!);
-                            Get.toNamed(RouteHelper.voucherPage);
+                        onTap: () {
+                          Get.find<PaymentController>()
+                              .getVoucher(totalItem.getItems[0].storeID!);
+                          Get.toNamed(RouteHelper.voucherPage);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,7 +318,27 @@ class _PaymentPageState extends State<PaymentPage> {
                         text: "Phương thức thanh toán:",
                         fontWeight: "bold",
                         color: Colors.black),
-                    SmallText(text: "Tiền mặt", color: Colors.black),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: dropdownValue,
+                        elevation: 15,
+                        style: const TextStyle(color: Color(0xFFFF8357),fontSize: 10),
+                        iconSize: 25,
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            dropdownValue = value!;
+                          });
+                        },
+                        items: list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    )
+                    //SmallText(text: "Tiền mặt", color: Colors.black),
                   ],
                 ),
               )
@@ -370,8 +399,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () async {
-                          payment.confirmOrder(note.text);
-                          Get.toNamed(RouteHelper.myOrderPage);
+                        payment.confirmOrder(note.text,dropdownValue);
+                        Get.toNamed(RouteHelper.myOrderPage);
                       },
                       child: BigText(
                         text: "Đặt hàng",

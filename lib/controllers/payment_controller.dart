@@ -70,14 +70,16 @@ class PaymentController extends GetxController{
   getTotal(){
     return cartController.totalAmount-amountDiscount;
   }
-  Future<bool> confirmOrder(String note) async {
+  Future<bool> confirmOrder(String note, String dropdownValue) async {
     _isLoaded=false;
-    print(voucherID);
     if(note.isEmpty) {
       note="Nothing";
     }
-    bool checkOrder=await paymentRepo.confirmOrder(voucherID,note,addressUser,phoneNumberUser);
-    if(checkOrder){
+    Map<bool,Object?> checkOrder=await paymentRepo.confirmOrder(voucherID,note,addressUser,phoneNumberUser,dropdownValue);
+    if(checkOrder.containsKey(true)){
+      if(checkOrder[true]!=""){
+        Get.toNamed(RouteHelper.getWebViewPage(checkOrder[true].toString()));
+      }
       await Get.find<MyOrderController>().getListMyOrdered();
       clear();
       cartController.getCartData();

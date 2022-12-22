@@ -79,7 +79,8 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor,
-          title: const Center(child: Text("Chi tiết đơn hàng")),
+          title:  Text("Chi tiết đơn hàng"),
+          centerTitle: true,
         ),
         body: GetBuilder<MyOrderController>(builder: (ordered) {
           var isReview = false;
@@ -438,11 +439,11 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                       top: ScreenUtil().setHeight(4),
                                       left: ScreenUtil().setWidth(20),
                                       right: ScreenUtil().setWidth(10)),
-                                  height: ScreenUtil().setHeight(50),
+                                  height: ScreenUtil().setHeight(70),
                                   width: double.maxFinite,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Column(
+                                    // mainAxisAlignment:
+                                    //     MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
@@ -451,7 +452,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                           fontWeight: "bold",
                                           color: Colors.black),
                                       SmallText(
-                                          text: "Tiền mặt",
+                                          text: ordered.detailOrdered.paymentMethod.toString(),
                                           color: Colors.black),
                                     ],
                                   ),

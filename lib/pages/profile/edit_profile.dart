@@ -33,8 +33,6 @@ class _EditProfileState extends State<EditProfile> {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         // uploadFile();
-      } else {
-        showCustomSnackBar("Vui lòng chọn ảnh", title: "Lỗi");
       }
     });
   }
@@ -46,15 +44,13 @@ class _EditProfileState extends State<EditProfile> {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         // uploadFile();
-      } else {
-        showCustomSnackBar("Vui lòng chọn ảnh", title: "Lỗi");
       }
     });
   }
 
   Future<bool> uploadFile() async {
     if (_photo == null) {
-      return false;
+      return true;
     }
     final fileName = _photo!.path;
     final destination = 'files/$fileName';
@@ -76,18 +72,20 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(builder: (infoUser) {
-      var nameController = TextEditingController(text: infoUser.user.name);
-      var phoneController = TextEditingController(text: infoUser.user.phone);
-      var emailController = TextEditingController(text: infoUser.user.email);
+      var nameController = TextEditingController(text: infoUser.user!.name);
+      var phoneController = TextEditingController(text: infoUser.user!.phone);
+      var emailController = TextEditingController(text: infoUser.user!.email);
       var addressController = TextEditingController(text: infoUser.address);
-      var photo = infoUser.user.photo.toString();
-      print(photo);
+      var photo = infoUser.user!.photo.toString();
       Future<bool> _editProfile() async {
         String name = nameController.text.trim();
         String email = emailController.text.trim();
         String address = addressController.text.trim();
         String phoneNumber = phoneController.text.trim();
-        String urlPhoto = imageUrl.toString().trim();
+        String urlPhoto = photo.toString();
+        if(imageUrl.isNotEmpty){
+           urlPhoto = imageUrl.toString().trim();
+        }
         if (name.isEmpty) {
           showCustomSnackBar("Vui lòng nhập tên", title: "Tên");
         } else if (email.isEmpty) {
@@ -147,7 +145,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: _photo != null || photo.isNotEmpty
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(85),
-                                  child: photo.isNotEmpty
+                                  child: _photo==null&&photo.isNotEmpty
                                       ? Image.network(
                                           photo,
                                           width: 170,
@@ -226,10 +224,10 @@ class _EditProfileState extends State<EditProfile> {
                     child: GestureDetector(
                   onTap: () async {
                       setState(() {
-                         nameController = TextEditingController(text: infoUser.user.name);
-                         phoneController = TextEditingController(text: infoUser.user.phone);
-                         emailController = TextEditingController(text: infoUser.user.email);
-                         addressController = TextEditingController(text: infoUser.address);
+                         // nameController.text = ;
+                         // phoneController = phoneController;
+                         // emailController =emailController;
+                         // addressController = addressController;
                         // photo = infoUser.user.photo.toString();
                         _isLoaded=false;
                       });

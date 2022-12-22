@@ -12,7 +12,6 @@ import 'base/show_custom_snackbar.dart';
 import 'controllers/recommended_storenear_controller.dart';
 import 'controllers/user_controller.dart';
 import 'helper/dependencies.dart' as dep;
- //String? token;
 Future<void> main() async{
   await ScreenUtil.ensureScreenSize();
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +26,6 @@ Future<void> main() async{
     hubConnection = HubConnectionBuilder().withUrl(url,options: HttpConnectionOptions(accessTokenFactory: () =>Future.value(token),requestTimeout: 15000))
         .build();
     await hubConnection.start();
-    print(hubConnection.state);
     hubConnection.on("sendToUser", (value) {showCustomSnackBar(title: value![0].toString(),value![1].toString(),type: false);
     });
   }
@@ -47,6 +45,7 @@ class MyApp extends StatelessWidget {
     };
     Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data);
     Get.find<CartController>().getCartData();
+    Get.find<UserController>().getUser();
     return ScreenUtilInit(
       designSize: const Size(410, 730),
       minTextAdapt: true,

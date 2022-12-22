@@ -18,7 +18,8 @@ import '../data/repository/recommended_storenear_repo.dart';
 Future<void> init()async {
   final sharePreferences=await SharedPreferences.getInstance();
   //await sharePreferences.remove("Cart-list");
-  Get.lazyPut(()=>sharePreferences);
+  Get.lazyPut((){return sharePreferences;},
+      fenix: true);
   //api client
   Get.lazyPut(() =>ApiClient(appBaseUrl: "https://takefood-apigateway-mobile.azurewebsites.net/"));
   //repo
@@ -30,7 +31,8 @@ Future<void> init()async {
       fenix: true);
   Get.lazyPut(() => RecommendedStoreNearRepo(apiClient: Get.find()));
   //controllers
-  Get.lazyPut(() => RecommendedStoreNearController(recommendedStoreNearRepo: Get.find()));
+  Get.lazyPut((){ return RecommendedStoreNearController(recommendedStoreNearRepo: Get.find());},
+      fenix: true);
   Get.lazyPut(() => FoodOfStoreRepo(apiClient: Get.find()));
   //controllers
   Get.lazyPut(() => FoodDetailRepo(apiClient: Get.find()));
@@ -45,6 +47,9 @@ Future<void> init()async {
   fenix: true);
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
   //controllers
+  Get.lazyPut(() {
+    return CartController(cartRepo: Get.find());
+  }, fenix: true);
   Get.lazyPut(() =>CartController(cartRepo: Get.find()));
   Get.lazyPut(() => PaymentRepo(apiClient: Get.find(),sharedPreferences: Get.find(),cart: Get.find()));
   Get.lazyPut(() {

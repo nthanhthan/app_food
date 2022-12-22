@@ -33,7 +33,7 @@ class ProfileUser extends StatelessWidget {
                  alignment: Alignment.center,
                   children: [
                     Positioned(
-                      child: user.user.photo!.isNotEmpty?CircleAvatar(
+                      child: user.user!.photo!.isNotEmpty?CircleAvatar(
                         radius: 90,
                         backgroundColor:
                         AppColors.mainColor,
@@ -44,7 +44,7 @@ class ProfileUser extends StatelessWidget {
                               85),
                           child: Image
                               .network(
-                            user.user.photo.toString(),
+                            user.user!.photo.toString(),
                             width:
                             170,
                             height:
@@ -69,8 +69,8 @@ class ProfileUser extends StatelessWidget {
                         size: 130,
                       ),),
                     Positioned(
-                        top: ScreenUtil().setHeight(100),
-                        right: 10,
+                        top: ScreenUtil().setHeight(150),
+                        right: 20,
                         child: GestureDetector(
                           onTap: (){
                             Get.toNamed(RouteHelper.editProfile);
@@ -97,7 +97,7 @@ class ProfileUser extends StatelessWidget {
                       size: 40,
                     ),
                     smallText: SmallText(
-                      text: user.user.name.toString(),
+                      text: user.user!.name.toString(),
                       color: AppColors.mainBlackColor,
                     )),
                 SizedBox(
@@ -112,7 +112,7 @@ class ProfileUser extends StatelessWidget {
                       size: 40,
                     ),
                     smallText: SmallText(
-                      text:user.user.phone.toString(),
+                      text:user.user!.phone.toString(),
                       color: AppColors.mainBlackColor,
                     )),
                 SizedBox(
@@ -127,7 +127,7 @@ class ProfileUser extends StatelessWidget {
                       size: 40,
                     ),
                     smallText: SmallText(
-                      text: user.user.email.toString(),
+                      text: user.user!.email.toString(),
                       color: AppColors.mainBlackColor,
                     )),
                 SizedBox(

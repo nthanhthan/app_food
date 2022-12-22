@@ -65,7 +65,7 @@ class _FoodDetailState extends State<FoodDetail> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                             Get.toNamed(RouteHelper.storeDetail);
+                             Get.toNamed(RouteHelper.getStoreDetail(storeId));
                             },
                             child: AppIcon(
                               iconColor: Colors.black54,
@@ -319,7 +319,7 @@ class _FoodDetailState extends State<FoodDetail> {
                     child: GestureDetector(
                       onTap: () {
                         foodDetail.addItem(foodDetail.foodsDetail,storeId);
-                        Get.toNamed(RouteHelper.cartPage);
+                        Get.toNamed(RouteHelper.getCartPage(storeId));
                       },
                       child: BigText(
                         text: "Thêm  ${(foodDetail.foodsDetail.price*foodDetail.quantity+foodDetail.totalMoney).toString().toVND(unit: 'đ')}",

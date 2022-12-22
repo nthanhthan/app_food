@@ -4,6 +4,7 @@ import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/models/cart_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../models/order_model.dart';
 import '../../models/user_model.dart';
 import '../api/api_client.dart';
@@ -45,12 +46,15 @@ class PaymentRepo extends GetxService{
        }
      }
   }
-  Future<bool> confirmOrder(voucherID,String note, String addressUser, String phoneNumberOrder) async {
+  Future<Map<bool,Object?>> confirmOrder(voucherID,String note, String addressUser, String phoneNumberOrder, String dropdownValue) async {
     var fullApiUrl ="${apiClient.appBaseUrl}CreateOrder";
   List<CartModel> carts=cart.getItems;
   if(carts.length==0){
     showCustomSnackBar("Vui lòng chọn món",title: "Không hợp lệ");
-    return false;
+    Map<bool,String?> result={
+      false:""
+    };
+    return result;
   }
   print(phoneNumberOrder);
   print(voucherID);
@@ -75,7 +79,7 @@ class PaymentRepo extends GetxService{
       note: note,
       phoneNumber: phoneNumberOrder ?? phoneNumberUser,
       voucherId: voucherID,
-      paymentMethod: "Tien mat",
+      paymentMethod: dropdownValue,
       deliveryMode: "nhan tai cua hang",
       storeId: carts[0].storeID.toString(),
       foodOrder:foodOrder
@@ -83,15 +87,34 @@ class PaymentRepo extends GetxService{
   print(jsonEncode(order));
   http.Response response=await apiClient.postOrder(fullApiUrl,order!);
   if(response.statusCode==200){
+    if(response.body.isNotEmpty){
+    String uri=response.body;
+    uri=uri.replaceAll('"', "");
+    Map<bool,Object?> result={
+      true:uri
+    };
+    removeCart();
+    await sharedPreferences.remove("Cart-list");
+    Get.find<CartController>().getCartData();
+    return result;
+
+    }
     print("Done");
     removeCart();
     await sharedPreferences.remove("Cart-list");
     Get.find<CartController>().getCartData();
-    return true;
+    Map<bool,String?> result={
+      true:""
+    };
+    return result;
+
   }else{
     print(response.statusCode);
     print("Failed");
-    return false;
+    Map<bool,String?> result={
+      false:""
+    };
+    return result;
   }
   }
   void removeCart(){
