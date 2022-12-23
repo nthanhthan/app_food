@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/myOrdered_controller.dart';
+import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/big_text.dart';
@@ -81,8 +82,19 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
     return  Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor,
-          title:  Text("Chi tiết đơn hàng"),
+          title:  const Text("Chi tiết đơn hàng"),
           centerTitle: true,
+          leading: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pushNamed(
+                        RouteHelper.myOrderPage);
+            },
+            child: AppIcon(
+                icon: Icons.arrow_back,
+                size: ScreenUtil().setHeight(30),
+                iconSize:ScreenUtil().setHeight(25) , backgroundColor: AppColors.mainColor
+            ),
+          )
         ),
         body: GetBuilder<MyOrderController>(builder: (ordered) {
           var isReview = false;

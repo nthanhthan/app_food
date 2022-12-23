@@ -416,7 +416,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           setState(() {
                             loaderOverlay = false;
                           });
-                          Get.toNamed(RouteHelper.getWebViewPage(url));
+                          Get.toNamed(RouteHelper.getWebViewPage(url,"Thanh toán"));
                         }else if(url!.isEmpty){
                           Get.toNamed(RouteHelper.myOrderPage);
                         }else{

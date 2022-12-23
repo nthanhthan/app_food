@@ -1,4 +1,5 @@
 
+import 'package:app_food/routes/route_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -117,7 +118,9 @@ class SignUpPage extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>SignInPage()),
+                        recognizer: TapGestureRecognizer()..onTap=(){
+                          Get.toNamed(RouteHelper.initial);
+                        },
                         text: " Đăng nhập",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

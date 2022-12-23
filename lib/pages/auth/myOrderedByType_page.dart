@@ -3,6 +3,7 @@ import 'package:app_food/models/myOrdered_model.dart';
 import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_icon.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-class MyOrderedByType extends StatelessWidget {
+class MyOrderedByType extends StatefulWidget {
   const MyOrderedByType({
     Key? key,
     required this.data,
@@ -19,21 +20,42 @@ class MyOrderedByType extends StatelessWidget {
   final List<MyOrdered>? data;
 
   @override
+  State<MyOrderedByType> createState() => _MyOrderedByTypeState();
+}
+
+class _MyOrderedByTypeState extends State<MyOrderedByType> {
+  bool loaderOverlay = true;
+
+  @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context,false);
     return Scaffold(
       body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: data!.isNotEmpty
+          child: widget.data!.isNotEmpty
               ? ListView.builder(
                   padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: data?.length,
+                  itemCount: widget.data?.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                          Get.find<MyOrderController>().getDetailOrdered(data![index].orderId);
-                         Get.toNamed(RouteHelper.getDetailOrdered(data![index].orderId));
+                        if (loaderOverlay) {
+                          overlay.show();
+                        } else {
+                          overlay.hide();
+                        }
+                        bool check=await Get.find<MyOrderController>().getDetailOrdered(widget.data![index].orderId);
+                        if(check){
+                          setState(() {
+                            loaderOverlay=false;
+                            //overlay.hide();
+                          });
+                          Get.toNamed(RouteHelper.getDetailOrdered(widget.data![index].orderId));
+
+                        }
+
                       },
                       child: Container(
                         padding: EdgeInsets.only(
@@ -64,20 +86,20 @@ class MyOrderedByType extends StatelessWidget {
                                   width: ScreenUtil().setWidth(8),
                                 ),
                                 SmallText(
-                                  text: data![index].state!,
+                                  text: widget.data![index].state!,
                                   color: AppColors.mainBlackColor,
                                   size: ScreenUtil().setSp(8),
                                 ),
                               ],
                             ),
                             SmallText(
-                              text: data![index].storeName!,
+                              text: widget.data![index].storeName!,
                               color: AppColors.mainBlackColor,
                               size: ScreenUtil().setSp(12),
                               maxLines: 1,
                             ),
                             SmallText(
-                              text: data![index].created.toString(),
+                              text: widget.data![index].created.toString(),
                               fontWeight: "bold",
                               size: ScreenUtil().setSp(8),
                             ),
@@ -85,7 +107,7 @@ class MyOrderedByType extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SmallText(
-                                  text: data![index]
+                                  text: widget.data![index]
                                       .total
                                       .toString()
                                       .toVND(unit: "đ"),

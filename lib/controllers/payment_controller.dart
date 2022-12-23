@@ -83,7 +83,7 @@ class PaymentController extends GetxController{
         cartController.getCartData();
         return checkOrder[true].toString();
       }
-       Get.find<MyOrderController>().getListMyOrdered();
+      Get.find<MyOrderController>().getListMyOrdered();
       clear();
       cartController.getCartData();
       return "";

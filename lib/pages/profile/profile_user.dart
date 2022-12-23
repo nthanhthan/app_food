@@ -77,7 +77,7 @@ class ProfileUser extends StatelessWidget {
                           },
                           child: Container(
                             child: Row(
-                              children: const [
+                              children:  [
                                 AppIcon(icon: Icons.edit,backgroundColor: Color(0xFFFBC78D), size: 30,iconSize: 25,),
                               ],
                             ),
@@ -104,7 +104,7 @@ class ProfileUser extends StatelessWidget {
                   height: ScreenUtil().setHeight(7),
                 ),
                 AccountWidget(
-                    appIcon: const AppIcon(
+                    appIcon:  AppIcon(
                       icon: Icons.phone,
                       backgroundColor: Color(0xFFFBC78D),
                       iconColor: Colors.white,
@@ -119,7 +119,7 @@ class ProfileUser extends StatelessWidget {
                   height: ScreenUtil().setHeight(7),
                 ),
                 AccountWidget(
-                    appIcon: const AppIcon(
+                    appIcon:  AppIcon(
                       icon: Icons.mail,
                       backgroundColor: Color(0xFFFBC78D),
                       iconColor: Colors.white,
@@ -134,7 +134,7 @@ class ProfileUser extends StatelessWidget {
                   height: ScreenUtil().setHeight(7),
                 ),
                 AccountWidget(
-                    appIcon: const AppIcon(
+                    appIcon:  AppIcon(
                       icon: Icons.location_on_sharp,
                       backgroundColor: Color(0xFFFBC78D),
                       iconColor: Colors.white,
@@ -149,7 +149,7 @@ class ProfileUser extends StatelessWidget {
                   height: ScreenUtil().setHeight(7),
                 ),
                 AccountWidget(
-                    appIcon: const AppIcon(
+                    appIcon:  AppIcon(
                       icon: Icons.store,
                       backgroundColor: Color(0xFFADC965),
                       iconColor: Colors.white,
@@ -172,7 +172,7 @@ class ProfileUser extends StatelessWidget {
                     Get.toNamed(RouteHelper.myOrderPage);
                   },
                   child: AccountWidget(
-                      appIcon: const AppIcon(
+                      appIcon:  AppIcon(
                         icon: Icons.history,
                         backgroundColor: Color(0xFFADC965),
                         iconColor: Colors.white,
@@ -191,7 +191,7 @@ class ProfileUser extends StatelessWidget {
                     }
                   },
                   child: AccountWidget(
-                      appIcon: const AppIcon(
+                      appIcon:  AppIcon(
                         icon: Icons.logout,
                         backgroundColor: Color(0xFFD33B23),
                         iconColor: Colors.white,

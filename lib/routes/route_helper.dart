@@ -1,4 +1,5 @@
 import 'package:app_food/pages/auth/DetailOrdered_page.dart';
+import 'package:app_food/pages/auth/sign_up_page.dart';
 import 'package:app_food/pages/cart/cart_page.dart';
 import 'package:app_food/pages/cart/payment_page.dart';
 import 'package:app_food/pages/cart/voucher_page.dart';
@@ -18,6 +19,7 @@ import '../pages/home/home_page.dart';
 
 class RouteHelper {
   static const String initial = "/";
+  static const String signUp = "/signup";
   static const String homepage = "/home_page";
   static const String storeDetail = "/store_detail";
   static const String foodDetail = "/food_detail";
@@ -33,6 +35,7 @@ class RouteHelper {
   static const String searchPage = '/search_page';
   static const String reviewPage = '/review_page';
   static const String webView = '/web_view';
+  static const String webViewForgotPass = '/web_view_forgot';
 
   static String getInitial() => '$initial';
   static String getHomePage() => '$homepage';
@@ -44,15 +47,27 @@ class RouteHelper {
   static String getPaymentPage() => '$paymentPage';
   static String getVoucherPage() => '$voucherPage';
   static String getMyOrderPage() => '$myOrderPage';
-  static String getDetailOrdered(String? orderId) => '$detailOrdered?orderId=$orderId';
+  static String getDetailOrdered(String? orderId) =>
+      '$detailOrdered?orderId=$orderId';
   static String getEditProfile() => '$editProfile';
   static String getProfileUser() => '$profile';
   static String getInfoUserOrder() => '$infoUserOrder';
   static String getSearchPage() => '$searchPage';
   static String getReviewPage() => '$reviewPage';
-  static String getWebViewPage(String url) => '$webView?url=$url';
+  static String getWebViewPage(String url,String name) => '$webView?url=$url&name=$name';
   static List<GetPage> routes = [
-    GetPage(name: initial, page: () => SignInPage()),
+    GetPage(
+        name: initial,
+        page: () {
+          return SignInPage();
+        },
+        transition: Transition.rightToLeftWithFade),
+    GetPage(
+        name: signUp,
+        page: () {
+          return SignUpPage();
+        },
+        transition: Transition.rightToLeftWithFade),
     GetPage(
         name: homepage,
         page: () {
@@ -78,7 +93,7 @@ class RouteHelper {
     GetPage(
         name: cartPage,
         page: () {
-          String? storeID=Get.parameters['storeID'];
+          String? storeID = Get.parameters['storeID'];
           return CartPage(storeID: storeID);
         },
         transition: Transition.rightToLeftWithFade),
@@ -104,7 +119,7 @@ class RouteHelper {
         name: detailOrdered,
         page: () {
           String orderId = Get.parameters['orderId']!;
-          return DetailOrderPage(orderID:orderId);
+          return DetailOrderPage(orderID: orderId);
         },
         transition: Transition.rightToLeftWithFade),
     GetPage(
@@ -135,7 +150,19 @@ class RouteHelper {
         name: webView,
         page: () {
           var url = Get.parameters['url'];
-          return WebViewContainer(url: url,);
+          String name=Get.parameters['name']!;
+          print(url.toString());
+          print(name);
+          return WebViewContainer(
+            url: url, name: name!,
+          );
+        },
+        transition: Transition.downToUp),
+    GetPage(
+        name: webViewForgotPass,
+        page: () {
+          return WeViewForgotPassword(
+          );
         },
         transition: Transition.downToUp),
   ];
