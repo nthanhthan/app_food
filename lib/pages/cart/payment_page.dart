@@ -1,6 +1,10 @@
+import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/controllers/payment_controller.dart';
+import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_icon.dart';
+import 'package:app_food/widgets/big_text.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import '../../controllers/cart_controller.dart';
-import '../../routes/route_helper.dart';
-import '../../widgets/big_text.dart';
 
 List<String> list = <String>['Tiền mặt', 'Paypal'];
 
@@ -23,8 +24,10 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   String dropdownValue = list.first;
+  bool loaderOverlay = true;
   @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context,true);
     var note = TextEditingController();
     int total = 0;
     return Scaffold(
@@ -322,7 +325,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         elevation: 15,
-                        style: const TextStyle(color: Color(0xFFFF8357),fontSize: 10),
+                        style: const TextStyle(
+                            color: Color(0xFFFF8357), fontSize: 10),
                         iconSize: 25,
                         onChanged: (String? value) {
                           // This is called when the user selects an item.
@@ -330,7 +334,8 @@ class _PaymentPageState extends State<PaymentPage> {
                             dropdownValue = value!;
                           });
                         },
-                        items: list.map<DropdownMenuItem<String>>((String value) {
+                        items:
+                            list.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -399,8 +404,24 @@ class _PaymentPageState extends State<PaymentPage> {
                         color: AppColors.mainColor),
                     child: GestureDetector(
                       onTap: () async {
-                        payment.confirmOrder(note.text,dropdownValue);
-                        Get.toNamed(RouteHelper.myOrderPage);
+                        if (loaderOverlay) {
+                          overlay.show();
+                        } else {
+                          overlay.hide();
+                        }
+
+                        String? url = await payment.confirmOrder(
+                            note.text, dropdownValue);
+                        if (url!.contains("https://")) {
+                          setState(() {
+                            loaderOverlay = false;
+                          });
+                          Get.toNamed(RouteHelper.getWebViewPage(url));
+                        }else if(url!.isEmpty){
+                          Get.toNamed(RouteHelper.myOrderPage);
+                        }else{
+                          Get.toNamed(RouteHelper.homepage);
+                        }
                       },
                       child: BigText(
                         text: "Đặt hàng",

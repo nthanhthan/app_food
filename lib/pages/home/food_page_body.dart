@@ -1,4 +1,5 @@
 
+import 'package:app_food/widgets/loader.dart';
 import 'package:app_food/widgets/shimmer.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -60,9 +61,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   itemBuilder: (context, position) {
                     return _buildPageItem(position,storeNear.storeNearList[position]);
                   }),
-          ):CircularProgressIndicator(
-            color: AppColors.mainColor,
-          );
+          ):const Loader();
         }),
 
         //dots

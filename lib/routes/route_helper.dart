@@ -44,7 +44,7 @@ class RouteHelper {
   static String getPaymentPage() => '$paymentPage';
   static String getVoucherPage() => '$voucherPage';
   static String getMyOrderPage() => '$myOrderPage';
-  static String getDetailOrdered() => '$detailOrdered';
+  static String getDetailOrdered(String? orderId) => '$detailOrdered?orderId=$orderId';
   static String getEditProfile() => '$editProfile';
   static String getProfileUser() => '$profile';
   static String getInfoUserOrder() => '$infoUserOrder';
@@ -103,7 +103,8 @@ class RouteHelper {
     GetPage(
         name: detailOrdered,
         page: () {
-          return DetailOrderPage();
+          String orderId = Get.parameters['orderId']!;
+          return DetailOrderPage(orderID:orderId);
         },
         transition: Transition.rightToLeftWithFade),
     GetPage(

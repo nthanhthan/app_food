@@ -29,22 +29,6 @@ class CartPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // const newRouteName = "/cart_page";
-                      // bool isNewRouteSameAsCurrent = false;
-                      //
-                      // Navigator.popUntil(context, (route) {
-                      //   print(route.settings.name);
-                      //   if (route.settings.name == newRouteName) {
-                      //     isNewRouteSameAsCurrent = true;
-                      //   }
-                      //   return true;
-                      // });
-                      //
-                      // if (!isNewRouteSameAsCurrent) {
-                      //   print("okee");
-                      //   Get.toNamed(RouteHelper.homepage);
-                      // //  Navigator.pushNamed(context, newRouteName);
-                      // }
                     Navigator.popAndPushNamed(context, RouteHelper.getDetailFood(storeID));
                     },
                     child: AppIcon(

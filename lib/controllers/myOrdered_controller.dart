@@ -18,7 +18,7 @@ class MyOrderController extends GetxController {
   List<MyOrdered> listMyOrderedDelivered = [];
   List<MyOrdered> listOrdered=[];
   final SharedPreferences sharedPreferences;
-  late DetailOrdered detailOrdered;
+  DetailOrdered? detailOrdered;
   List<Food> listFood = [];
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
@@ -83,8 +83,9 @@ class MyOrderController extends GetxController {
   Future<bool> getDetailOrdered(orderedID) async {
     _isLoaded = false;
     http.Response response = await myOrderedRepo.getDetailOrdered(orderedID);
-     await Get.find<MyOrderController>().getReviewByOrderId(orderedID);
     if (response.statusCode == 200) {
+      detailOrdered = DetailOrdered.fromJson(jsonDecode(response.body));
+      Get.find<MyOrderController>().getReviewByOrderId(orderedID);
       if (sharedPreferences.containsKey("user")) {
         String? getUser = sharedPreferences.getString("user");
         User user = User.fromJson(jsonDecode(getUser!));
@@ -92,7 +93,6 @@ class MyOrderController extends GetxController {
       } else {
         nameUser = "No Name";
       }
-      detailOrdered = DetailOrdered.fromJson(jsonDecode(response.body));
       DateTime parseDate =  DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .parse(detailOrdered!.orderDate.toString(), true);
     var inputDate = DateTime.parse(parseDate.toString());

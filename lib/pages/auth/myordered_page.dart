@@ -40,8 +40,8 @@ class _MyOrderPageState extends State<MyOrderPage>
           appBar: AppBar(
             bottom: TabBar(
               controller: controller,
-              labelStyle: TextStyle(fontSize: 10),
-              physics: BouncingScrollPhysics(),
+              labelStyle: const TextStyle(fontSize: 10),
+              physics: const BouncingScrollPhysics(),
               isScrollable: true,
               tabs: const [
                 Tab(text: "Đã đặt"),
@@ -57,12 +57,12 @@ class _MyOrderPageState extends State<MyOrderPage>
               ],
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
                   RouteHelper.homepage, (route) => false),
             ),
             backgroundColor: AppColors.mainColor,
-            title: Text("Đơn hàng của tôi"),
+            title: const Text("Đơn hàng của tôi"),
             centerTitle: true,
           ),
           body: Navigator(

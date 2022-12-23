@@ -1,5 +1,6 @@
 import 'package:app_food/controllers/payment_controller.dart';
 import 'package:app_food/utils/colors.dart';
+import 'package:app_food/widgets/loader.dart';
 import 'package:app_food/widgets/shimmer.dart';
 import 'package:app_food/widgets/skeleton.dart';
 import 'package:app_food/widgets/small_text.dart';
@@ -16,7 +17,8 @@ class VoucherPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor,
-          title: const Center(child: Text("Phiếu giảm giá")),
+          title:  Text("Phiếu giảm giá"),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
             child: GetBuilder<PaymentController>(builder: (voucher) {
@@ -78,7 +80,7 @@ class VoucherPage extends StatelessWidget {
                       ),
                     );
                   })
-              :const ShimmerLoad();
+              :const Center(child: Loader());
         })));
   }
 }

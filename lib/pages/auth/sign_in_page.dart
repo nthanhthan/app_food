@@ -4,6 +4,7 @@ import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_text_field.dart';
 import 'package:app_food/widgets/big_text.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,9 +19,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  bool _isLoaded=true;
+  bool loaderOverlay = true;
   @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context,false);
     var passwordController=TextEditingController();
     var emailController=TextEditingController();
      double screenHeight=Get.context!.height; //820
@@ -44,7 +46,7 @@ class _SignInPageState extends State<SignInPage> {
             SizedBox(height: ScreenUtil().setHeight(36.5),),
             Container(
               height: ScreenUtil().setHeight(182),
-              child: Center(
+              child: const Center(
                 child: CircleAvatar(
                   backgroundColor:Colors.white,
                   radius: 90,
@@ -70,12 +72,12 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             SizedBox(height: ScreenUtil().setHeight(25),),
-            AppTextField(textController: emailController, hintText: "Email", icon: Icons.phone,textInputType: TextInputType.emailAddress,),
+            AppTextField(textController: emailController, hintText: "Email", icon: Icons.email,textInputType: TextInputType.emailAddress,),
             SizedBox(height: ScreenUtil().setHeight(20),),
             AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: true,),
             SizedBox(height: ScreenUtil().setHeight(50),),
 
-        _isLoaded?Container(
+        Container(
               width: ScreenUtil().setWidth(250),
               height: ScreenUtil().setHeight(70),
               decoration: BoxDecoration(
@@ -85,11 +87,17 @@ class _SignInPageState extends State<SignInPage> {
               child: Center(
                 child:GestureDetector(
                   onTap: () async {
-                    setState(() {
-                      _isLoaded=false;
-                    });
+                    if (loaderOverlay) {
+                      overlay.show();
+                    } else {
+                      overlay.hide();
+                    }
+
                     var signup=await _login();
                     if(signup==true){
+                      setState(() {
+                        loaderOverlay=false;
+                      });
                       Navigator.pushNamedAndRemoveUntil(context, RouteHelper.homepage, (route) => false);
                      // Get.offNamed(RouteHelper.homepage);
                     }else{
@@ -104,9 +112,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 )
               )
-            ):CircularProgressIndicator(
-          color: AppColors.mainColor,
-        ),
+            ),
             SizedBox(height:  ScreenUtil().setHeight(50)),
             RichText(
                 text: TextSpan(

@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/myOrdered_controller.dart';
+import 'package:app_food/utils/colors.dart';
+import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/big_text.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +13,22 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../utils/colors.dart';
-import '../../widgets/app_icon.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class DetailOrderPage extends StatefulWidget {
-
-   DetailOrderPage({Key? key}) : super(key: key);
-
+  String orderID;
+   DetailOrderPage({Key? key,required this.orderID}) : super(key: key);
   @override
-  State<DetailOrderPage> createState() => _DetailOrderPageState();
+  State<DetailOrderPage> createState() => _DetailOrderPageState(orderID);
 }
 
 class _DetailOrderPageState extends State<DetailOrderPage> {
-
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   File? _photo;
   final ImagePicker _picker = ImagePicker();
+  String _orderId;
+  _DetailOrderPageState(this._orderId);
   Future imgFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -73,10 +74,11 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
     }
     return "";
   }
-
+  bool loaderOverlay = true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final overlay = LoadingOverlay.of(context,true);
+    return  Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor,
           title:  Text("Chi tiết đơn hàng"),
@@ -93,9 +95,9 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
             ratingStar = review.star;
             isReview = true;
           }
-          return SingleChildScrollView(
-              child: ordered.isLoaded
-                  ? Column(
+          return ordered.isLoaded?SingleChildScrollView(
+              child:
+                   Column(
                       children: [
                         Container(
                             padding: EdgeInsets.only(
@@ -153,7 +155,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                       children: [
                                         SmallText(
                                           text: detailOrder
-                                              .detailOrdered.orderId.toString(),
+                                              .detailOrdered!.orderId.toString(),
                                           color: AppColors.mainBlackColor,
                                           size: ScreenUtil().setSp(8.5),
                                           maxLines: 1,
@@ -166,7 +168,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                         ),
                                         SmallText(
                                           text: detailOrder
-                                              .detailOrdered.phoneNumber
+                                              .detailOrdered!.phoneNumber
                                               .toString(),
                                           color: AppColors.mainBlackColor,
                                           size: ScreenUtil().setSp(8.5),
@@ -174,7 +176,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                         ),
                                         SmallText(
                                           text: detailOrder
-                                              .detailOrdered.address
+                                              .detailOrdered!.address
                                               .toString(),
                                           color: AppColors.mainBlackColor,
                                           size: ScreenUtil().setSp(8.5),
@@ -211,12 +213,12 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                   height: ScreenUtil().setHeight(10),
                                 ),
                                 BigText(
-                                    text: ordered.detailOrdered.storeName
+                                    text: ordered.detailOrdered!.storeName
                                         .toString()),
                                 Row(
                                   children: [
                                     SmallText(
-                                      text: ordered.detailOrdered.state
+                                      text: ordered.detailOrdered!.state
                                           .toString(),
                                       size: ScreenUtil().setSp(8),
                                       color: AppColors.mainBlackColor,
@@ -395,7 +397,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                   width: double.maxFinite,
                                   child: Column(
                                     children: [
-                                      ordered.detailOrdered.discount == 0
+                                      ordered.detailOrdered!.discount == 0
                                           ? SizedBox(
                                               height: ScreenUtil().setHeight(1),
                                             )
@@ -411,7 +413,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                                 ),
                                                 SmallText(
                                                     text:
-                                                        "-${ordered.detailOrdered.discount.toString().toVND(unit: "đ")}",
+                                                        "-${ordered.detailOrdered!.discount.toString().toVND(unit: "đ")}",
                                                     color: AppColors
                                                         .mainBlackColor),
                                               ],
@@ -425,7 +427,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                             color: AppColors.mainBlackColor,
                                           ),
                                           SmallText(
-                                              text: ordered.detailOrdered.total
+                                              text: ordered.detailOrdered!.total
                                                   .toString()
                                                   .toVND(unit: "đ"),
                                               color: Colors.redAccent),
@@ -452,7 +454,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                           fontWeight: "bold",
                                           color: Colors.black),
                                       SmallText(
-                                          text: ordered.detailOrdered.paymentMethod.toString(),
+                                          text: ordered.detailOrdered!.paymentMethod.toString(),
                                           color: Colors.black),
                                     ],
                                   ),
@@ -469,7 +471,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                           children: [
                                             SmallText(
                                                 text: "Đánh giá đơn hàng"),
-                                            ordered.detailOrdered.state ==
+                                            ordered.detailOrdered!.state ==
                                                         "Delivered" &&
                                                     ordered.review != null
                                                 ? RatingBar.builder(
@@ -520,7 +522,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                               controller: rateText,
                                               obscureText: false,
                                               enabled:
-                                                  ordered.detailOrdered.state ==
+                                                  ordered.detailOrdered!.state ==
                                                               "Delivered" &&
                                                           ordered.review != null
                                                       ? false
@@ -637,6 +639,11 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                             ),
                                             GestureDetector(
                                               onTap: () async {
+                                                if (loaderOverlay) {
+                                                  overlay.show();
+                                                } else {
+                                                  overlay.hide();
+                                                }
                                                 if (!isReview) {
                                                   if (rateText.text.isEmpty) {
                                                     showCustomSnackBar(
@@ -663,14 +670,17 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                                         'star': ratingStar,
                                                         'images': [url]
                                                       };
+
                                                       bool check = await ordered
                                                           .reviewOrder(data);
                                                       if (check == false) {
+                                                        overlay.hide();
                                                         showCustomSnackBar(
                                                             "Vui  lòng thử lại",
                                                             title:
                                                                 "Lỗi hệ thống");
                                                       } else {
+                                                        overlay.hide();
                                                         showCustomSnackBar(
                                                             "Cảm ơn bạn đã đánh giá",
                                                             title: "Thành công",
@@ -678,7 +688,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                                         ordered
                                                             .getReviewByOrderId(
                                                                 ordered
-                                                                    .detailOrdered
+                                                                    .detailOrdered!
                                                                     .orderId);
                                                         setState(() {
                                                           isReview = true;
@@ -710,11 +720,7 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                             ))
                       ],
                     )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.mainColor,
-                      ),
-                    ));
+                 ) : LoadOverlay(type: false);
         }));
   }
 

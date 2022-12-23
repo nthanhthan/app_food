@@ -1,4 +1,5 @@
 
+import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:flutter/material.dart';
  import 'package:webview_flutter/webview_flutter.dart';
@@ -20,6 +21,11 @@ class _WebViewState extends State<WebViewContainer> {
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
         title: const Text("Thanh Toán"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteHelper.myOrderPage, (route) => false),
+        ),
         centerTitle: true,),
       body: Column(
         children: [

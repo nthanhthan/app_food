@@ -32,8 +32,8 @@ class MyOrderedByType extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                        await Get.find<MyOrderController>().getDetailOrdered(data![index].orderId);
-                        Get.toNamed(RouteHelper.detailOrdered);
+                          Get.find<MyOrderController>().getDetailOrdered(data![index].orderId);
+                         Get.toNamed(RouteHelper.getDetailOrdered(data![index].orderId));
                       },
                       child: Container(
                         padding: EdgeInsets.only(

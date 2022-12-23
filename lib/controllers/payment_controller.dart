@@ -70,7 +70,7 @@ class PaymentController extends GetxController{
   getTotal(){
     return cartController.totalAmount-amountDiscount;
   }
-  Future<bool> confirmOrder(String note, String dropdownValue) async {
+  Future<String?> confirmOrder(String note, String dropdownValue) async {
     _isLoaded=false;
     if(note.isEmpty) {
       note="Nothing";
@@ -78,16 +78,18 @@ class PaymentController extends GetxController{
     Map<bool,Object?> checkOrder=await paymentRepo.confirmOrder(voucherID,note,addressUser,phoneNumberUser,dropdownValue);
     if(checkOrder.containsKey(true)){
       if(checkOrder[true]!=""){
-        Get.toNamed(RouteHelper.getWebViewPage(checkOrder[true].toString()));
+        Get.find<MyOrderController>().getListMyOrdered();
+        clear();
+        cartController.getCartData();
+        return checkOrder[true].toString();
       }
-      await Get.find<MyOrderController>().getListMyOrdered();
+       Get.find<MyOrderController>().getListMyOrdered();
       clear();
       cartController.getCartData();
-      return true;
+      return "";
     }else{
-      Get.toNamed(RouteHelper.homepage);
+      return "false";
     }
-    return false;
   }
   editInfoUser(data){
     try{

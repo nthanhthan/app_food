@@ -1,4 +1,5 @@
 
+import 'package:app_food/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -243,11 +244,7 @@ class _FoodDetailState extends State<FoodDetail> {
                         ],
                       )))
             ],
-          ):Center(
-            child: CircularProgressIndicator(
-              color: AppColors.mainColor,
-            ),
-          );
+          ):const Loader();
         }),
         bottomNavigationBar: GetBuilder<FoodDetailController>(
           builder: (foodDetail) {
