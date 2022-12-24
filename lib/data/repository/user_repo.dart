@@ -18,8 +18,8 @@ class UserRepo extends GetxService{
     var fullApiUrl=apiClient.appBaseUrl+apiUrl;
     return await apiClient.SignIn(data, fullApiUrl);
   }
-  Future<bool> LogOut(){
-    return apiClient.LogOut();
+  Future<bool> LogOut() async {
+    return await apiClient.LogOut();
   }
   getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

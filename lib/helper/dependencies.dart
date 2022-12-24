@@ -17,6 +17,7 @@ import '../data/repository/foodOfStore_repo.dart';
 import '../data/repository/recommended_storenear_repo.dart';
 Future<void> init()async {
   final sharePreferences=await SharedPreferences.getInstance();
+  //await sharePreferences.remove("token");
   //await sharePreferences.remove("Cart-list");
   Get.lazyPut((){return sharePreferences;},
       fenix: true);

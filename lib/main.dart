@@ -18,7 +18,10 @@ Future<void> main() async{
   await Firebase.initializeApp();
   await dep.init();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token= prefs.getString("token");
+  String? token;
+  if(prefs.containsKey("token")){
+    token= prefs.getString("token");
+  }
   if(token!=null){
     await Get.find<UserController>().getUser();
     String url="https://takefood-apigateway-mobile.azurewebsites.net/notifysocket";

@@ -1,5 +1,7 @@
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/widgets/account_widget.dart';
 import 'package:app_food/widgets/app_icon.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:app_food/widgets/small_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +12,19 @@ import '../../controllers/myOrdered_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/colors.dart';
-import '../auth/sign_in_page.dart';
 
-class ProfileUser extends StatelessWidget {
+class ProfileUser extends StatefulWidget {
   const ProfileUser({Key? key}) : super(key: key);
 
   @override
+  State<ProfileUser> createState() => _ProfileUserState();
+}
+
+class _ProfileUserState extends State<ProfileUser> {
+  bool loaderOverlay = true;
+  @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context,false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
@@ -186,8 +194,24 @@ class ProfileUser extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    if(await Get.find<UserController>().LogOut()){
-                      Get.to(()=>SignInPage());
+                    if (loaderOverlay) {
+                      overlay.show();
+                    } else {
+                      overlay.hide();
+                    }
+                    bool check=await Get.find<UserController>().LogOut();
+                    if(check){
+                      setState(() {
+                      loaderOverlay=false;
+                      });
+                      // Navigator.of(context).pushNamedAndRemoveUntil(
+                      //     RouteHelper.signUp, (route) => false);
+                    //  Navigator.pushNamedAndRemoveUntil(context, RouteHelper.initial, (route) => false);
+                      Get.offAndToNamed(RouteHelper.initial);
+
+                    }else{
+                      overlay.hide();
+                      showCustomSnackBar("Vui lòng thử lại", title: "Lỗi");
                     }
                   },
                   child: AccountWidget(

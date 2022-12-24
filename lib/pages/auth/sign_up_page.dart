@@ -11,9 +11,15 @@ import '../../widgets/app_text_field.dart';
 import '../../widgets/big_text.dart';
 import 'sign_in_page.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
     var emailController=TextEditingController();
@@ -72,7 +78,63 @@ class SignUpPage extends StatelessWidget {
             SizedBox(height:  ScreenUtil().setHeight(20),),
             AppTextField(textController: phoneController, hintText: "Số điện thoại", icon: Icons.phone),
             SizedBox(height:  ScreenUtil().setHeight(20),),
-            AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: true,),
+      Container(
+        margin: EdgeInsets.only(left: ScreenUtil().setHeight(20),right: ScreenUtil().setWidth(20)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 10,
+                  spreadRadius: 7,
+                  offset: Offset(1,10),
+                  color: Colors.grey.withOpacity(0.2)
+              )
+            ]
+        ),
+        child: TextField(
+          controller: passwordController,
+          obscureText: _isHidden,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            suffix: InkWell(
+              onTap: (){
+                setState(() {
+                  _isHidden=!_isHidden;
+                });
+              },
+              child: Icon(
+                _isHidden
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+              ),
+            ),
+              hintText: "Mật khẩu",
+              prefixIcon: Icon(Icons.password_sharp,color: AppColors.mainColor,),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                  borderSide: const BorderSide(
+                    width: 0.5,
+                    color: Colors.white,
+                  )
+              ),
+              enabledBorder:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                  borderSide: const BorderSide(
+                    width: 1.0,
+                    color: Colors.white,
+                  )
+              ),
+              border:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+
+              )
+
+          ),
+          style: TextStyle(fontSize: ScreenUtil().setSp(10)),
+        ),
+      ),
+           // AppTextField(textController: passwordController, hintText: "Mật khẩu", icon: Icons.password_sharp,obscureText: _isHidden,),
             SizedBox(height:  ScreenUtil().setHeight(40),),
             Container(
               width:  ScreenUtil().setWidth(250),
@@ -96,7 +158,6 @@ class SignUpPage extends StatelessWidget {
                       nameController.text="";
                       phoneController.text="";
                       passwordController.text="";
-                      Text("SAI rooif");
                     }
                   },
                   child: BigText(

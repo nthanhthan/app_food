@@ -26,8 +26,8 @@ class UserController extends GetxController{
       return false;
     }
   }
-  Future<bool> LogOut(){
-    return userRepo.LogOut();
+  Future<bool> LogOut() async {
+    return await userRepo.LogOut();
   }
     Future<void> getUser() async {
     address="";
@@ -80,11 +80,12 @@ class UserController extends GetxController{
       if(prefs.containsKey("user")){
         print("true");
       }
-      await Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data1);
       Get.find<CartController>().getCartData();
       await Get.find<UserController>().getUser();
       var checkRole=user?.getRoles?.contains("User");
+
       if(checkRole==true){
+        Get.find<RecommendedStoreNearController>().getRecommendedStoreNearList(data1);
         return true;
       }else {
         return false;

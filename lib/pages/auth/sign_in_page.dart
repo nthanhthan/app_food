@@ -110,8 +110,8 @@ class _SignInPageState extends State<SignInPage> {
                       overlay.hide();
                     }
 
-                    var signup = await _login();
-                    if (signup == true) {
+                    var signIn = await _login();
+                    if (signIn == true) {
                       setState(() {
                         loaderOverlay = false;
                       });
@@ -119,8 +119,13 @@ class _SignInPageState extends State<SignInPage> {
                           context, RouteHelper.homepage, (route) => false);
                       // Get.offNamed(RouteHelper.homepage);
                     } else {
+                      setState(() {
+                        overlay.hide();
+                        //loaderOverlay = false;
+                      });
                       emailController.text = "";
                       passwordController.text = "";
+
                     }
                   },
                   child: BigText(
