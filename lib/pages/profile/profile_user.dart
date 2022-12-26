@@ -1,4 +1,5 @@
 import 'package:app_food/base/show_custom_snackbar.dart';
+import 'package:app_food/pages/cart/web_view.dart';
 import 'package:app_food/widgets/account_widget.dart';
 import 'package:app_food/widgets/app_icon.dart';
 import 'package:app_food/widgets/loader_overlay.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/myOrdered_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../../routes/route_helper.dart';
@@ -73,11 +75,11 @@ class _ProfileUserState extends State<ProfileUser> {
                         icon: Icons.person,
                         backgroundColor: AppColors.mainColor,
                         iconColor: Colors.white,
-                        iconSize: 80,
-                        size: 130,
+                        iconSize: 120,
+                        size: 170,
                       ),),
                     Positioned(
-                        top: ScreenUtil().setHeight(150),
+                        top: ScreenUtil().setHeight(140),
                         right: 20,
                         child: GestureDetector(
                           onTap: (){
@@ -156,18 +158,26 @@ class _ProfileUserState extends State<ProfileUser> {
                 SizedBox(
                   height: ScreenUtil().setHeight(7),
                 ),
-                AccountWidget(
-                    appIcon:  AppIcon(
-                      icon: Icons.store,
-                      backgroundColor: Color(0xFFADC965),
-                      iconColor: Colors.white,
-                      iconSize: 20,
-                      size: 40,
-                    ),
-                    smallText: SmallText(
-                      text: "Đăng ký bán hàng",
-                      color: AppColors.mainBlackColor,
-                    )),
+                GestureDetector(
+                  onTap: () async {
+                    final Uri uri=Uri.parse('https://takefoodstore.web.app');
+                    if(!await launchUrl(uri)){
+                      throw 'Cound not lauch $uri';
+                    }
+                  },
+                  child: AccountWidget(
+                      appIcon:  AppIcon(
+                        icon: Icons.store,
+                        backgroundColor: Color(0xFFADC965),
+                        iconColor: Colors.white,
+                        iconSize: 20,
+                        size: 40,
+                      ),
+                      smallText: SmallText(
+                        text: "Đăng ký bán hàng",
+                        color: AppColors.mainBlackColor,
+                      )),
+                ),
                 SizedBox(
                   height: ScreenUtil().setHeight(7),
                 ),

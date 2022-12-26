@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/models/review_model.dart';
 import 'package:get/get.dart';
 import '../data/repository/foodOfStore_repo.dart';
@@ -27,6 +28,7 @@ class FoodOfStoreController extends GetxController{
       update();
       return true;
     }else{
+      showCustomSnackBar("Vui lòng thử lại",);
       return false;
     }
   }
@@ -41,10 +43,9 @@ class FoodOfStoreController extends GetxController{
         reviews=[];
         reviews=List<Review>.from(decodedList.map((e) => Review.fromJson(e)));
         listCommentStore.addAll(reviews);
-        print(listCommentStore.isNotEmpty);
          _isLoaded=true;
          update();
-        if(reviews.length<10){
+        if(reviews.isEmpty){
           break;
         }
       }

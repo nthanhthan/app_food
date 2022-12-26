@@ -412,7 +412,13 @@ class _PaymentPageState extends State<PaymentPage> {
 
                         String? url = await payment.confirmOrder(
                             note.text, dropdownValue);
-                        if (url!.contains("https://")) {
+                        if(url!.contains("missing address")){
+                          setState(() {
+                            overlay.hide();
+                            loaderOverlay = false;
+                          });
+                        }
+                        else if (url!.contains("https://")) {
                           setState(() {
                             loaderOverlay = false;
                           });

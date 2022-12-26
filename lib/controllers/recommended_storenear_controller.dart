@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/data/repository/recommended_storenear_repo.dart';
 import 'package:app_food/models/store_model.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,8 @@ class RecommendedStoreNearController extends GetxController{
      _isLoaded=true;
       update();
     }else{
-      print("sai");
+
+     //showCustomSnackBar("Thử lại sau",title: "Lỗi");
     }
   }
 }

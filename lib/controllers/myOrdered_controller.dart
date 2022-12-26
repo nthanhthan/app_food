@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/data/repository/myOrdered_repo.dart';
 import 'package:app_food/models/detailOrdered_model.dart';
 import 'package:app_food/models/myOrdered_model.dart';
@@ -41,15 +42,14 @@ class MyOrderController extends GetxController {
       if(response.statusCode==200){
       List<dynamic>  decodedList = json.decode(response.body);
       List<MyOrdered> posts = List<MyOrdered>.from(decodedList.map((model)=> MyOrdered.fromJson(model)));
+      print(posts.length);
       listMyOrdered.addAll(posts);
-      // listMyOrdered=[];
-      // listMyOrdered.addAll(ordered);
       getListMyOrderedByType();
-      if (posts.length < 10) {
+      if (posts.isEmpty) {
         break;
       }
       }
-      update();
+      // update();
     }
   }
 
@@ -72,6 +72,7 @@ class MyOrderController extends GetxController {
       }
     }
     _isLoaded=true;
+    update();
   }
 
    getReviewByOrderId(orderedId) async {
@@ -109,6 +110,7 @@ class MyOrderController extends GetxController {
     update();
     return true;
     }
+    showCustomSnackBar("Vui lòng thử lại",);
     return false;
   }
 

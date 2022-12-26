@@ -136,7 +136,7 @@ class _FoodDetailState extends State<FoodDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 BigText(
-                                  text: foodDetail.foodsDetail.name!.toString(),
+                                  text: handleNameFood(foodDetail.foodsDetail.name!.toString()),
                                   size: ScreenUtil().setSp(12),
                                   maxLines: 5,
                                 ),
@@ -329,5 +329,12 @@ class _FoodDetailState extends State<FoodDetail> {
             ):Container();
           },
         ));
+  }
+  String handleNameFood(String name){
+    String nameStore=name;
+    if(name.length> 20){
+      nameStore="${name.substring(0,21)}...";
+    }
+    return nameStore;
   }
 }

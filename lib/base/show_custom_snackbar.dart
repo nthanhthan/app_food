@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void showCustomSnackBar(String message,
-    {bool isError = true, String title = "Error",bool type=true}) {
+    {bool isError = true, String title = "Lỗi",bool type=true}) {
   Get.snackbar(title, message,
       titleText: SmallText(
         text: title,

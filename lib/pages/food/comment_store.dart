@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../utils/colors.dart';
@@ -20,8 +21,7 @@ class CommentStore extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: GetBuilder<FoodOfStoreController>(builder: (commentStore) {
-            return commentStore.isLoaded
-                ? commentStore.listCommentStore.isNotEmpty
+            return commentStore.isLoaded && commentStore.listCommentStore.isNotEmpty
                     ? ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -97,17 +97,17 @@ class CommentStore extends StatelessWidget {
                             ),
                           );
                         })
+                : (commentStore.listCommentStore.isEmpty &&
+                        commentStore.isLoaded)
+                    ? Center(
+                        child: SvgPicture.asset(
+                            "assets/images/coming_soon_ic.svg"),
+                      )
                     : Center(
-                        child: SmallText(
-                        text: "Chưa có đánh giá nào",
-                        color: AppColors.mainBlackColor,
-                        size: 10,
-                      ))
-                : Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.mainColor,
-                    ),
-                  );
+                        child: CircularProgressIndicator(
+                          color: AppColors.mainColor,
+                        ),
+                      );
           }),
         ));
   }

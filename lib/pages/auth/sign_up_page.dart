@@ -19,13 +19,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  var emailController=TextEditingController();
+  var passwordController=TextEditingController();
+  var nameController=TextEditingController();
+  var phoneController=TextEditingController();
   bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
-    var emailController=TextEditingController();
-    var passwordController=TextEditingController();
-    var nameController=TextEditingController();
-    var phoneController=TextEditingController();
+
     Future<bool> _register() async{
       String name=nameController.text.trim();
       String email=emailController.text.trim();
@@ -74,9 +75,9 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(height: ScreenUtil().setHeight(20),),
             AppTextField(textController: nameController, hintText: "Tên", icon: Icons.person),
             SizedBox(height: ScreenUtil().setHeight(20),),
-            AppTextField(textController: emailController, hintText: "Email", icon: Icons.email),
+            AppTextField(textController: emailController, hintText: "Email", icon: Icons.email,textInputType: TextInputType.emailAddress,),
             SizedBox(height:  ScreenUtil().setHeight(20),),
-            AppTextField(textController: phoneController, hintText: "Số điện thoại", icon: Icons.phone),
+            AppTextField(textController: phoneController, hintText: "Số điện thoại", icon: Icons.phone,textInputType: TextInputType.phone,),
             SizedBox(height:  ScreenUtil().setHeight(20),),
       Container(
         margin: EdgeInsets.only(left: ScreenUtil().setHeight(20),right: ScreenUtil().setWidth(20)),
@@ -107,6 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 _isHidden
                     ? Icons.visibility
                     : Icons.visibility_off,
+                color: AppColors.mainColor,
               ),
             ),
               hintText: "Mật khẩu",

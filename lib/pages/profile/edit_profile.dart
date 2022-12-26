@@ -5,6 +5,7 @@ import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/app_text_field.dart';
 import 'package:app_food/widgets/big_text.dart';
+import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,9 +69,10 @@ class _EditProfileState extends State<EditProfile> {
     return false;
   }
   bool _isLoaded=true;
-
+  bool loaderOverlay = true;
   @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context,true);
     return GetBuilder<UserController>(builder: (infoUser) {
       var nameController = TextEditingController(text: infoUser.user!.name);
       var phoneController = TextEditingController(text: infoUser.user!.phone);
@@ -213,7 +215,7 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: ScreenUtil().setHeight(40),
               ),
-              _isLoaded?Container(
+             Container(
                 width: ScreenUtil().setWidth(250),
                 height: ScreenUtil().setHeight(60),
                 decoration: BoxDecoration(
@@ -223,19 +225,24 @@ class _EditProfileState extends State<EditProfile> {
                 child: Center(
                     child: GestureDetector(
                   onTap: () async {
-                      setState(() {
-                         // nameController.text = ;
-                         // phoneController = phoneController;
-                         // emailController =emailController;
-                         // addressController = addressController;
-                        // photo = infoUser.user.photo.toString();
-                        _isLoaded=false;
-                      });
+                    if (loaderOverlay) {
+                      overlay.show();
+                    } else {
+                      overlay.hide();
+                    }
+
                     bool checkStatus = await uploadFile();
                     if (checkStatus) {
-                       await _editProfile();
-                      Get.toNamed(RouteHelper.profile);
+                       bool statusEdit=await _editProfile();
+                       if(statusEdit){
+                         overlay.hide();
+                         Get.toNamed(RouteHelper.profile);
+                       }else{
+                         overlay.hide();
+                         showCustomSnackBar("Cập nhật thất bại", title: "Thử lại");
+                       }
                     } else {
+                      overlay.hide();
                       showCustomSnackBar("Cập nhật thất bại", title: "Thử lại");
                     }
                   },
@@ -245,8 +252,6 @@ class _EditProfileState extends State<EditProfile> {
                     color: Colors.white,
                   ),
                 )),
-              ):CircularProgressIndicator(
-                color: AppColors.mainColor,
               )
             ],
           ),

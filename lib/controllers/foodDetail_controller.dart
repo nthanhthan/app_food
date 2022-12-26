@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class FoodDetailController extends GetxController {
      // return _foodsDetail;
       return true;
     } else {
+      showCustomSnackBar("Vui lòng thử lại",);
       return false;
       // return false;
     }

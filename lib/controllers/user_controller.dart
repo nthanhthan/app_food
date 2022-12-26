@@ -4,6 +4,7 @@ import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/recommended_storenear_controller.dart';
 import 'package:app_food/data/repository/user_repo.dart';
 import 'package:app_food/models/user_model.dart';
+import 'package:app_food/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,11 +19,14 @@ class UserController extends GetxController{
 
   Future<bool> SignUp(data,url) async{
     http.Response response=(await userRepo.SignUp(data, url));
+    print(data);
+    print(response.statusCode);
     if(response.statusCode==200){
-     print("Register success");
+     showCustomSnackBar("Vui lòng xác thực email trong hòm thư của bạn",title: "Xác thực", type: false );
+     Get.toNamed(RouteHelper.initial);
      return true;
     }else{
-      showCustomSnackBar("Register Failed",title: "Register");
+      showCustomSnackBar(response.body,title: "Đăng kí thất bại");
       return false;
     }
   }
@@ -91,7 +95,7 @@ class UserController extends GetxController{
         return false;
       }
     }else{
-      showCustomSnackBar("Login Failed",title: "Login");
+      showCustomSnackBar("Đăng nhập thất bại",title: "Đăng nhập");
       return false;
     }
   }

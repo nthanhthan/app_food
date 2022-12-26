@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/cart_controller.dart';
 import 'package:app_food/data/repository/payment_repo.dart';
 import 'package:app_food/models/voucher_model.dart';
@@ -36,6 +37,7 @@ class PaymentController extends GetxController{
       // return _foodsDetail;
       return true;
     } else {
+      showCustomSnackBar("Vui lòng thử lại", title: "Lỗi");
       _isLoaded=false;
       return false;
       // return false;
@@ -74,6 +76,10 @@ class PaymentController extends GetxController{
     _isLoaded=false;
     if(note.isEmpty) {
       note="Nothing";
+    };
+    if(addressUser.contains("Chưa có địa chỉ")){
+      showCustomSnackBar("Chưa có địa chỉ nhận hàng",title: "Thất bại");
+      return "missing address";
     }
     Map<bool,Object?> checkOrder=await paymentRepo.confirmOrder(voucherID,note,addressUser,phoneNumberUser,dropdownValue);
     if(checkOrder.containsKey(true)){
@@ -88,6 +94,7 @@ class PaymentController extends GetxController{
       cartController.getCartData();
       return "";
     }else{
+      showCustomSnackBar("Đặt hàng thất bại",title: "Thất bại");
       return "false";
     }
   }

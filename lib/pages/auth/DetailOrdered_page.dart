@@ -651,64 +651,69 @@ class _DetailOrderPageState extends State<DetailOrderPage> {
                                             ),
                                             GestureDetector(
                                               onTap: () async {
-                                                if (loaderOverlay) {
-                                                  overlay.show();
-                                                } else {
-                                                  overlay.hide();
-                                                }
-                                                if (!isReview) {
-                                                  if (rateText.text.isEmpty) {
-                                                    showCustomSnackBar(
-                                                        "Vui lòng thêm nhận xét",
-                                                        title: "Bổ sung");
+                                                if(isReview==false){
+                                                  if (loaderOverlay) {
+                                                    overlay.show();
                                                   } else {
-                                                    String url =
-                                                        await uploadFile();
-                                                    if (url.isEmpty) {
+                                                    overlay.hide();
+                                                  }
+                                                  if (!isReview) {
+                                                    if (rateText.text.isEmpty) {
+                                                      overlay.hide();
                                                       showCustomSnackBar(
-                                                          "Vui lòng chọn ảnh",
-                                                          title: "Lỗi");
-                                                    }
-                                                    if (url.isNotEmpty &&
-                                                        rateText
-                                                            .text.isNotEmpty) {
-                                                      var data = {
-                                                        'orderId': ordered
-                                                            .detailOrdered!
-                                                            .orderId,
-                                                        'description': rateText
-                                                            .text
-                                                            .toString(),
-                                                        'star': ratingStar,
-                                                        'images': [url]
-                                                      };
+                                                          "Vui lòng thêm nhận xét",
+                                                          title: "Bổ sung");
+                                                    } else {
+                                                      String url =
+                                                      await uploadFile();
+                                                      if (url.isEmpty) {
+                                                        overlay.hide();
+                                                        showCustomSnackBar(
+                                                            "Vui lòng chọn ảnh",
+                                                            title: "Lỗi");
+                                                      }
+                                                      if (url.isNotEmpty &&
+                                                          rateText
+                                                              .text.isNotEmpty) {
+                                                        var data = {
+                                                          'orderId': ordered
+                                                              .detailOrdered!
+                                                              .orderId,
+                                                          'description': rateText
+                                                              .text
+                                                              .toString(),
+                                                          'star': ratingStar,
+                                                          'images': [url]
+                                                        };
 
-                                                      bool check = await ordered
-                                                          .reviewOrder(data);
-                                                      if (check == false) {
-                                                        overlay.hide();
-                                                        showCustomSnackBar(
-                                                            "Vui  lòng thử lại",
-                                                            title:
-                                                                "Lỗi hệ thống");
-                                                      } else {
-                                                        overlay.hide();
-                                                        showCustomSnackBar(
-                                                            "Cảm ơn bạn đã đánh giá",
-                                                            title: "Thành công",
-                                                            type: false);
-                                                        ordered
-                                                            .getReviewByOrderId(
-                                                                ordered
-                                                                    .detailOrdered!
-                                                                    .orderId);
-                                                        setState(() {
-                                                          isReview = true;
-                                                        });
+                                                        bool check = await ordered
+                                                            .reviewOrder(data);
+                                                        if (check == false) {
+                                                          overlay.hide();
+                                                          showCustomSnackBar(
+                                                              "Vui  lòng thử lại",
+                                                              title:
+                                                              "Lỗi hệ thống");
+                                                        } else {
+                                                          overlay.hide();
+                                                          showCustomSnackBar(
+                                                              "Cảm ơn bạn đã đánh giá",
+                                                              title: "Thành công",
+                                                              type: false);
+                                                          ordered
+                                                              .getReviewByOrderId(
+                                                              ordered
+                                                                  .detailOrdered!
+                                                                  .orderId);
+                                                          setState(() {
+                                                            isReview = true;
+                                                          });
+                                                        }
                                                       }
                                                     }
                                                   }
                                                 }
+
                                               },
                                               child: isReview == false
                                                   ? SmallText(

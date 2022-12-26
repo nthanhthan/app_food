@@ -1,9 +1,8 @@
 import 'package:app_food/controllers/payment_controller.dart';
 import 'package:app_food/utils/colors.dart';
 import 'package:app_food/widgets/loader.dart';
-import 'package:app_food/widgets/shimmer.dart';
-import 'package:app_food/widgets/skeleton.dart';
 import 'package:app_food/widgets/small_text.dart';
+import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,40 +41,53 @@ class VoucherPage extends StatelessWidget {
                       },
                       child: Container(
                         padding: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(4),
-                            left: ScreenUtil().setWidth(20),
+                            top: ScreenUtil().setHeight(10),
+                            left: ScreenUtil().setWidth(10),
                             right: ScreenUtil().setWidth(10)),
                         height: ScreenUtil().setHeight(150),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: AppColors.borderBottom,
-                                    width: 5.0))),
+                        // decoration: BoxDecoration(
+                        //     border: Border(
+                        //         bottom: BorderSide(
+                        //             color: AppColors.borderBottom,
+                        //             width: 5.0))),
                         width: double.maxFinite,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SmallText(
-                                  text: voucher.listVoucher[index].name,
-                                  fontWeight: "bold",
-                                  color: Colors.black,
-                                ),
-                                SmallText(
-                                    text:
-                                        voucher.listVoucher[index].description),
-                              ],
-                            ),
-                            SmallText(
-                              text: "Chọn",
-                              color: AppColors.mainColor,
-                              fontWeight: "bold",
-                              size: ScreenUtil().setSp(10),
-                            )
-                          ],
+                        child: ClayContainer(
+                          color: const Color(0xFFF2F2F2),
+                          customBorderRadius: const BorderRadius.only(topRight: Radius.circular(40),bottomLeft:  Radius.circular(50),topLeft: Radius.circular(20)),
+                          depth: 10,
+                          spread: 20,
+                          child: Column(
+                           // crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SmallText(
+                                        text: voucher.listVoucher[index].name,
+                                        size: 12,
+                                        fontWeight: "bold",
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                  SmallText(
+                                    color: AppColors.paraColor,
+                                      text:
+                                          voucher.listVoucher[index].description),
+                                ],
+                              ),
+                              SmallText(
+                                text: "Chọn",
+                                color: AppColors.mainColor,
+                                fontWeight: "bold",
+                                size: ScreenUtil().setSp(10),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );

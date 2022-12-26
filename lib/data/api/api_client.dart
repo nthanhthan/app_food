@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class ApiClient extends GetConnect implements GetxService {
     http.Response response =
         await http.get(Uri.parse(uri), headers: _mainHeaders(token));
     print("Get${response.statusCode}");
+
     return response;
   }
 
@@ -131,7 +133,7 @@ class ApiClient extends GetConnect implements GetxService {
       };
 
   Response handleResponse(Response response) {
-    Response _response = response;
+   Response _response = response;
     if (_response.hasError &&
         _response.body != null &&
         _response.body is! String) {
@@ -148,11 +150,12 @@ class ApiClient extends GetConnect implements GetxService {
       }
     } else if (_response.hasError && _response.body == null) {
       print("The status code is " + _response.statusCode.toString());
-      _response = Response(
+      _response = const Response(
           statusCode: 0,
           statusText:
               'Connection to API server failed due to internet connection');
     }
+    showCustomSnackBar(_response.statusText.toString(),title: "Error");
     return _response;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:app_food/base/show_custom_snackbar.dart';
 import 'package:app_food/controllers/user_controller.dart';
 import 'package:app_food/routes/route_helper.dart';
 import 'package:app_food/utils/colors.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -21,22 +21,29 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool loaderOverlay = true;
+  var passwordController = TextEditingController();
+  var emailController = TextEditingController();
+  bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
     final overlay = LoadingOverlay.of(context, false);
-    var passwordController = TextEditingController();
-    var emailController = TextEditingController();
     double screenHeight = Get.context!.height; //820
     double screenWidth = Get.context!.width; //411
     print(screenHeight);
     print(screenWidth);
     Future<bool> _login() async {
       var data = {
-        'username': emailController.text,
-        'password': passwordController.text,
+        'username': emailController.text.trim(),
+        'password': passwordController.text.trim(),
       };
-      var check = await Get.find<UserController>().SignIn(data, "SignIn");
-      return check;
+      if(emailController.text.trim().isEmpty ||passwordController.text.trim().isEmpty ){
+        showCustomSnackBar("Nhập đủ thông tin",type: false);
+      }else{
+        var check = await Get.find<UserController>().SignIn(data, "SignIn");
+        return check;
+      }
+      return false;
+
     }
 
     return Scaffold(
@@ -85,11 +92,62 @@ class _SignInPageState extends State<SignInPage> {
             SizedBox(
               height: ScreenUtil().setHeight(20),
             ),
-            AppTextField(
-              textController: passwordController,
-              hintText: "Mật khẩu",
-              icon: Icons.password_sharp,
-              obscureText: true,
+            Container(
+              margin: EdgeInsets.only(left: ScreenUtil().setHeight(20),right: ScreenUtil().setWidth(20)),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 10,
+                        spreadRadius: 7,
+                        offset: Offset(1,10),
+                        color: Colors.grey.withOpacity(0.2)
+                    )
+                  ]
+              ),
+              child: TextField(
+                controller: passwordController,
+                obscureText: _isHidden,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    suffix: InkWell(
+                      onTap: (){
+                        setState(() {
+                          _isHidden=!_isHidden;
+                        });
+                      },
+                      child: Icon(
+                        _isHidden
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: AppColors.mainColor,
+                      ),
+                    ),
+                    hintText: "Mật khẩu",
+                    prefixIcon: Icon(Icons.password_sharp,color: AppColors.mainColor,),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                        borderSide: const BorderSide(
+                          width: 0.5,
+                          color: Colors.white,
+                        )
+                    ),
+                    enabledBorder:  OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+                        borderSide: const BorderSide(
+                          width: 1.0,
+                          color: Colors.white,
+                        )
+                    ),
+                    border:  OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(ScreenUtil().radius(30)),
+
+                    )
+
+                ),
+                style: TextStyle(fontSize: ScreenUtil().setSp(10)),
+              ),
             ),
             SizedBox(
               height: ScreenUtil().setHeight(50),

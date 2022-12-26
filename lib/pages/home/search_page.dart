@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../controllers/foodOfStore_controller.dart';
 import '../../routes/route_helper.dart';
@@ -39,14 +40,14 @@ class SearchStore extends SearchDelegate<String> {
             (store) => store.name!.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return ListView.builder(
-      itemCount: allStores.isEmpty?0:allStores.length,
+      itemCount:allStores.length,
       itemBuilder: (context, index) {
         return GestureDetector(
             onTap: () async {
                Get.find<FoodOfStoreController>().getAllFoodOfStore(allStores[index].storeId!, "16.073877", "108.149892");
                Get.toNamed(RouteHelper.getStoreDetail(allStores[index].storeId!));
             },
-            child: Container(
+            child: allStores.isNotEmpty?Container(
               margin: EdgeInsets.only(
                   left: ScreenUtil().setWidth(20),
                   right: ScreenUtil().setWidth(20),
@@ -116,7 +117,11 @@ class SearchStore extends SearchDelegate<String> {
                   )
                 ],
               ),
-            ));
+            ):Center(
+              child: SvgPicture.asset(
+                  "assets/images/coming_soon_ic.svg"),
+            )
+        );
       },
     );
   }
@@ -128,7 +133,7 @@ class SearchStore extends SearchDelegate<String> {
             (store) => store.name!.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return ListView.builder(
-      itemCount: storeSuggestions.isEmpty?0:storeSuggestions.length,
+      itemCount: storeSuggestions.length,
       itemBuilder: (context, index) {
         return GestureDetector(
             onTap: () async {
@@ -137,7 +142,7 @@ class SearchStore extends SearchDelegate<String> {
                 Get.toNamed(RouteHelper.getStoreDetail(storeSuggestions[index].storeId!));
               }
             },
-            child: Container(
+            child: storeSuggestions.isNotEmpty?Container(
               margin: EdgeInsets.only(
                   left: ScreenUtil().setWidth(20),
                   right: ScreenUtil().setWidth(20),
@@ -207,7 +212,11 @@ class SearchStore extends SearchDelegate<String> {
                   )
                 ],
               ),
-            ));
+            ):Center(
+              child: SvgPicture.asset(
+                  "assets/images/coming_soon_ic.svg"),
+            )
+        );
       },
     );
   }
