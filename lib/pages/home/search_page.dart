@@ -44,7 +44,7 @@ class SearchStore extends SearchDelegate<String> {
       itemBuilder: (context, index) {
         return GestureDetector(
             onTap: () async {
-               Get.find<FoodOfStoreController>().getAllFoodOfStore(allStores[index].storeId!, "16.073877", "108.149892");
+               Get.find<FoodOfStoreController>().getAllFoodOfStore(allStores[index].storeId!, "16.0752017445013", "108.15545900149125");
                Get.toNamed(RouteHelper.getStoreDetail(allStores[index].storeId!));
             },
             child: allStores.isNotEmpty?Container(

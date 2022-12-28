@@ -7,9 +7,10 @@ class FoodOfStoreRepo extends GetxService {
   FoodOfStoreRepo({required this.apiClient});
 
   Future<http.Response> getAllFoodOfStore(id, lat, lng) async {
-    var fullApiUrl ="${apiClient.appBaseUrl+ "GetStore?storeId=" + id + "&lat=" + lat}lng=" +lng;
-
-
+    print(lat);
+    print(lng);
+    var fullApiUrl =apiClient.appBaseUrl+ "GetStore?storeId=$id"+"&lat=$lat"+"&lng=$lng";
+    print(fullApiUrl);
     return await apiClient.Get(fullApiUrl);
   }
   Future<http.Response> getAllCommentStore(id,index) async {

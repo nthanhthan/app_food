@@ -1,5 +1,6 @@
 
 import 'package:app_food/routes/route_helper.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,8 +48,13 @@ class _SignUpPageState extends State<SignUpPage> {
           'password':password,
           'phoneNumber':phoneNumber,
         };
-        var check=await Get.find<UserController>().SignUp(data, "SignUp");
-        return check;
+        bool checkEmail=EmailValidator.validate(emailController.text.trim());
+        if(checkEmail){
+          var check=await Get.find<UserController>().SignUp(data, "SignUp");
+          return check;
+        }else{
+          showCustomSnackBar("Email không đúng định dạng",title: "Lỗi email");
+        }
       }
       return false;
 

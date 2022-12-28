@@ -68,8 +68,8 @@ class UserController extends GetxController{
   }
   Future<bool> SignIn(data,url) async{
     var data1={
-      "lat": 16.073877,
-      "lng": 108.149892,
+      "lat": 16.0752017445013,
+      "lng": 108.15545900149125,
       "radiusIn": 0,
       "radiusOut": 1
     };

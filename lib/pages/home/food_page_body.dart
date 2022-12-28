@@ -1,4 +1,3 @@
-
 import 'package:app_food/widgets/loader.dart';
 import 'package:app_food/widgets/shimmer.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -89,7 +88,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              BigText(text: "Phổ biến",
+              BigText(text: "Gần bạn",
                 color: AppColors.mainColor,
               ),
             ],
@@ -103,9 +102,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               shrinkWrap: true,
               itemCount: storeNear.storeNearList.isEmpty?0:storeNear.storeNearList.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
+                return index>4?GestureDetector(
                   onTap: () async {
-                    Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.073877", "108.149892");
+                     Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeNearList[index].storeId!, "16.0752017445013", "108.15545900149125");
                      Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeNearList[index].storeId!));
                   },
                   child: Container(
@@ -167,7 +166,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                       ],
                     ),
                   ),
-                );
+                ):const SizedBox();
               }): const ShimmerLoad();
         })
 
@@ -204,7 +203,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       transform: matrix,
       child: GestureDetector(
         onTap: () {
-          Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeId!, "16.073877", "108.149892");
+          Get.find<FoodOfStoreController>().getAllFoodOfStore(storeNear.storeId!, "16.0752017445013", "108.15545900149125");
           Get.toNamed(RouteHelper.getStoreDetail(storeNear.storeId!));
         },
         child: Stack(

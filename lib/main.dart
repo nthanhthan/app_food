@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var data={
-      "lat": 16.073877,
-      "lng": 108.149892,
+      "lat":  16.0752017445013,
+      "lng": 108.15545900149125,
       "radiusIn": 0,
       "radiusOut": 1
     };

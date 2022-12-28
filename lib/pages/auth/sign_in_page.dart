@@ -6,10 +6,12 @@ import 'package:app_food/widgets/app_text_field.dart';
 import 'package:app_food/widgets/big_text.dart';
 import 'package:app_food/widgets/loader_overlay.dart';
 import 'package:app_food/widgets/small_text.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SignInPage extends StatefulWidget {
@@ -37,10 +39,15 @@ class _SignInPageState extends State<SignInPage> {
         'password': passwordController.text.trim(),
       };
       if(emailController.text.trim().isEmpty ||passwordController.text.trim().isEmpty ){
-        showCustomSnackBar("Nhập đủ thông tin",type: false);
+        showCustomSnackBar("Nhập đủ thông tin");
       }else{
-        var check = await Get.find<UserController>().SignIn(data, "SignIn");
-        return check;
+        bool checkEmail=EmailValidator.validate(emailController.text.trim());
+        if(checkEmail){
+          var check = await Get.find<UserController>().SignIn(data, "SignIn");
+          return check;
+        }else{
+          showCustomSnackBar("Email không đúng định dạng",title: "Lỗi email");
+        }
       }
       return false;
 
@@ -73,9 +80,13 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   Text(
                     "Fooder xin chào",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(20),
-                        fontWeight: FontWeight.bold),
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                          color: Color(0xFFFF8357),
+                          fontSize: ScreenUtil().setSp(20),
+                          fontWeight: FontWeight.bold),
+                    )
+
                   ),
                 ],
               ),
