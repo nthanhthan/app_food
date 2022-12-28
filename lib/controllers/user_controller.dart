@@ -26,7 +26,7 @@ class UserController extends GetxController{
      Get.toNamed(RouteHelper.initial);
      return true;
     }else{
-      showCustomSnackBar(response.body,title: "Đăng kí thất bại");
+      showCustomSnackBar(response.body.toString(),title: "Đăng kí thất bại");
       return false;
     }
   }

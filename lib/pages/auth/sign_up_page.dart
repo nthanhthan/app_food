@@ -27,6 +27,22 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
+    bool isValidPhoneNumber(String string) {
+      // Null or empty string is invalid phone number
+      if (string == null || string.isEmpty) {
+        return false;
+      }
+
+      // You may need to change this pattern to fit your requirement.
+      // I just copied the pattern from here: https://regexr.com/3c53v
+      const pattern=r'^((\+*84)|0)(3|5|7|8|9)+([0-9]{8})$';
+      final regExp = RegExp(pattern);
+
+      if (!regExp.hasMatch(string)) {
+        return false;
+      }
+      return true;
+    }
 
     Future<bool> _register() async{
       String name=nameController.text.trim();
@@ -50,9 +66,16 @@ class _SignUpPageState extends State<SignUpPage> {
         };
         bool checkEmail=EmailValidator.validate(emailController.text.trim());
         if(checkEmail){
-          var check=await Get.find<UserController>().SignUp(data, "SignUp");
-          return check;
+          bool checkPhone=isValidPhoneNumber(phoneNumber);
+          if(checkPhone){
+            var check=await Get.find<UserController>().SignUp(data, "SignUp");
+            return check;
+          }else{
+            phoneController.text="";
+            showCustomSnackBar("Số điện thoại không đúng định dạng",title: "Lỗi số điện thoại");
+          }
         }else{
+          emailController.text="";
           showCustomSnackBar("Email không đúng định dạng",title: "Lỗi email");
         }
       }
@@ -162,10 +185,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       MaterialPageRoute(builder: (context) => const SignInPage()),
                     );
                     }else{
-                      emailController.text="";
-                      nameController.text="";
-                      phoneController.text="";
-                      passwordController.text="";
+                      // emailController.text="";
+                      // nameController.text="";
+                      // phoneController.text="";
+                      // passwordController.text="";
                     }
                   },
                   child: BigText(
